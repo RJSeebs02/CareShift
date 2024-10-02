@@ -33,7 +33,6 @@ body{
 }
 
 .wrapper .sidebar ul li{
-    padding: 15px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -41,11 +40,22 @@ body{
 .wrapper .sidebar ul li a{
     color: white;
     display: block;
+    padding: 15px;
 }
 
 .wrapper .sidebar ul li a .fas{
     width: 25px;
 }
+
+.wrapper .sidebar ul li a.active {
+    background-color: #29ce7a;
+    color: #181a1d;
+}
+
+.wrapper .sidebar ul li a.active .fas {
+    color: #181a1d;
+}
+
 
 .wrapper .sidebar ul li:hover{
     background: #ffffff;
@@ -55,21 +65,92 @@ body{
     color: #000000;
 }
 
-.wrapper .main_content{
+.wrapper .body{
     width: 100%;
     margin-left: 200px;
 }
 
-.wrapper .main_content .header{
+.wrapper .body .header {
     padding: 20px;
     background: #29ce7a;
     display: flex;
+    justify-content: flex-end;
+    gap: 20px;
     align-items: center;
 }
 
-.wrapper .main_content .header h3{
-    margin-right: 20px;
-    background: #29ce7a;
-    display: flex;
-    align-items: center;
+.wrapper .body .header h3{
+    margin: 0;
+}
+
+.wrapper .body .main_content{
+    padding: 0px 30px 0px 30px;
+}
+.wrapper .body .main_content h1{
+    font-size: 50px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+.wrapper .body .main_content .content_wrapper{
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 5px #CBD4DF;
+}
+#tablerecords{
+	padding: 10px;
+	border-collapse: collapse;
+	width: 100%;
+}
+#tablerecords thead{
+	color: white;
+	background-color: #181a1d;
+	text-align: left;
+    font-size: 30px;
+}
+#tablerecords tbody{
+	font-size: 20px;
+}
+#tablerecords tbody tr td{
+	padding: 10px 0px 10px 0px;
+}
+#tablerecords a:hover{
+	color: #7A95FF;
+	transition: 0.2s;
+}
+
+#login-wrapper{
+	margin-top: 80px;
+}
+#login-box{
+	background-color: white;
+	margin: auto;
+	padding: 30px 20px 20px 20px;
+	width: 25%;
+	border-radius: 20px;
+	box-shadow: 0 0 10px 5px #CBD4DF;
+}
+#login-title{
+	text-align: center;
+	margin-bottom: 20px;
+	border-radius: 20px;
+}
+#login-title h1, #login-title h3{
+	color: #2E303A;
+}
+#login-main{
+	text-align: center;
+}
+#loginbutton{
+	margin-top: 50px;
+}
+#error_box{
+	margin: auto;
+	width:400px;
+	text-align: center;
+}
+#error_notif{
+	margin-top: 20px;
+	padding: 20px;
+	background: white;
+	box-shadow: 0 0 10px 5px #CBD4DF;
 }

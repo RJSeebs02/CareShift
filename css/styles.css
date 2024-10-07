@@ -154,3 +154,54 @@ body{
 	background: white;
 	box-shadow: 0 0 10px 5px #CBD4DF;
 }
+
+.calendar {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f2f2f2;
+}
+
+#month-year {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.calendar-body {
+    padding: 10px;
+}
+
+.day-names, .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+}
+
+.day-names span, .days div {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.days div {
+    border-radius: 50%;
+    margin: 2px;
+    padding: 10px;
+    background-color: #f2f2f2;
+}
+
+.days div.active {
+    background-color: #007bff;
+    color: #fff;
+}

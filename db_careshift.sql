@@ -31,3 +31,40 @@ CREATE TABLE `admin` (
 
 INSERT INTO admin(adm_username,adm_password,adm_fname,adm_mname,adm_lname,adm_email,adm_contact,adm_department) 
 VALUES ("admin","123", "Admin", "Admin", "Admin", "admin@gmail.com", 123, "HR");
+
+DROP TABLE IF EXISTS `logs`;
+CREATE TABLE `logs` (
+  `log_id` int(50) NOT NULL auto_increment,
+  `log_actor` varchar(50) NOT NULL,
+  `log_subject` varchar(50) NOT NULL,
+  `log_action` varchar(50) NOT NULL,
+  `log_description` varchar(50) NOT NULL,
+  `log_time_managed` time NOT NULL,
+  `log_date_managed` date NOT NULL,
+  PRIMARY KEY  (`log_id`)
+);
+
+INSERT INTO logs(log_actor,log_subject,log_action,log_description,log_time_managed,log_date_managed) 
+VALUES ("Lij Faeldonea","Anton Magbanua", "Removed", "Lij removed Nurse 24 - Anton Magbanua", '12:34:56', '2024-10-06');
+
+DROP TABLE IF EXISTS `schedule`;
+CREATE TABLE `schedule` (
+  `sched_id` int(50) NOT NULL auto_increment,
+  `emp_id` int(50) NOT NULL,
+  `sched_date` date NOT NULL,
+  `sched_start_time` time NOT NULL,
+  `sched_end_time` time NOT NULL,
+  PRIMARY KEY  (`sched_id`),
+  KEY (`emp_id`)
+);
+
+DROP TABLE IF EXISTS `attendance`;
+CREATE TABLE `attendance` (
+  `att_id` int(50) NOT NULL auto_increment,
+  `emp_id` int(50) NOT NULL,
+  `att_type` varchar(50) NOT NULL,
+  `att_date` date NOT NULL,
+  `att_time` time NOT NULL,
+  PRIMARY KEY  (`att_id`),
+  KEY (`emp_id`)
+);

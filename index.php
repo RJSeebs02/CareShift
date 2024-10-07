@@ -1,6 +1,7 @@
 <?php
 include_once 'class/class.employee.php';
 include_once 'class/class.admin.php';
+include_once 'class/class.logs.php';
 include 'config/config.php';
 
 /*Parameter variables for the navbar*/
@@ -9,6 +10,7 @@ $page = (isset($_GET['page']) && $_GET['page'] != '') ? $_GET['page'] : '';
 /*Declaring the objects (OOP Concept)*/
 $employee = new Employee();
 $admin = new Admin();
+$log = new Log();
 
 /*Login Verifier (Deploys Login Check Method from another file)*/
 if(!$admin->get_session()){
@@ -76,5 +78,6 @@ $admin_user_login = $admin_id;
             </div>
         </div>
     </div>
+    <script src="script/script.js"></script>
 </body>
 </html>

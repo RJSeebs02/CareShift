@@ -43,5 +43,4 @@
 			}
 			?>
 </table>
-<p>Tae</p>
 </div>

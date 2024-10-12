@@ -1,23 +1,7 @@
-<h1>Schedule</h1>
-<div class="dashboard-wrapper">
-    <div class="calendar">
-        <div class="calendar-header">
-            <button id="prev" onclick="prevMonth()">&#10094;</button>
-            <div id="month-year"></div>
-            <button id="next" onclick="nextMonth()">&#10095;</button>
-        </div>
-        <div class="calendar-body">
-            <div class="day-names">
-                <span>Sun</span>
-                <span>Mon</span>
-                <span>Tue</span>
-                <span>Wed</span>
-                <span>Thu</span>
-                <span>Fri</span>
-                <span>Sat</span>
-            </div>
-            <div class="days" id="calendar-days"></div>
-        </div>
+<div class="content_wrapper">
+    <div class="heading">
+        <h1><i class="fas fa-solid fa-clock"></i>&nbspSchedule</h1>
+        <a href="#" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Schedule</a>
     </div>
+    <div id="calendar"></div>
 </div>
- 

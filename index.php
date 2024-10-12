@@ -6,6 +6,8 @@ include 'config/config.php';
 
 /*Parameter variables for the navbar*/
 $page = (isset($_GET['page']) && $_GET['page'] != '') ? $_GET['page'] : '';
+$subpage = (isset($_GET['subpage']) && $_GET['subpage'] != '') ? $_GET['subpage'] : '';
+$id = (isset($_GET['id']) && $_GET['id'] != '') ? $_GET['id'] : '';
 
 /*Declaring the objects (OOP Concept)*/
 $employee = new Employee();
@@ -16,7 +18,7 @@ $log = new Log();
 if(!$admin->get_session()){
 	header("location: login.php");
 }
-$admin_id = $admin->get_id($_SESSION['adm_username']);
+$admin_id = $admin->get_id_by_username($_SESSION['adm_username']);
 $admin_user_login = $admin_id;
 ?>
 
@@ -26,6 +28,10 @@ $admin_user_login = $admin_id;
 <head>
     <title>CareShift</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script> 
     <script src="https://kit.fontawesome.com/e697cf1067.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -38,6 +44,7 @@ $admin_user_login = $admin_id;
                 <li><a href="index.php?page=logs" class="<?= $page == 'logs' ? 'active' : '' ?>"><i class="fas fa-solid fa-receipt"></i>Logs</a></li>
                 <li><a href="index.php?page=schedule" class="<?= $page == 'schedule' ? 'active' : '' ?>"><i class="fas fa-solid fa-clock"></i>Schedule</a></li>
                 <li><a href="index.php?page=employees" class="<?= $page == 'employees' ? 'active' : '' ?>"><i class="fas fa-solid fa-user-nurse"></i>Employees</a></li>
+                <li><a href="index.php?page=admins" class="<?= $page == 'admins' ? 'active' : '' ?>"><i class="fas fa-lock" aria-hidden="true"></i></i>Admins</a></li>
                 <li><a href="index.php?page=settings" class="<?= $page == 'settings' ? 'active' : '' ?>"><i class="fas fa-solid fa-gear"></i>Settings</a></li>
             </ul>
         </div>
@@ -64,6 +71,10 @@ $admin_user_login = $admin_id;
 				    /*Displays Employees Page*/
                     case 'employees':
                         require_once 'employees-module/index.php';
+                    break;
+                    /*Displays Admins Page*/
+                    case 'admins':
+                        require_once 'admins-module/index.php';
                     break;
 				    /*Displays Settings Page*/
                     case 'settings':

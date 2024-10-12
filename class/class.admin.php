@@ -11,6 +11,40 @@ class Admin{
 		$this->conn = new PDO("mysql:host=".$this->DB_SERVER.";dbname=".$this->DB_DATABASE,$this->DB_USERNAME,$this->DB_PASSWORD);
 	}
 
+	/*Function for creating a new admin */
+	public function new_admin($username,$password,$first_name,$middle_name,$last_name,$email,$contact_no,$access){
+		
+		$data = [
+			[$username,$password,$first_name,$middle_name,$last_name,$email,$contact_no,$access],
+		];
+		/*Stores parameters passed from the creation page inside the database */
+		$stmt = $this->conn->prepare("INSERT INTO admin (adm_username, adm_password, adm_fname, adm_mname, adm_lname, adm_email, adm_contact, adm_access) VALUES (?,?,?,?,?,?,?,?)");
+		try {
+			$this->conn->beginTransaction();
+			foreach ($data as $row)
+			{
+				$stmt->execute($row);
+			}
+			$this->conn->commit();
+		}catch (Exception $e){
+			$this->conn->rollback();
+			throw $e;
+		}
+
+		return true;
+
+	}
+
+	/*Function for updating an admin */
+	public function update_admin($id,$username,$first_name,$middle_name,$last_name,$email,$contact_no,$access){
+		/*Updates data from the database using the parameters passed from the profile updating page */
+		$sql = "UPDATE admin SET adm_fname=:first_name, adm_mname=:middle_name, adm_lname=:last_name, adm_email=:email, adm_contact=:contact_no, adm_access=:access WHERE adm_username=:username";
+
+		$q = $this->conn->prepare($sql);
+		$q->execute(array(':first_name'=>$first_name, ':middle_name'=>$middle_name,':last_name'=>$last_name,':email'=>$email,':contact_no'=>$contact_no, ':access'=>$access, ':username'=>$username));
+		return true;
+	}
+
 	/*Function that selects all the records from the admins table */
 	public function list_admins(){
 		$sql="SELECT * FROM admin";
@@ -25,7 +59,15 @@ class Admin{
 		}
 	}
 	/*Function for getting the admin id from the database */
-	function get_id($username){
+	function get_id_by_id($id){
+		$sql="SELECT adm_id FROM admin WHERE adm_id = :id";	
+		$q = $this->conn->prepare($sql);
+		$q->execute(['id' => $id]);
+		$id = $q->fetchColumn();
+		return $id;
+	}
+	/*Function for getting the admin id by username from the database */
+	function get_id_by_username($username){
 		$sql="SELECT adm_id FROM admin WHERE adm_username = :username";	
 		$q = $this->conn->prepare($sql);
 		$q->execute(['username' => $username]);
@@ -89,8 +131,8 @@ class Admin{
 		return $contact;
 	}
 	/*Function for getting the admin department from the database */
-	function get_department($id){
-		$sql="SELECT adm_department FROM admin WHERE adm_id = :id";	
+	function get_access($id){
+		$sql="SELECT adm_access FROM admin WHERE adm_id = :id";	
 		$q = $this->conn->prepare($sql);
 		$q->execute(['id' => $id]);
 		$department = $q->fetchColumn();

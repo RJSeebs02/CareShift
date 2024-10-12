@@ -263,14 +263,31 @@ label {
 	margin-bottom: 20px;
 	border-radius: 20px;
 }
+#login-title h1{
+    font-size: 60px;
+}
+#login-title h3{
+    font-size: 30px;
+}
 #login-title h1, #login-title h3{
 	color: #2E303A;
 }
 #login-main{
 	text-align: center;
 }
+#login-main input[type="text"],
+#login-main input[type="password"]{
+	width: 250px;
+    height: 40px;
+    padding: 0px 10px 0px 10px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
 #loginbutton{
-	margin-top: 50px;
+	margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    width: 100px;
 }
 #error_box{
 	margin: auto;

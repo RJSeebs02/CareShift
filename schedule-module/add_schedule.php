@@ -1,24 +1,14 @@
-<div class="content_wrapper">
-    <div class="heading">
-        <h1><i class="fas fa-solid fa-clock"></i>&nbspSchedule</h1>
-
-        <!-- Add Schedule Button (opens modal) -->
-        <button id="addScheduleBtn" class="right_button">
-            <i class="fa fa-plus"></i>&nbspAdd Schedule
-        </button>
-
-        <!-- Calendar Button -->
-        <a href="index.php?page=schedule&subpage=calendar" class="right_button">
-            <i class="fa fa-calendar"></i>&nbspCalendar
-        </a>
-    </div>
-</div>
-
-<!-- Modal Structure -->
-<div id="addScheduleModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h1><i class="fa fa-plus"></i>&nbspAdd Nurse Schedule</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Schedule</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Create Nurse Schedule</h1>
         <form method="post" action="schedule-module/generate_schedule.php">
             <label for="emp_id">Select Nurse:</label>
             <select name="emp_id" required>
@@ -29,9 +19,11 @@
 
                 // Query to select nurses from the employee table
                 $query = "SELECT emp_id, CONCAT(emp_fname, ' ', emp_lname) AS name FROM employee";
-                $result = mysqli_query($con, $query);
+                $result = mysqli_query($con, $query); // Use $con (not $conn)
 
+                // Check if the query returned any results
                 if ($result && mysqli_num_rows($result) > 0) {
+                    // Loop through the results and display them as options in the dropdown
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<option value='{$row['emp_id']}'>{$row['name']}</option>";
                     }
@@ -57,20 +49,5 @@
             <button type="submit">Generate Schedule</button>
         </form>
     </div>
-</div>
-
-<?php
-    $subpage = isset($_GET['subpage']) ? $_GET['subpage'] : 'calendar';
-
-    switch($subpage){
-        case 'add_sched':
-            require_once 'add_schedule.php';
-        break;
-        case 'calendar':
-            require_once 'calendar.php';
-        break; 
-        default:
-            require_once 'calendar.php';
-        break;
-    }
-?>
+</body>
+</html>

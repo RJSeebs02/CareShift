@@ -12,15 +12,14 @@ $(document).ready(function() {
         header: {
             left: 'prev,next,today',
             center: 'title',
-            right: 'month,agendaWeek,agendaDay'
+            right: 'month,agendaWeek'
         },
         selectable: true,
         editable: false,
         buttonText: {
             today: 'Today',
             month: 'Month',
-            week: 'Week',
-            day: 'Day'
+            week: 'Week'
         },
         events: 'schedule-module/fetch_schedule.php?nurse_id=' + nurse_id, // Load events based on nurse_id from the URL
         eventRender: function(event, element) {

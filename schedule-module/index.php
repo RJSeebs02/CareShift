@@ -2,6 +2,12 @@
     <div class="heading">
         <h1><i class="fas fa-solid fa-clock"></i>&nbsp;Schedule</h1>
 
+        
+        <!-- Add Schedule Button (opens modal) -->
+        <button id="addScheduleBtn" class="right_button">
+            <i class="fa fa-plus"></i>&nbspAdd Schedule
+        </button>
+    </div>
         <form id="nurseForm" method="GET" action="">
             <label for="nurseSelect">Select Nurse:</label>
             <select id="nurseSelect" name="nurse_id" onchange="this.form.submit()">
@@ -22,11 +28,22 @@
                 ?>
             </select>
         </form>
-        <!-- Add Schedule Button (opens modal) -->
-        <button id="addScheduleBtn" class="right_button">
-            <i class="fa fa-plus"></i>&nbspAdd Schedule
-        </button>
-    </div>
+
+    <?php
+    $subpage = isset($_GET['subpage']) ? $_GET['subpage'] : 'calendar';
+
+    switch($subpage){
+        case 'add_sched':
+            require_once 'add_schedule.php';
+        break;
+        case 'calendar':
+            require_once 'calendar.php';
+        break; 
+        default:
+            require_once 'calendar.php';
+        break;
+    }
+?>
 </div>
 
 
@@ -74,19 +91,3 @@
         </form> 
     </div>
 </div>
-
-<?php
-    $subpage = isset($_GET['subpage']) ? $_GET['subpage'] : 'calendar';
-
-    switch($subpage){
-        case 'add_sched':
-            require_once 'add_schedule.php';
-        break;
-        case 'calendar':
-            require_once 'calendar.php';
-        break; 
-        default:
-            require_once 'calendar.php';
-        break;
-    }
-?>

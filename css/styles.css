@@ -301,16 +301,72 @@ label {
 	box-shadow: 0 0 10px 5px #CBD4DF;
 }
 
+#nurseForm {
+    display: flex; /* Enable flexbox */
+    justify-content: center; /* Center contents horizontally */
+    gap: 10px; /* Optional: Adds space between elements */
+}
+
+
+#nurseForm label{
+    font-size: 40px;
+}
+
+#nurseForm select{
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 20px;
+}
+
 /* Calendar container */
 #calendar {
     max-width: 1000px;
-    margin: 40px auto;
+    margin: 20px auto;
     padding: 10px;
     background-color: #ffffff; /* Light background */
     border: 1px solid #ddd; /* Border around the calendar */
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0 0 10px 5px #CBD4DF;
 }
+
+.fc-button {
+    background: #29ce7a !important;
+    border: none !important;
+    color: white !important;
+    padding-bottom: 0px !important;
+    margin: 0px !important;
+}
+
+/* Remove hover styles */
+.fc-button:hover {
+    background: #0f9753 !important;
+    color: white !important;
+}
+
+#calendar .fc-day-today {
+    background-color: #40d4ee !important; /* Ensure it overrides */
+    color: #000 !important; /* Ensure it overrides */
+}
+
+
+/* Remove default text styles */
+.fc h2, .fc h3, .fc h4, .fc h5, .fc h6 {
+    font-size: 40px !important;
+    font-weight: bold !important;
+    color: inherit !important;
+}
+
+/* Reset event styles */
+.fc-event {
+    background: #29ce7a !important;
+    border: black solid 1px !important;
+    color: white !important;
+}
+
+
+
 
 
 
@@ -349,7 +405,8 @@ label {
 .modal-content select,
 .modal-content input[type="date"],
 .modal-content input[type="time"],
-.modal-content input[type="tel"] {
+.modal-content input[type="tel"],
+.modal-content input[type="number"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;

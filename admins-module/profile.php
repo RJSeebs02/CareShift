@@ -1,5 +1,5 @@
 <div class="heading">
-    <h1><i class="fas fa-lock" aria-hidden="true"></i>&nbsp<?php echo $admin->get_username($id).'\'s ';?>Profile</h1>
+    <h1><i class="fas fa-lock" aria-hidden="true"></i>&nbsp<?php echo $admin->get_fname($id).'\'s ';?>Profile</h1>
     <a href="index.php?page=admins" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspAdmin List</a>
 </div>
 
@@ -29,9 +29,11 @@
             <label for="access">Access:</label>
             <select id="access" name="access" required>
                 <option value="<?php echo $admin->get_access($id);?>"><?php echo $admin->get_access($id);?></option>
-                <option value="Manager">Manager</option>
-                <option value="Supervisor">Supervisor</option>
-                <option value="Secretary">Secretary</option>
+                <option value="Super Admin">Super Admin</option>
+                <option value="Head Nurse">Head Nurse</option>
+                <option value="OR Scheduler">OR Scheduler</option>
+                <option value="CNA Scheduler">CNA Scheduler</option>
+                <option value="SCN Scheduler">SCN Scheduler</option>
             </select>
 
             <label for="id"></label>

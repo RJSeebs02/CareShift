@@ -29,9 +29,11 @@
             <label for="access">Access:</label>
             <select id="access" name="access" required>
                 <option value="">Select Access</option>
-                <option value="Manager">Manager</option>
-                <option value="Supervisor">Supervisor</option>
-                <option value="Secretary">Secretary</option>
+                <option value="Super Admin">Super Admin</option>
+                <option value="Head Nurse">Head Nurse</option>
+                <option value="OR Scheduler">Operating Room Scheduler</option>
+                <option value="CNA Scheduler">Clinical Nursing Area Scheduler</option>
+                <option value="SCN Scheduler">Special Care Nursing Scheduler</option>
             </select>
         </div>
     </div>

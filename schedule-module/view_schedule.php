@@ -4,18 +4,18 @@
 // Include the MySQLi connection from config.php
 include '../config/config.php';  // Adjust the path if necessary
 
-// Check if emp_id is set in the URL
-if (isset($_GET['emp_id']) && !empty($_GET['emp_id'])) {
-    // Get the employee ID from the URL
-    $emp_id = $_GET['emp_id'];
+// Check if nurse_id is set in the URL
+if (isset($_GET['nurse_id']) && !empty($_GET['nurse_id'])) {
+    // Get the nurse ID from the URL
+    $nurse_id = $_GET['nurse_id'];
 
     // Prepare the SQL query using MySQLi
-    $query = "SELECT schedule_time FROM schedules WHERE emp_id = ?";
+    $query = "SELECT schedule_time FROM schedules WHERE nurse_id = ?";
 
     // Initialize a prepared statement
     if ($stmt = mysqli_prepare($con, $query)) {
-        // Bind the emp_id parameter
-        mysqli_stmt_bind_param($stmt, "i", $emp_id);
+        // Bind the nurse_id parameter
+        mysqli_stmt_bind_param($stmt, "i", $nurse_id);
         
         // Execute the statement
         mysqli_stmt_execute($stmt);
@@ -39,6 +39,6 @@ if (isset($_GET['emp_id']) && !empty($_GET['emp_id'])) {
     // Close the database connection
     mysqli_close($con);
 } else {
-    echo "Invalid employee ID.";
+    echo "Invalid nurse ID.";
 }
 ?>

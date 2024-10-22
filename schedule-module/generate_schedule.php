@@ -6,29 +6,29 @@ if (!$con) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get form data
-    $emp_id = $_POST['emp_id'];
+    $nurse_id = $_POST['nurse_id'];
     $sched_date = $_POST['sched_date'];
     $sched_start_time = $_POST['sched_start_time'];
-    $sched_end_time = $_POST['sched_end_time'];
+    $work_hours = $_POST['work_hours'];
 
-    $query = "SELECT * FROM schedule WHERE emp_id = '$emp_id' AND sched_date = '$sched_date' 
-              AND ('$sched_start_time' BETWEEN sched_start_time AND sched_end_time 
-              OR '$sched_end_time' BETWEEN sched_start_time AND sched_end_time)";
-    $result = mysqli_query($con, $query);
+    // Calculate the end time based on work hours
+    $start_time = new DateTime($sched_date . ' ' . $sched_start_time);
+    $end_time = clone $start_time; // Clone to avoid modifying the original start time
+    $end_time->modify("+{$work_hours} hours");
 
-    if (mysqli_num_rows($result) > 0) {
-        echo "The nurse already has a schedule for this time slot.";
+    // Format the times for insertion into the database
+    $formatted_start_time = $start_time->format('H:i:s');
+    $formatted_end_time = $end_time->format('H:i:s');
+    $end_date = $end_time->format('Y-m-d');  // The end date may change if shift crosses midnight
+
+    // Insert into the database
+    $insert_query = "INSERT INTO schedule (nurse_id, sched_date, sched_start_time, sched_end_time) 
+                     VALUES ('$nurse_id', '$sched_date', '$formatted_start_time', '$formatted_end_time')";
+
+    if (mysqli_query($con, $insert_query)) {
+        echo "<script>alert('Schedule generated successfully!'); window.location.href = '../index.php?page=schedule&subpage=calendar';</script>";
     } else {
-        // Insert the new schedule into the database
-        $insert_query = "INSERT INTO schedule (emp_id, sched_date, sched_start_time, sched_end_time) 
-                         VALUES ('$emp_id', '$sched_date', '$sched_start_time', '$sched_end_time')";
-
-        if (mysqli_query($con, $insert_query)) {
-            echo "Schedule generated successfully!";
-        } else {
-            echo "Error: " . mysqli_error($conn);
-        }
+        echo "<script>alert('Error: " . mysqli_error($con) . "'); window.location.href = '../index.php?page=schedule&subpage=calendar';</script>";
     }
 }
 

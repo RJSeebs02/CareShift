@@ -1,18 +1,34 @@
 <div class="content_wrapper">
     <div class="heading">
-        <h1><i class="fas fa-solid fa-clock"></i>&nbspSchedule</h1>
+        <h1><i class="fas fa-solid fa-clock"></i>&nbsp;Schedule</h1>
 
+        <form id="nurseForm" method="GET" action="">
+            <label for="nurseSelect">Select Nurse:</label>
+            <select id="nurseSelect" name="nurse_id" onchange="this.form.submit()">
+                <option value="all">All Nurses</option>
+                <?php
+                // Query to select nurses from the nurse table
+                $query = "SELECT nurse_id, CONCAT(nurse_lname, ', ', nurse_fname) AS name FROM nurse";
+                $result = mysqli_query($con, $query);
+
+                if ($result && mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $selected = isset($_GET['nurse_id']) && $_GET['nurse_id'] == $row['nurse_id'] ? 'selected' : '';
+                        echo "<option value='{$row['nurse_id']}' $selected>{$row['name']}</option>";
+                    }
+                } else {
+                    echo "<option>No nurses found</option>";
+                }
+                ?>
+            </select>
+        </form>
         <!-- Add Schedule Button (opens modal) -->
         <button id="addScheduleBtn" class="right_button">
             <i class="fa fa-plus"></i>&nbspAdd Schedule
         </button>
-
-        <!-- Calendar Button -->
-        <a href="index.php?page=schedule&subpage=calendar" class="right_button">
-            <i class="fa fa-calendar"></i>&nbspCalendar
-        </a>
     </div>
 </div>
+
 
 <!-- Modal Structure -->
 <div id="addScheduleModal" class="modal">
@@ -20,20 +36,20 @@
         <span class="close">&times;</span>
         <h1><i class="fa fa-plus"></i>&nbspAdd Nurse Schedule</h1>
         <form method="post" action="schedule-module/generate_schedule.php">
-            <label for="emp_id">Select Nurse:</label>
-            <select name="emp_id" required>
+            <label for="nurse_id">Select Nurse:</label>
+            <select name="nurse_id" required>
                 <?php
                 if (!$con) {
                     die("Connection failed: " . mysqli_connect_error());
                 }
 
-                // Query to select nurses from the employee table
-                $query = "SELECT emp_id, CONCAT(emp_fname, ' ', emp_lname) AS name FROM employee";
-                $result = mysqli_query($con, $query);
+                // Query to select nurses from the nurse table
+                $query = "SELECT nurse_id, CONCAT(nurse_fname, ' ', nurse_lname) AS name FROM nurse";
+                $result = mysqli_query($con, $query); 
 
                 if ($result && mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
-                        echo "<option value='{$row['emp_id']}'>{$row['name']}</option>";
+                        echo "<option value='{$row['nurse_id']}'>{$row['name']}</option>";
                     }
                 } else {
                     echo "<option>No nurses found</option>";
@@ -49,13 +65,13 @@
             <label for="sched_start_time">Start Time:</label>
             <input type="time" name="sched_start_time" required>
 
-            <!-- End Time Selection -->
-            <label for="sched_end_time">End Time:</label>
-            <input type="time" name="sched_end_time" required>
+            <!-- Number of Hours -->
+            <label for="work_hours">Number of Hours:</label>
+            <input type="number" name="work_hours" min="1" required>
 
             <!-- Submit Button -->
             <button type="submit">Generate Schedule</button>
-        </form>
+        </form> 
     </div>
 </div>
 

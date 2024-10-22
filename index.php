@@ -1,7 +1,8 @@
 <?php
-include_once 'class/class.employee.php';
+include_once 'class/class.nurse.php';
 include_once 'class/class.admin.php';
 include_once 'class/class.logs.php';
+include_once 'class/class.leave.php';
 include 'config/config.php';
 
 /*Parameter variables for the navbar*/
@@ -10,9 +11,10 @@ $subpage = (isset($_GET['subpage']) && $_GET['subpage'] != '') ? $_GET['subpage'
 $id = (isset($_GET['id']) && $_GET['id'] != '') ? $_GET['id'] : '';
 
 /*Declaring the objects (OOP Concept)*/
-$employee = new Employee();
+$nurse = new Nurse();
 $admin = new Admin();
 $log = new Log();
+$leave = new Leave; 
 
 /*Login Verifier (Deploys Login Check Method from another file)*/
 if(!$admin->get_session()){
@@ -39,11 +41,11 @@ $admin_user_login = $admin_id;
         <div class="sidebar">
             <h2>CareShift</h2>
             <ul>
-                <li><a href="index.php" class="<?= $page == '' ? 'active' : '' ?>"><i class="fas fa-solid fa-chart-pie"></i>Dashboard</a></li>
+                <li><a href="index.php?page=schedule" class="<?= $page == 'schedule' ? 'active' : '' ?>"><i class="fas fa-solid fa-clock"></i>Schedule</a></li>
                 <li><a href="index.php?page=reports" class="<?= $page == 'reports' ? 'active' : '' ?>"><i class="fas fa-solid fa-file-waveform"></i>Reports</a></li>
                 <li><a href="index.php?page=logs" class="<?= $page == 'logs' ? 'active' : '' ?>"><i class="fas fa-solid fa-receipt"></i>Logs</a></li>
-                <li><a href="index.php?page=schedule" class="<?= $page == 'schedule' ? 'active' : '' ?>"><i class="fas fa-solid fa-clock"></i>Schedule</a></li>
-                <li><a href="index.php?page=employees" class="<?= $page == 'employees' ? 'active' : '' ?>"><i class="fas fa-solid fa-user-nurse"></i>Employees</a></li>
+                <li><a href="index.php?page=leave" class="<?= $page == 'leave' ? 'active' : '' ?>"><i class="fas fa-regular fa-paste"></i></i></i>Leave Applicants</a></li>
+                <li><a href="index.php?page=nurses" class="<?= $page == 'nurses' ? 'active' : '' ?>"><i class="fas fa-solid fa-user-nurse"></i>Nurses</a></li>
                 <li><a href="index.php?page=admins" class="<?= $page == 'admins' ? 'active' : '' ?>"><i class="fas fa-lock" aria-hidden="true"></i></i>Admins</a></li>
                 <li><a href="index.php?page=settings" class="<?= $page == 'settings' ? 'active' : '' ?>"><i class="fas fa-solid fa-gear"></i>Settings</a></li>
             </ul>
@@ -64,13 +66,17 @@ $admin_user_login = $admin_id;
                     case 'logs':
                         require_once 'logs-module/index.php';
                     break;
+                    /*Displays Leave Page*/
+                    case 'leave':
+                        require_once 'leave-module/index.php';
+                    break;
 				    /*Displays Schedule Page*/
                     case 'schedule':
                         require_once 'schedule-module/index.php';
                     break;
-				    /*Displays Employees Page*/
-                    case 'employees':
-                        require_once 'employees-module/index.php';
+				    /*Displays Nurse Page*/
+                    case 'nurses':
+                        require_once 'nurse-module/index.php';
                     break;
                     /*Displays Admins Page*/
                     case 'admins':
@@ -82,7 +88,7 @@ $admin_user_login = $admin_id;
                     break;
 				    /*Displays Default Page (Homepage)*/
                     default:
-                        require_once 'dashboard-module/index.php';
+                        require_once 'schedule-module/index.php';
                     break; 
                     }
                 ?>

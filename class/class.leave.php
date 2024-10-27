@@ -5,7 +5,6 @@ class Leave {
     private $DB_PASSWORD = '';
     private $DB_DATABASE = 'db_careshift';
     private $conn;
-
     public function __construct() {
         $this->conn = new PDO("mysql:host=" . $this->DB_SERVER . ";dbname=" . $this->DB_DATABASE, $this->DB_USERNAME, $this->DB_PASSWORD);
         $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Set error mode to exception

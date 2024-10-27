@@ -1,84 +1,87 @@
 <!--Logs Class File-->
 <?php
 /*Creates Logs Object with database connection */
-class Log{
-	private $DB_SERVER='localhost';
-	private $DB_USERNAME='root';
-	private $DB_PASSWORD='';
-	private $DB_DATABASE='db_careshift';
-	private $conn;
-	public function __construct(){
-		$this->conn = new PDO("mysql:host=".$this->DB_SERVER.";dbname=".$this->DB_DATABASE,$this->DB_USERNAME,$this->DB_PASSWORD);
+class Log {
+    private $DB_SERVER='localhost';
+    private $DB_USERNAME='root';
+    private $DB_PASSWORD='';
+    private $DB_DATABASE='db_careshift';
+    private $conn;
+    public function __construct() {
+        $this->conn = new PDO("mysql:host=".$this->DB_SERVER.";dbname=".$this->DB_DATABASE, $this->DB_USERNAME, $this->DB_PASSWORD);
+        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Enable exceptions for better error handling
+    }
+
+    public function addLog($log_action, $log_description, $adm_id, $nurse_id) {
+        $log_date_managed = date('Y-m-d');
+        $log_time_managed = date('H:i:s'); 
+
+        $log_insert_query = "INSERT INTO logs (log_action, log_description, log_time_managed, log_date_managed, adm_id, nurse_id) 
+                             VALUES ('$log_action', '$log_description', '$log_time_managed', '$log_date_managed', '$adm_id', '$nurse_id')";
+
+        return mysqli_query($this->con, $log_insert_query);
+    }
+
+    public function list_logs() {
+		$sql = "SELECT logs.*, 
+					   admin.adm_fname, 
+					   admin.adm_lname, 
+					   nurse.nurse_fname, 
+					   nurse.nurse_lname 
+				FROM logs 
+				LEFT JOIN admin ON logs.adm_id = admin.adm_id 
+				LEFT JOIN nurse ON logs.nurse_id = nurse.nurse_id"; 
+	
+		$q = $this->conn->query($sql);
+		$data = [];
+		
+		while ($r = $q->fetch(PDO::FETCH_ASSOC)) {
+			$data[] = $r;
+		}
+	
+		return empty($data) ? false : $data;
 	}
 
-	/*Function that selects all the records from the logs table */
-	public function list_logs(){
-		$sql="SELECT * FROM logs";
-		$q = $this->conn->query($sql) or die("failed!");
-		while($r = $q->fetch(PDO::FETCH_ASSOC)){
-		$data[]=$r;
-		}
-		if(empty($data)){
-		   return false;
-		}else{
-			return $data;	
-		}
-	}
-	/*Function for getting the log id from the database */
-	function get_log_id($log_id){
-		$sql="SELECT log_id FROM logs WHERE log_id = :log_id";	
-		$q = $this->conn->prepare($sql);
-		$q->execute(['logs_id' => $log_id]);
-		$log_id = $q->fetchColumn();
-		return $log_id;
-	}
-	/*Function for getting the log date from the database */
-	function get_log_date($log_id){
-		$sql="SELECT log_date_managed FROM logs WHERE log_id = :id";
-		$q = $this->conn->prepare($sql);
-		$q->execute(['log_id' => $log_id]);
-		$log_date = $q->fetchColumn();
-		return $log_date;
-	}
-	/*Function for getting the log date from the database */
-	function get_log_time($log_id){
-		$sql="SELECT log_time_managed FROM logs WHERE log_id = :id";	
-		$q = $this->conn->prepare($sql);
-		$q->execute(['log_id' => $log_id]);
-		$log_time = $q->fetchColumn();
-		return $log_time;
-	}
-    /*Function for getting the log actor from the database */
-	function get_log_actor($log_id){
-		$sql="SELECT log_actor FROM logs WHERE log_id = :id";	
-		$q = $this->conn->prepare($sql);
-		$q->execute(['log_id' => $log_id]);
-		$log_actor = $q->fetchColumn();
-		return $log_actor;
-	}
-    /*Function for getting the log action from the database */
-	function get_log_action($log_id){
-		$sql="SELECT log_action FROM logs WHERE log_id = :id";	
-		$q = $this->conn->prepare($sql);
-		$q->execute(['log_id' => $log_id]);
-		$log_action = $q->fetchColumn();
-		return $log_action;
-	}
-    /*Function for getting the log subject from the database */
-	function get_log_subject($log_id){
-		$sql="SELECT log_subject FROM logs WHERE log_id = :id";	
-		$q = $this->conn->prepare($sql);
-		$q->execute(['log_id' => $log_id]);
-		$log_subject = $q->fetchColumn();
-		return $log_subject;
-	}
-    /*Function for getting the log description from the database */
-	function get_log_description($log_id){
-		$sql="SELECT log_description FROM logs WHERE log_id = :id";	
-		$q = $this->conn->prepare($sql);
-		$q->execute(['log_id' => $log_id]);
-		$log_description = $q->fetchColumn();
-		return $log_description;
-	}
+	public function fetch_log($filter = null, $startDate = null, $endDate = null) {
+        $query = "SELECT logs.*, 
+                         admin.adm_fname, 
+                         admin.adm_lname, 
+                         nurse.nurse_fname, 
+                         nurse.nurse_lname 
+                  FROM logs 
+                  JOIN admin ON logs.adm_id = admin.adm_id 
+                  JOIN nurse ON logs.nurse_id = nurse.nurse_id WHERE 1=1"; // Base query
+
+        if ($filter) {
+            $query .= " AND logs.log_action LIKE :filter"; // Add filter condition
+        }
+
+        if ($startDate) {
+            $query .= " AND logs.log_date_managed >= :startDate"; // Add start date filter
+        }
+
+        if ($endDate) {
+            $query .= " AND logs.log_date_managed <= :endDate"; // Add end date filter
+        }
+
+        $query .= " ORDER BY logs.log_date_managed DESC"; // Sort by date
+
+        $stmt = $this->conn->prepare($query);
+
+        if ($filter) {
+            $stmt->bindValue(':filter', "%$filter%");
+        }
+        if ($startDate) {
+            $stmt->bindValue(':startDate', $startDate);
+        }
+        if ($endDate) {
+            $stmt->bindValue(':endDate', $endDate);
+        }
+
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return empty($data) ? false : $data; // Return logs or false if none found
+    }
 }
 ?>

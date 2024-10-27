@@ -10,13 +10,13 @@ class Nurse{
 		$this->conn = new PDO("mysql:host=".$this->DB_SERVER.";dbname=".$this->DB_DATABASE,$this->DB_USERNAME,$this->DB_PASSWORD);
 	}
 
-	public function new_nurse($password,$first_name,$middle_name,$last_name,$email,$contact_no,$position,$department){
+	public function new_nurse($password,$first_name,$middle_name,$last_name,$email,$sex,$contact_no,$position,$department){
 		
 		$data = [
-			[$password,$first_name,$middle_name,$last_name,$email,$contact_no,$position,$department],
+			[$password,$first_name,$middle_name,$last_name,$email,$sex,$contact_no,$position,$department],
 		];
 		/*Stores parameters passed from the creation page inside the database */
-		$stmt = $this->conn->prepare("INSERT INTO nurse (nurse_password, nurse_fname, nurse_mname, nurse_lname, nurse_email, nurse_contact, nurse_position, nurse_department) VALUES (?,?,?,?,?,?,?,?)");
+		$stmt = $this->conn->prepare("INSERT INTO nurse (nurse_password, nurse_fname, nurse_mname, nurse_lname, nurse_email, nurse_sex, nurse_contact, nurse_position, nurse_department) VALUES (?,?,?,?,?,?,?,?,?)");
 		try {
 			$this->conn->beginTransaction();
 			foreach ($data as $row)
@@ -34,12 +34,12 @@ class Nurse{
 	}
 
 	/*Function for updating an nurse */
-	public function update_nurse($id,$first_name,$middle_name,$last_name,$email,$contact_no,$position,$department){
+	public function update_nurse($id,$first_name,$middle_name,$last_name,$email,$sex,$contact_no,$position,$department){
 		/*Updates data from the database using the parameters passed from the profile updating page */
-		$sql = "UPDATE nurse SET nurse_fname=:first_name, nurse_mname=:middle_name, nurse_lname=:last_name, nurse_email=:email, nurse_contact=:contact_no, nurse_position=:position, nurse_department=:department WHERE nurse_id=:id";
+		$sql = "UPDATE nurse SET nurse_fname=:first_name, nurse_mname=:middle_name, nurse_lname=:last_name, nurse_email=:email, nurse_sex=:sex, nurse_contact=:contact_no, nurse_position=:position, nurse_department=:department WHERE nurse_id=:id";
 
 		$q = $this->conn->prepare($sql);
-		$q->execute(array(':first_name'=>$first_name, ':middle_name'=>$middle_name,':last_name'=>$last_name,':email'=>$email,':contact_no'=>$contact_no, ':position'=>$position, ':department'=>$department, ':id'=>$id));
+		$q->execute(array(':first_name'=>$first_name, ':middle_name'=>$middle_name,':last_name'=>$last_name,':email'=>$email,':sex'=>$sex,':contact_no'=>$contact_no, ':position'=>$position, ':department'=>$department, ':id'=>$id));
 		return true;
 	}
 
@@ -95,6 +95,14 @@ class Nurse{
 		$q->execute(['id' => $id]);
 		$email = $q->fetchColumn();
 		return $email;
+	}
+	/*Function for getting the nurse sex from the database */
+	function get_sex($id){
+		$sql="SELECT nurse_sex FROM nurse WHERE nurse_id = :id";	
+		$q = $this->conn->prepare($sql);
+		$q->execute(['id' => $id]);
+		$sex = $q->fetchColumn();
+		return $sex;
 	}
 	/*Function for getting the nurse contact from the database */
 	function get_contact($id){

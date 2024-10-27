@@ -22,6 +22,13 @@
         </div>
         <div class="add_form-right">
 
+            <label for="sex">Sex:</label>
+            <select id="sex" name="sex" required>
+                <option value="<?php echo $nurse->get_sex($id);?>"><?php echo $nurse->get_sex($id);?></option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+
             <label for="position">Position:</label>
             <select id="position" name="position" required>
                 <option value="<?php echo $nurse->get_position($id);?>"><?php echo $nurse->get_position($id);?></option>

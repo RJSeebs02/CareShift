@@ -2,7 +2,10 @@
     <h1><i class="fas fa-lock" aria-hidden="true"></i>&nbspAdmins</h1>
     <a href="index.php?page=admins&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Admin</a>
 </div>
-
+<span class="right">
+    <div class="search_bar">Search:<input type="text" id="search" name="search" onkeyup="">
+    </div>
+</span>
 <table id="tablerecords">   
     <thead>
         <tr>

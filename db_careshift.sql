@@ -10,16 +10,12 @@ CREATE TABLE `nurse` (
   `nurse_mname` varchar(50) NOT NULL,
   `nurse_lname` varchar(50) NOT NULL,
   `nurse_email` varchar(50) NOT NULL,
+  `nurse_sex` varchar(50) NOT NULL,
   `nurse_contact` bigint(20) NOT NULL,
   `nurse_position` varchar(255) NOT NULL,
   `nurse_department` varchar(255) NOT NULL,
   PRIMARY KEY  (`nurse_id`)
 );
-
-INSERT INTO nurse(nurse_password,nurse_fname,nurse_mname,nurse_lname,nurse_email,nurse_contact,nurse_position,nurse_department) 
-VALUES ("123", "Romeo", "Valderama", "Seva", "romrom@gmail.com", 123, "Nurse I", "OR"),
-    ("123", "Russ Allen", "Solinap", "Garde", "gards@gmail.com", 123, "Nurse II", "OR"),
-    ("123", "Elijah Zachary", "Geronimo", "Faeldonea", "lij@gmail.com", 123, "Nurse III", "OR");
 
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
@@ -51,9 +47,6 @@ CREATE TABLE `logs` (
   KEY (`adm_id`),
   KEY (`nurse_id`)
 );
-
-INSERT INTO logs(adm_id,nurse_id,log_action,log_description,log_time_managed,log_date_managed) 
-VALUES ("1","3", "Removed", "Lij removed Nurse 24 - Anton Magbanua", '12:34:56', '2024-10-06');
 
 DROP TABLE IF EXISTS `schedule`;
 CREATE TABLE `schedule` (

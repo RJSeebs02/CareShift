@@ -2,7 +2,10 @@
     <h1><i class="fas fa-regular fa-paste"></i>&nbspLeave Applicants</h1>
     <a href="index.php?page=leave&subpage=new" class="right_button"><i class="fa fa-file-pen" aria-hidden="true"></i>&nbspApply Leave</a>
 </div>
-
+<span class="right">
+    <div class="search_bar">Search:<input type="text" id="search" name="search" onkeyup="">
+    </div>
+</span>
 <table id="tablerecords">   
     <thead>
         <tr>

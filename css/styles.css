@@ -77,7 +77,12 @@ body{
     justify-content: flex-end;
     gap: 20px;
     align-items: center;
+    position: sticky; /* This makes the header sticky */
+    top: 0;           /* Specifies the top position for the sticky element */
+    z-index: 100;       /* Ensures the header appears above other elements */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Adds shadow below the header */
 }
+
 
 .wrapper .body .header h3{
     margin: 0;
@@ -117,6 +122,50 @@ body{
 
 .heading .right_button:hover {
     background-color: #27b46b;
+}
+
+.heading #addScheduleBtn {
+    margin: 0px 10px 0px 10px;
+    width: 250px;
+}
+
+.heading #multipleScheduleBtn {
+    margin: 0px 10px 0px 10px;
+    width: 250px;
+}
+
+.heading #generateScheduleBtn {
+    margin: 0px 0px 0px 10px;
+    width: 250px;
+}
+
+#nurseForm label {
+    font-size: 10px;
+}
+
+#nurseForm #nurseSelect {
+    width: 500px;
+}
+
+.right {
+    float: right;
+}
+
+.right .search_bar {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.search_bar input[type="text"] {
+    padding: 3px;              /* Padding for the input field */
+    width: 250px;              /* Set a fixed width */
+    font-size: 20px;           /* Font size for the input text */
+    border-radius: 4px;       /* Rounded corners for the input */
+    margin-left: 10px;         /* Space between label and input */
+}
+
+.search_bar input[type="text"]:focus {
+    transition: box-shadow 0.3s ease; /* Smooth transition */
 }
 
 #tablerecords{
@@ -322,7 +371,7 @@ label {
 
 /* Calendar container */
 #calendar {
-    max-width: 1000px;
+    max-width: 100%;
     margin: 20px auto;
     padding: 10px;
     background-color: #ffffff; /* Light background */
@@ -364,6 +413,23 @@ label {
     border: black solid 1px !important;
     color: white !important;
 }
+
+/* Target the header container */
+#calendar .fc-head-container {
+    font-size: 30px !important; /* Desired font size */
+    font-weight: bold !important;
+    color: #000000 !important;
+}
+
+/* Style day numbers */
+#calendar .fc-day-top {
+    font-size: 25px !important; /* Adjust to desired size */
+    color: #000000 !important; /* Change to desired color */
+    font-weight: bold; /* Optional: Change weight */
+}
+
+
+
 
 
 

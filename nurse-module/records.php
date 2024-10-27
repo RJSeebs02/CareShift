@@ -2,6 +2,10 @@
     <h1><i class="fas fa-solid fa-user-nurse"></i>&nbspNurses</h1>
     <a href="index.php?page=nurses&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Nurse</a>
 </div>
+<span class="right">
+    <div class="search_bar">Search:<input type="text" id="search" name="search" onkeyup="">
+    </div>
+</span>
 
 <table id="tablerecords">   
     <thead>
@@ -34,7 +38,7 @@
         } else {
             ?>
             <tr>
-                <td colspan="5">"No Record Found."</td>
+                <td colspan="5">No Record Found.</td>
             </tr>
         <?php
         }

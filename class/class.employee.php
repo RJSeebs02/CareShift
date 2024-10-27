@@ -1,6 +1,5 @@
 <!--Employee Class File-->
 <?php
-/*Creates Employee Object with database connection */
 class Employee{
 	private $DB_SERVER='localhost';
 	private $DB_USERNAME='root';

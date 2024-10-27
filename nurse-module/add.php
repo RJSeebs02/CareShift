@@ -11,7 +11,7 @@
             <input type="text" id="first_name" name="first_name" required>
 
             <label for="middle_name">Middle Name:</label>
-            <input type="text" id="middle_name" name="middle_name" required>
+            <input type="text" id="middle_name" name="middle_name">
 
             <label for="last_name">Last Name:</label>
             <input type="text" id="last_name" name="last_name" required>
@@ -20,6 +20,12 @@
             <input type="email" id="email" name="email" required>
         </div>
         <div class="add_form-right">
+            <label for="sex">Sex:</label>
+            <select id="sex" name="sex" required>
+                <option value="">Select Sex</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
             <label for="position">Position:</label>
             <select id="position" name="position" required>
                 <option value="">Select Position</option>

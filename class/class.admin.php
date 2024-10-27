@@ -1,6 +1,5 @@
 <!--Admin Class File-->
 <?php
-/*Creates Admin Object with database connection */
 class Admin{
 	private $DB_SERVER='localhost';
 	private $DB_USERNAME='root';

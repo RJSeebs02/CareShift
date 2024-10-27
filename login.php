@@ -14,6 +14,8 @@ if(isset($_REQUEST['submit'])){
 	extract($_REQUEST);
 	$login = $admin->check_login($username,$password);
 	if($login){
+		$adm_id = $admin->get_id_by_username($username);
+        $_SESSION['adm_id'] = $adm_id;
 		header("location: index.php");
 	}else{
 		?>

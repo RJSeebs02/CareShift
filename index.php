@@ -3,6 +3,7 @@ include_once 'class/class.nurse.php';
 include_once 'class/class.admin.php';
 include_once 'class/class.logs.php';
 include_once 'class/class.leave.php';
+include_once 'class/class.reports.php';
 include 'config/config.php';
 
 /*Parameter variables for the navbar*/
@@ -14,7 +15,8 @@ $id = (isset($_GET['id']) && $_GET['id'] != '') ? $_GET['id'] : '';
 $nurse = new Nurse();
 $admin = new Admin();
 $log = new Log();
-$leave = new Leave; 
+$leave = new Leave(); 
+$report = new Report();
 
 /*Login Verifier (Deploys Login Check Method from another file)*/
 if(!$admin->get_session()){
@@ -42,7 +44,7 @@ $admin_user_login = $admin_id;
             <h2>CareShift</h2>
             <ul>
                 <li><a href="index.php?page=schedule" class="<?= $page == 'schedule' ? 'active' : '' ?>"><i class="fas fa-solid fa-clock"></i>Schedule</a></li>
-                <li><a href="index.php?page=reports" class="<?= $page == 'reports' ? 'active' : '' ?>"><i class="fas fa-solid fa-file-waveform"></i>Reports</a></li>
+                <li><a href="index.php?page=reports" class="<?= $page == 'reports' ? 'active' : '' ?>"><i class="fas fa-solid fa-chart-line"></i>Reports</a></li>
                 <li><a href="index.php?page=logs" class="<?= $page == 'logs' ? 'active' : '' ?>"><i class="fas fa-solid fa-receipt"></i>Logs</a></li>
                 <li><a href="index.php?page=leave" class="<?= $page == 'leave' ? 'active' : '' ?>"><i class="fas fa-regular fa-paste"></i></i></i>Leave Applicants</a></li>
                 <li><a href="index.php?page=nurses" class="<?= $page == 'nurses' ? 'active' : '' ?>"><i class="fas fa-solid fa-user-nurse"></i>Nurses</a></li>

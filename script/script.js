@@ -24,12 +24,37 @@ $(document).ready(function() {
         },
         events: 'schedule-module/fetch_schedule.php?nurse_id=' + nurse_id, // Load events based on nurse_id from the URL
         eventRender: function(event, element) {
-            element.attr('title', event.title);
+            element.html(`
+                <div style="white-space: normal;">
+                    <strong>${event.title}</strong><br>
+                    ${event.position}<br>
+                    ${event.department}<br>
+                    ${event.start}<br>
+                    ${event.end}
+                </div>
+            `);
         },
         eventClick: function(event, jsEvent, view) {
-            var start = event.start.format('YYYY-MM-DD HH:mm');
-            var end = event.end ? event.end.format('YYYY-MM-DD HH:mm') : 'N/A';
-            alert(event.title + '\nStart Time: ' + start + '\nEnd Time: ' + end);
+            // Populate modal content
+            $('#eventNurse').val(event.title);
+            $('#eventPosition').val(event.position);
+            $('#eventDepartment').val(event.department);
+            $('#eventStart').val(event.start.format('MMMM D, YYYY h:mm A'));
+            $('#eventEnd').val(event.end ? event.end.format('MMMM D, YYYY h:mm A') : 'N/A');
+            
+            // Show the modal
+            $('#viewScheduleModal').css('display', 'block');
+        }
+    });
+
+    $('#viewScheduleClose').on('click', function() {
+        $('#viewScheduleModal').css('display', 'none');
+    });
+
+    // Close the modal when clicking outside the modal content
+    $(window).on('click', function(event) {
+        if ($(event.target).is('#viewScheduleModal')) {
+            $('#viewScheduleModal').css('display', 'none');
         }
     });
 });
@@ -158,10 +183,33 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function viewSchedules(nurse_id) {
+    // Send an AJAX request to fetch schedules for the selected nurse
+    fetch('schedule-module/fetch_schedule.php?nurse_id=' + nurse_id)
+        .then(response => response.json())
+        .then(data => {
+            let scheduleTable = document.querySelector('#scheduleTable tbody');
+            scheduleTable.innerHTML = ''; // Clear previous results
+            data.forEach(schedule => {
+                let row = `<tr>
+                               <td>${schedule.sched_id}</td>
+                               <td>${schedule.start_date}</td>
+                               <td>${schedule.end_date}</td>
+                               <td>${schedule.start_time}</td>
+                               <td>${schedule.end_time}</td>
+                           </tr>`;
+                scheduleTable.insertAdjacentHTML('beforeend', row);
+            });
+            document.getElementById('scheduleModal').style.display = 'block'; // Show modal
+        });
+}
 
-// Prevent context menu from appearing
-/*var message = "This function is not allowed here.";
+function closeModal() {
+    document.getElementById('scheduleModal').style.display = 'none';
+}
+
+var message = "This function is not allowed here.";
 $(document).on("contextmenu", function(e) {
     alert(message);
     return false; 
-});*/
+});

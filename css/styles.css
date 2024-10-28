@@ -209,6 +209,21 @@ body{
 	transition: 0.2s;
 }
 
+.leave-status-denied {
+    background-color: rgb(255, 125, 125);
+}
+
+.leave-status-approved {
+    background-color: rgb(118, 255, 118);
+}
+
+.leave-status-for-approval {
+    background-color: rgb(248, 246, 137);
+}
+
+
+
+
 .add_form_wrapper{
     display: flex;
     justify-content: center;
@@ -222,6 +237,10 @@ body{
     margin-bottom: 20px;
 }
 
+.profile_image {
+    height: 200px;
+    width: 200px;
+}
 .form_wrapper {
     display: flex;
     justify-content: space-between;
@@ -461,6 +480,9 @@ label {
     z-index: 1001; /* Ensure modal content is on top of the background */
 }
 
+.modal-content h2 {
+    font-size: 30px;
+}
 
 .modal-content label {
     font-size: 30px;
@@ -469,10 +491,12 @@ label {
 
 
 .modal-content select,
+.modal-content input[type="text"],
 .modal-content input[type="date"],
 .modal-content input[type="time"],
 .modal-content input[type="tel"],
-.modal-content input[type="number"] {
+.modal-content input[type="number"],
+.modal-content input[type="datetime-local"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;

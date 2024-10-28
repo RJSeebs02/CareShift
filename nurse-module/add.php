@@ -7,26 +7,26 @@
 <form class="add_form" action="processes/process.nurse.php?action=new" method="POST">
     <div class="form_wrapper">
         <div class="add_form_left">
-            <label for="first_name">First Name:</label>
-            <input type="text" id="first_name" name="first_name" required>
+            <label for="first_name">First Name</label>
+            <input type="text" id="first_name" name="first_name" placeholder="Enter First Name" required>
 
-            <label for="middle_name">Middle Name:</label>
-            <input type="text" id="middle_name" name="middle_name">
+            <label for="middle_name">Middle Name</label>
+            <input type="text" id="middle_name" name="middle_name" placeholder="Enter Middle Name" required>
 
-            <label for="last_name">Last Name:</label>
-            <input type="text" id="last_name" name="last_name" required>
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name" placeholder="Enter Last Name" required>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter Email Address" required>
         </div>
         <div class="add_form-right">
-            <label for="sex">Sex:</label>
+            <label for="sex">Sex</label>
             <select id="sex" name="sex" required>
                 <option value="">Select Sex</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
             </select>
-            <label for="position">Position:</label>
+            <label for="position">Position</label>
             <select id="position" name="position" required>
                 <option value="">Select Position</option>
                 <option value="Nurse I">Nurse I</option>
@@ -34,10 +34,10 @@
                 <option value="Nurse III">Nurse III</option>
             </select>
 
-            <label for="contact_no">Contact No.:</label>
-            <input type="tel" id="contact_no" name="contact_no" required>
+            <label for="contact_no">Contact No.</label>
+            <input type="tel" id="contact_no" name="contact_no" placeholder="Enter Contact Number" required>
 
-            <label for="department">Department:</label>
+            <label for="department">Department</label>
             <select id="department" name="department" required>
                 <option value="">Select Department</option>
                 <option value="Operating Room">Operating Room</option>

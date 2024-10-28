@@ -2,8 +2,8 @@
 	<?php
         /*Switch case for the subpage of the Admins Page */
         switch($subpage){
-            case 'applicants':
-                require_once 'applicants.php';
+            case 'records':
+                require_once 'records.php';
             break;
             case 'new':
                 require_once 'new_leave.php';
@@ -12,7 +12,7 @@
                 require_once 'details.php';
             break;
             default:
-                require_once 'applicants.php';
+                require_once 'records.php';
             break;
         }
     ?>

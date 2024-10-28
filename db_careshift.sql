@@ -60,9 +60,10 @@ CREATE TABLE `schedule` (
 );
 
 DROP TABLE IF EXISTS `leave`;
-CREATE TABLE `leave` (
+CREATE TABLE `leaves` (
   `leave_id` int(50) NOT NULL auto_increment,
   `leave_type` varchar(50) NOT NULL,
+  `leave_date_filed` date NOT NULL,
   `leave_start_date` date NOT NULL,
   `leave_end_date` date NOT NULL,
   `leave_desc` varchar(50) NOT NULL,
@@ -73,3 +74,8 @@ CREATE TABLE `leave` (
   KEY (`nurse_id`),
   KEY (`adm_id`)
 );
+
+INSERT INTO leaves(leave_type,leave_date_filed,leave_start_date,leave_end_date,leave_desc,leave_status,nurse_id,adm_id) 
+VALUES  ("Sick Leave", "2024-10-10", "2024-10-20", "2024-10-24", "Diagnosed with amoeba", "For Approval", "2", "1"),
+        ("Vacation Leave", "2024-9-2", "2024-9-15", "2024-9-30", "Vacation Break", "Approved", "1", "1"),
+        ("Emergency Leave", "2024-9-2", "2024-9-2", "2024-9-2", "Late", "Denied", "3", "1");

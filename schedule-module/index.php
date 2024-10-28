@@ -174,4 +174,47 @@
 </div>
 
 
+
+<!-- View Schedule Modal -->
+<div id="viewScheduleModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="viewScheduleClose">&times;</span>
+        <h1><i class="fa fa-plus"></i>&nbsp;Shift Details</h1>
+        <form action="processes/process.schedule.php?action=update" method="POST">
+            <label for="eventNurse">Nurse</label>
+            <select name="eventNurse" disabled>
+                <?php
+                if (!$con) {
+                    die("Connection failed: " . mysqli_connect_error());
+                }
+
+                $query = "SELECT nurse_id, CONCAT(nurse_fname, ' ', nurse_lname) AS name FROM nurse";
+                $result = mysqli_query($con, $query); 
+
+                if ($result && mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<option value='{$row['nurse_id']}'>{$row['name']}</option>";
+                    }
+                } else {
+                    echo "<option>No nurses found</option>";
+                }
+                ?>
+            </select>
+            
+            <!-- Schedule Details -->
+            <label for="eventPosition">Nurse Position</label>
+            <input type="text" id="eventPosition" name="eventPosition" readonly>
+
+            <label for="eventDepartment">Department</label>
+            <input type="text" id="eventDepartment" name="eventDepartment" readonly>
+            
+            <label for="eventStart">Shift Start Time</label>
+            <input type="text" id="eventStart" name="eventStart" readonly>
+
+            <label for="eventEnd">Shift End Time:</label>
+            <input type="text" id="eventEnd" name="eventEnd" readonly>
+        </form>
+    </div>
+</div>
+
 <div id="calendar"></div>

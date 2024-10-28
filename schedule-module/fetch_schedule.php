@@ -10,7 +10,7 @@ $nurse_id = isset($_GET['nurse_id']) ? $_GET['nurse_id'] : 'all';
 
 // Prepare the base query
 $query = "
-    SELECT s.nurse_id, s.sched_date, s.sched_start_time, s.sched_end_time, n.nurse_lname, n.nurse_position
+    SELECT s.nurse_id, s.sched_date, s.sched_start_time, s.sched_end_time, n.nurse_lname, n.nurse_fname, n.nurse_position, n.nurse_department
     FROM schedule s
     JOIN nurse n ON s.nurse_id = n.nurse_id
 ";
@@ -49,14 +49,17 @@ while ($row = mysqli_fetch_assoc($result)) {
         $end_time = $row['sched_date'] . 'T' . $row['sched_end_time'];
     }
 
-    $nurse_name = htmlspecialchars($row['nurse_lname'] . ', ' . $row['nurse_position']); // Encode to prevent XSS
+    $nurse_name = htmlspecialchars($row['nurse_lname'] . ', ' . $row['nurse_fname']); 
 
     $events[] = [
         'title' => $nurse_name,
+        'position' => htmlspecialchars($row['nurse_position']), // Position
+        'department' => htmlspecialchars($row['nurse_department']),
         'start' => $start_time,
         'end' => $end_time,
         'allDay' => false,
     ];
+    
 }
 
 // Send the response as JSON

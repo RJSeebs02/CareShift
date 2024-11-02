@@ -159,8 +159,13 @@ body{
 }
 
 .right .search_bar {
+    margin-bottom: 10px;
+}
+
+.right .search_bar label {
     font-size: 25px;
     margin-bottom: 10px;
+    font-weight: normal;
 }
 
 .search_bar input[type="text"] {

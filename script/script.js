@@ -213,3 +213,45 @@ $(document).on("contextmenu", function(e) {
     alert(message);
     return false; 
 });
+
+function filterTable() {
+    let searchInput = document.getElementById("search").value.toUpperCase();
+    let table = document.getElementById("tablerecords");
+    let tr = table.getElementsByTagName("tr");
+    let recordFound = false;
+
+    // Clear previous no record row if it exists
+    let noRecordRow = document.getElementById("no-record-row");
+    if (noRecordRow) {
+        table.deleteRow(noRecordRow.rowIndex);
+    }
+
+    for (let i = 1; i < tr.length; i++) {
+        let tdArray = tr[i].getElementsByTagName("td");
+        let rowMatches = false;
+
+        for (let j = 0; j < tdArray.length; j++) {
+            if (tdArray[j] && tdArray[j].textContent.toUpperCase().includes(searchInput)) {
+                rowMatches = true;
+                break;
+            }
+        }
+
+        tr[i].style.display = rowMatches ? "" : "none";
+        if (rowMatches) {
+            recordFound = true;
+        }
+    }
+
+    // If no records are found, show "No record found"
+    if (!recordFound) {
+        noRecordRow = table.insertRow();
+        noRecordRow.setAttribute("id", "no-record-row");
+        let cell = noRecordRow.insertCell(0);
+        cell.colSpan = 8; // Adjust based on the number of columns
+        cell.textContent = "No record found.";
+        cell.style.textAlign = "center";
+    }
+}
+
+

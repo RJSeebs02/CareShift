@@ -3,7 +3,9 @@
     <a href="index.php?page=nurses&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Nurse</a>
 </div>
 <span class="right">
-    <div class="search_bar">Search:<input type="text" id="search" name="search" onkeyup="">
+    <div class="search_bar">
+        <label for="search">Search:</label>
+        <input type="text" id="search" class="search" name="search" onkeyup="filterTable()">
     </div>
 </span>
 

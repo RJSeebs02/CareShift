@@ -26,14 +26,34 @@
             <label for="contact_no">Contact No.</label>
             <input type="tel" id="contact_no" name="contact_no" placeholder="Enter Contact Number" required>
 
+            <label for="department">Department</label>
+            <select required id="department" name="department">
+                <option value="" disabled selected>Select Department</option>
+                    <?php
+                    if($departments->list_department() != false){
+                        foreach($departments->list_department() as $value){
+                            extract($value);
+                            ?>
+                            <option value="<?php echo $department_id;?>"><?php echo $department_name; ?></option>
+                            <?php
+                        }
+                    }
+                ?>
+            </select>
+
             <label for="access">Access</label>
-            <select id="access" name="access" required>
-                <option value="">Select Access</option>
-                <option value="Super Admin">Super Admin</option>
-                <option value="Head Nurse">Head Nurse</option>
-                <option value="OR Scheduler">Operating Room Scheduler</option>
-                <option value="CNA Scheduler">Clinical Nursing Area Scheduler</option>
-                <option value="SCN Scheduler">Special Care Nursing Scheduler</option>
+            <select required id="access" name="access">
+                <option value="" disabled selected>Select User Access</option>
+                    <?php
+                    if($useraccess->list_useraccess() != false){
+                        foreach($useraccess->list_useraccess() as $value){
+                            extract($value);
+                            ?>
+                            <option value="<?php echo $useraccess_id;?>"><?php echo $useraccess_name; ?></option>
+                            <?php
+                        }
+                    }
+                ?>
             </select>
         </div>
     </div>

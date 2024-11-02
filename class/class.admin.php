@@ -11,13 +11,13 @@ class Admin{
 	}
 
 	/*Function for creating a new admin */
-	public function new_admin($username,$password,$first_name,$middle_name,$last_name,$email,$contact_no,$access){
+	public function new_admin($username,$password,$first_name,$middle_name,$last_name,$email,$contact_no,$access,$department){
 		
 		$data = [
-			[$username,$password,$first_name,$middle_name,$last_name,$email,$contact_no,$access],
+			[$username,$password,$first_name,$middle_name,$last_name,$email,$contact_no,$access,$department],
 		];
 		/*Stores parameters passed from the creation page inside the database */
-		$stmt = $this->conn->prepare("INSERT INTO admin (adm_username, adm_password, adm_fname, adm_mname, adm_lname, adm_email, adm_contact, adm_access) VALUES (?,?,?,?,?,?,?,?)");
+		$stmt = $this->conn->prepare("INSERT INTO admin (adm_username, adm_password, adm_fname, adm_mname, adm_lname, adm_email, adm_contact, useraccess_id, department_id) VALUES (?,?,?,?,?,?,?,?,?)");
 		try {
 			$this->conn->beginTransaction();
 			foreach ($data as $row)
@@ -37,11 +37,26 @@ class Admin{
 	/*Function for updating an admin */
 	public function update_admin($id,$username,$first_name,$middle_name,$last_name,$email,$contact_no,$access){
 		/*Updates data from the database using the parameters passed from the profile updating page */
-		$sql = "UPDATE admin SET adm_fname=:first_name, adm_mname=:middle_name, adm_lname=:last_name, adm_email=:email, adm_contact=:contact_no, adm_access=:access WHERE adm_username=:username";
+		$sql = "UPDATE admin SET adm_fname=:first_name, adm_mname=:middle_name, adm_lname=:last_name, adm_email=:email, adm_contact=:contact_no, useraccess_id=:access WHERE adm_username=:username";
 
 		$q = $this->conn->prepare($sql);
 		$q->execute(array(':first_name'=>$first_name, ':middle_name'=>$middle_name,':last_name'=>$last_name,':email'=>$email,':contact_no'=>$contact_no, ':access'=>$access, ':username'=>$username));
 		return true;
+	}
+
+	/*Function for deleting a admin */
+	public function delete_admin($id)
+	{
+		/*Deletes data from admin selected by the user*/
+		$sql = "DELETE FROM admin WHERE adm_id = :id";
+		$stmt = $this->conn->prepare($sql);
+		$stmt->bindParam(':id', $id);
+
+		if ($stmt->execute()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/*Function that selects all the records from the admins table */
@@ -129,14 +144,43 @@ class Admin{
 		$contact = $q->fetchColumn();
 		return $contact;
 	}
-	/*Function for getting the admin department from the database */
-	function get_access($id){
-		$sql="SELECT adm_access FROM admin WHERE adm_id = :id";	
+	/*Function for getting the admin access from the database */
+	function get_access_id($id){
+		$sql="SELECT useraccess_id FROM admin WHERE adm_id = :id";	
 		$q = $this->conn->prepare($sql);
 		$q->execute(['id' => $id]);
-		$department = $q->fetchColumn();
-		return $department;
+		$useraccess_id = $q->fetchColumn();
+		return $useraccess_id;
 	}
+	/*Function for getting the access name of a admin from the database */
+	function get_admin_access_name($id){
+		$sql="SELECT useraccess_name FROM useraccess INNER JOIN admin WHERE admin.useraccess_id = useraccess.useraccess_id AND adm_id = :id";	
+		$q = $this->conn->prepare($sql);
+		$q->execute(['id' => $id]);
+		$useraccess_name = $q->fetchColumn();
+		return $useraccess_name;
+	}
+	/*Function for getting the admin department from the database */
+	function get_department_id($id){
+		$sql="SELECT department_id FROM admin WHERE adm_id = :id";	
+		$q = $this->conn->prepare($sql);
+		$q->execute(['id' => $id]);
+		$department_id = $q->fetchColumn();
+		return $department_id;
+	}
+	/*Function for getting the access name of a admin from the database */
+	function get_admin_department_name($id){
+			$sql="SELECT department_name FROM department INNER JOIN admin WHERE admin.department_id = department.department_id AND adm_id = :id";	
+		$q = $this->conn->prepare($sql);
+		$q->execute(['id' => $id]);
+		$department_name = $q->fetchColumn();
+		return $department_name;
+	}
+
+
+
+
+
     /*Function for getting the session from the database for logging in */
 	function get_session(){
 		if(isset($_SESSION['login']) && $_SESSION['login'] == true){

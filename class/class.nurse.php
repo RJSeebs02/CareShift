@@ -16,7 +16,7 @@ class Nurse{
 			[$password,$first_name,$middle_name,$last_name,$email,$sex,$contact_no,$position,$department],
 		];
 		/*Stores parameters passed from the creation page inside the database */
-		$stmt = $this->conn->prepare("INSERT INTO nurse (nurse_password, nurse_fname, nurse_mname, nurse_lname, nurse_email, nurse_sex, nurse_contact, nurse_position, nurse_department) VALUES (?,?,?,?,?,?,?,?,?)");
+		$stmt = $this->conn->prepare("INSERT INTO nurse (nurse_password, nurse_fname, nurse_mname, nurse_lname, nurse_email, nurse_sex, nurse_contact, nurse_position, department_id) VALUES (?,?,?,?,?,?,?,?,?)");
 		try {
 			$this->conn->beginTransaction();
 			foreach ($data as $row)
@@ -36,11 +36,26 @@ class Nurse{
 	/*Function for updating an nurse */
 	public function update_nurse($id,$first_name,$middle_name,$last_name,$email,$sex,$contact_no,$position,$department){
 		/*Updates data from the database using the parameters passed from the profile updating page */
-		$sql = "UPDATE nurse SET nurse_fname=:first_name, nurse_mname=:middle_name, nurse_lname=:last_name, nurse_email=:email, nurse_sex=:sex, nurse_contact=:contact_no, nurse_position=:position, nurse_department=:department WHERE nurse_id=:id";
+		$sql = "UPDATE nurse SET nurse_fname=:first_name, nurse_mname=:middle_name, nurse_lname=:last_name, nurse_email=:email, nurse_sex=:sex, nurse_contact=:contact_no, nurse_position=:position, department_id=:department WHERE nurse_id=:id";
 
 		$q = $this->conn->prepare($sql);
 		$q->execute(array(':first_name'=>$first_name, ':middle_name'=>$middle_name,':last_name'=>$last_name,':email'=>$email,':sex'=>$sex,':contact_no'=>$contact_no, ':position'=>$position, ':department'=>$department, ':id'=>$id));
 		return true;
+	}
+
+	/*Function for deleting a nurse */
+	public function delete_nurse($id)
+	{
+		/*Deletes data from nurse selected by the user*/
+		$sql = "DELETE FROM nurse WHERE nurse_id = :id";
+		$stmt = $this->conn->prepare($sql);
+		$stmt->bindParam(':id', $id);
+
+		if ($stmt->execute()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/*Function that selects all the records from the nurse table */
@@ -127,6 +142,22 @@ class Nurse{
 		$q->execute(['id' => $id]);
 		$department = $q->fetchColumn();
 		return $department;
+	}
+	/*Function for getting the department id from the database */
+	function get_nurse_department_id($id){
+		$sql="SELECT department_id FROM nurse WHERE nurse_id = :id";	
+		$q = $this->conn->prepare($sql);
+		$q->execute(['id' => $id]);
+		$department_id = $q->fetchColumn();
+		return $department_id;
+	}
+    /*Function for getting the department name of a room from the database */
+	function get_nurse_department_name($id){
+		$sql="SELECT department_name FROM department INNER JOIN nurse WHERE nurse.department_id = department.department_id AND nurse_id = :id";	
+		$q = $this->conn->prepare($sql);
+		$q->execute(['id' => $id]);
+		$department_name = $q->fetchColumn();
+		return $department_name;
 	}
 }
 ?>

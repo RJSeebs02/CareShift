@@ -33,8 +33,8 @@
                 $status_class = 'leave-status-denied';
             } elseif ($leave_status === 'Approved') {
                 $status_class = 'leave-status-approved';
-            } elseif ($leave_status === 'For Approval') {
-                $status_class = 'leave-status-for-approval';
+            } elseif ($leave_status === 'Pending') {
+                $status_class = 'leave-status-pending';
             }
             ?>
             <tr onclick="location.href='<?php echo $row_url; ?>'" style="cursor: pointer;">

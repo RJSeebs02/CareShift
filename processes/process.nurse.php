@@ -57,7 +57,7 @@ function create_new_nurse($con) {
     }
 }
 
-/*Main Function Process for updating an admin */
+/*Main Function Process for updating an nurse */
 function update_nurse(){  
     $nurse = new Nurse();
     /*Receives the parameters passed from the profile updating page form */
@@ -75,6 +75,33 @@ function update_nurse(){
     $result = $nurse->update_nurse($id,$first_name,$middle_name,$last_name,$email,$sex,$contact_no,$position,$department);
     if($result){
         header('location: ../index.php?page=nurses&subpage=profile&id=' . $id);
+    }
+}
+
+/*Main Function Process for deleting a nurse */
+function delete_nurse()
+{
+    /*If parameter was passed succesfully */
+    if (isset($_POST['id'])) {
+        $nurse = new Nurse();
+        /*Receives the parameters passed from the delete button */
+        $id = $_POST['id'];
+
+        /*Passes the parameters to the class function */
+        $result = $nurse->delete_nurse($id);
+
+        /*If result was executed */
+        if ($result) {
+            header("location: ../index.php?page=nurses&subpage=records");
+        }
+        /*If result was interrupted */
+        else {
+            echo "Error deleting nurse.";
+        }
+    }
+    /*If parameter was not passed successfully */
+    else {
+        echo "Invalid Nurse ID.";
     }
 }
 ?>

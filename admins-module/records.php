@@ -14,6 +14,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Contact No.</th>
+            <th>Department</th>
             <th>Access</th>
         </tr>
     </thead>
@@ -32,14 +33,15 @@
                     <td><?php echo $adm_lname . ', ' . $adm_fname . ' ' . $adm_mname; ?></td>
                     <td><?php echo $adm_email; ?></td>
                     <td><?php echo $adm_contact; ?></td>
-                    <td><?php echo $adm_access; ?></td>
+                    <td><?php echo $admin->get_admin_department_name($adm_id); ?></td>
+                    <td><?php echo $admin->get_admin_access_name($adm_id); ?></td>
                 </tr>
                 <?php
             }
         } else {
             ?>
             <tr>
-                <td colspan="6">"No Record Found."</td>
+                <td colspan="7">"No Record Found."</td>
             </tr>
         <?php
         }

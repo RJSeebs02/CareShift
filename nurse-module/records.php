@@ -15,6 +15,7 @@
             <th>Email</th>
             <th>Contact No.</th>
             <th>Department</th>
+            <th>Position</th>
         </tr>
     </thead>
     <tbody>
@@ -31,14 +32,15 @@
                     <td><?php echo $nurse_lname . ', ' . $nurse_fname . ' ' . $nurse_mname; ?></td>
                     <td><?php echo $nurse_email; ?></td>
                     <td><?php echo $nurse_contact; ?></td>
-                    <td><?php echo $nurse_department; ?></td>
+                    <td><?php echo $nurse->get_nurse_department_name($nurse_id); ?></td>
+                    <td><?php echo $nurse_position; ?></td>
                 </tr>
                 <?php
             }
         } else {
             ?>
             <tr>
-                <td colspan="5">No Record Found.</td>
+                <td colspan="6">No Record Found.</td>
             </tr>
         <?php
         }

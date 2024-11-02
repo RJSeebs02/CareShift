@@ -20,16 +20,24 @@ body{
 
 .wrapper .sidebar{
     position: fixed;
-    width: 200px;
+    width: 250px;
     height: 100%;
     background: #181a1d;
     padding: 30px 0;
+    z-index: 999;
 }
 
 .wrapper .sidebar h2{
     color: white;
     text-align: center;
     margin-bottom: 30px;
+}
+
+.wrapper .sidebar h3{
+    color: white;
+    font-size: 20px;
+    margin-top: 25px;
+    margin-left: 10px;
 }
 
 .wrapper .sidebar ul li{
@@ -40,7 +48,7 @@ body{
 .wrapper .sidebar ul li a{
     color: white;
     display: block;
-    padding: 15px;
+    padding: 15px 15px 15px 35px;
 }
 
 .wrapper .sidebar ul li a .fas{
@@ -67,7 +75,7 @@ body{
 
 .wrapper .body{
     width: 100%;
-    margin-left: 200px;
+    margin-left: 250px;
 }
 
 .wrapper .body .header {
@@ -98,7 +106,6 @@ body{
 }
 .wrapper .body .main_content .content_wrapper{
     background: white;
-    border-radius: 10px;
     box-shadow: 0 0 10px 5px #CBD4DF;
     padding: 20px;
     margin-top: 30px;
@@ -217,7 +224,7 @@ body{
     background-color: rgb(118, 255, 118);
 }
 
-.leave-status-for-approval {
+.leave-status-pending {
     background-color: rgb(248, 246, 137);
 }
 
@@ -225,9 +232,7 @@ body{
 
 
 .add_form_wrapper{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: 10px 100px 10px 100px;
 }
 .add_form {
     display: flex;
@@ -263,6 +268,7 @@ label {
 }
 
 .add_form input[type="text"],
+.add_form input[type="number"],
 .add_form input[type="email"],
 .add_form input[type="tel"],
 .add_form select {
@@ -291,12 +297,43 @@ label {
     background-color: #27b46b;
 }
 
+.delete-btn {
+    padding: 10px 20px;
+    background-color: #ff5b5a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 25px;
+    cursor: pointer;
+    display: block;
+    width: 100%; /* Full width for the button */
+    text-align: center;
+}
+
+.delete-btn:hover {
+    background-color: #e64949;
+}
 
 
 
+.content_layer1_wrapper {
+    display: flex;        /* Display items in a row */
+    align-items: center;     /* Center content vertically (if needed) */
+    gap: 10px; /* Space between items */
+    margin: auto;
+}
 
-
-
+.content_layer1_wrapper #nurses_report,
+.content_layer1_wrapper #leaves_report,
+.content_layer1_wrapper #vacant_report,
+.content_layer1_wrapper #overworked_report {
+    width: 270px;
+    height: 100px;
+    padding: 10px;
+    background-color: #ffffff; /* Light background */
+    border: 1px solid #ddd; /* Border around the calendar */
+    box-shadow: 0 0 10px 5px #CBD4DF;
+}
 
 
 
@@ -395,7 +432,6 @@ label {
     padding: 10px;
     background-color: #ffffff; /* Light background */
     border: 1px solid #ddd; /* Border around the calendar */
-    border-radius: 10px; /* Rounded corners */
     box-shadow: 0 0 10px 5px #CBD4DF;
 }
 

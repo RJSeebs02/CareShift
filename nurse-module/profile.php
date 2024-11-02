@@ -26,27 +26,47 @@
             <label for="sex">Sex</label>
             <select id="sex" name="sex" required>
                 <option value="<?php echo $nurse->get_sex($id);?>"><?php echo $nurse->get_sex($id);?></option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
+                <?php
+                $sex = ["Male", "Female"];
+                foreach ($sex as $sex) {
+                    if ($sex != $nurse->get_sex($id)) {
+                        echo "<option value=\"$sex\">$sex</option>";
+                    }
+                }
+                ?>
             </select>
 
             <label for="position">Position</label>
             <select id="position" name="position" required>
-                <option value="<?php echo $nurse->get_position($id);?>"><?php echo $nurse->get_position($id);?></option>
-                <option value="Nurse I">Nurse I</option>
-                <option value="Nurse II">Nurse II</option>
-                <option value="Nurse III">Nurse III</option>
+                <option value="<?php echo $nurse->get_position($id); ?>"><?php echo $nurse->get_position($id); ?></option>
+                <?php
+                $positions = ["Nurse I", "Nurse II", "Nurse III", "Nurse IV", "Nurse V", "Nursing Attendant I", "Nursing Attendant II"];
+                foreach ($positions as $position) {
+                    if ($position != $nurse->get_position($id)) {
+                        echo "<option value=\"$position\">$position</option>";
+                    }
+                }
+                ?>
             </select>
 
             <label for="contact_no">Contact No.</label>
             <input type="tel" id="contact_no" name="contact_no" value="<?php echo $nurse->get_contact($id);?>" required>
 
             <label for="department">Department</label>
-            <select id="department" name="department" required>
-                <option value="<?php echo $nurse->get_department($id);?>"><?php echo $nurse->get_department($id);?></option>
-                <option value="Operating Room">Operating Room</option>
-                <option value="Clinical Nursing Area">Clinical Nursing Area</option>
-                <option value="Special Care Nursing Area">Special Care Nursing Area</option>
+            <select required id="department" name="department">
+                <option value="" disabled selected>Select Department</option>
+                    <?php
+                    if($departments->list_department() != false){
+                        foreach($departments->list_department() as $value){
+                            extract($value);
+                            ?>
+                            <option value="<?php echo $department_id; ?>" <?php echo ($department_id == $nurse->get_nurse_department_id($id)) ? 'selected' : ''; ?>>
+                                <?php echo $department_name; ?>
+                            </option>
+                            <?php
+                        }
+                    }
+                ?>
             </select>
 
             <label for="id"></label>
@@ -55,4 +75,10 @@
     </div>
     <button type="submit" class="submit-btn">Update Nurse</button>
 </form>
+
+<form action="processes/process.nurse.php?action=delete" method="POST">
+    <input type="text" id="id" class="text" name="id" value="<?php echo $nurse->get_id($id);?>" hidden>
+    <button type="submit" class="delete-btn">Delete Nurse</button>
+</form>
+
 </div>

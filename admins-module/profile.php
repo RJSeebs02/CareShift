@@ -26,14 +26,36 @@
             <label for="contact_no">Contact No.</label>
             <input type="tel" id="contact_no" name="contact_no" value="<?php echo $admin->get_contact($id);?>" required>
 
+            <label for="department">Department</label>
+            <select required id="department" name="department">
+                    <?php
+                    if($departments->list_department() != false){
+                        foreach($departments->list_department() as $value){
+                            extract($value);
+                            ?>
+                            <option value="<?php echo $department_id;?>" <?php echo ($department_id == $admin->get_department_id($id)) ? 'selected' : ''; ?>>
+                                <?php echo $department_name; ?>
+                            </option>
+                            <?php
+                        }
+                    }
+                ?>
+            </select>
+            
             <label for="access">Access</label>
-            <select id="access" name="access" required>
-                <option value="<?php echo $admin->get_access($id);?>"><?php echo $admin->get_access($id);?></option>
-                <option value="Super Admin">Super Admin</option>
-                <option value="Head Nurse">Head Nurse</option>
-                <option value="OR Scheduler">OR Scheduler</option>
-                <option value="CNA Scheduler">CNA Scheduler</option>
-                <option value="SCN Scheduler">SCN Scheduler</option>
+            <select required id="access" name="access">
+                    <?php
+                    if($useraccess->list_useraccess() != false){
+                        foreach($useraccess->list_useraccess() as $value){
+                            extract($value);
+                            ?>
+                            <option value="<?php echo $useraccess_id;?>" <?php echo ($useraccess_id == $admin->get_access_id($id)) ? 'selected' : ''; ?>>
+                                <?php echo $useraccess_name; ?>
+                            </option>
+                            <?php
+                        }
+                    }
+                ?>
             </select>
 
             <label for="id"></label>
@@ -42,4 +64,10 @@
     </div>
     <button type="submit" class="submit-btn">Update Admin</button>
 </form>
+
+<form action="processes/process.admin.php?action=delete" method="POST">
+    <input type="text" id="id" class="text" name="id" value="<?php echo $admin->get_id_by_id($id);?>" hidden>
+    <button type="submit" class="delete-btn">Delete Admin</button>
+</form>
+
 </div>

@@ -28,12 +28,13 @@ function create_new_admin(){
     $last_name = ucfirst($_POST['last_name']);
     $email = $_POST['email'];
     $contact_no = $_POST['contact_no'];
+    $department = $_POST['department'];
     $access = $_POST['access'];
 
     $password = 123;
 
     /*Passes the parameters to the class function */
-    $result = $admin->new_admin($username,$password,$first_name,$middle_name,$last_name,$email,$contact_no,$access);
+    $result = $admin->new_admin($username,$password,$first_name,$middle_name,$last_name,$email,$contact_no,$access,$department);
     if($result){
         $id = $admin->get_id_by_username($username);
         header("location: ../index.php?page=admins");
@@ -60,17 +61,30 @@ function update_admin(){
     }
 }
 
-/*Main Function Process for deleting an admin */
-function delete_admin(){
-    if (isset($_POST['adm_username'])) {
+/*Main Function Process for deleting a nurse */
+function delete_admin()
+{
+    /*If parameter was passed succesfully */
+    if (isset($_POST['id'])) {
         $admin = new Admin();
-        $id = $_POST['adm_username'];
+        /*Receives the parameters passed from the delete button */
+        $id = $_POST['id'];
+
+        /*Passes the parameters to the class function */
         $result = $admin->delete_admin($id);
+
+        /*If result was executed */
         if ($result) {
-            header("location: ../index.php?page=admins");
-        } 
+            header("location: ../index.php?page=admins&subpage=records");
+        }
+        /*If result was interrupted */
+        else {
+            echo "Error deleting admin.";
+        }
+    }
+    /*If parameter was not passed successfully */
+    else {
+        echo "Invalid Admin ID.";
     }
 }
-
-
 ?>

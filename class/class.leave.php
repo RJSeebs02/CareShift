@@ -16,7 +16,7 @@ class Leave {
         ];
     
         // Escape the table name
-        $stmt = $this->conn->prepare("INSERT INTO `leaves` (leave_type, leave_start_date, leave_end_date, leave_desc, leave_status, nurse_id, adm_id) VALUES (?,?,?,?,?,?,?)");
+        $stmt = $this->conn->prepare("INSERT INTO `leave` (leave_type, leave_start_date, leave_end_date, leave_desc, leave_status, nurse_id, adm_id) VALUES (?,?,?,?,?,?,?)");
         
         try {
             $this->conn->beginTransaction();
@@ -33,7 +33,7 @@ class Leave {
     
     /*Function that selects all the records from the leaves table */
 	public function list_leaves(){
-		$sql="SELECT * FROM leaves";
+		$sql="SELECT * FROM `leave`";
 		$q = $this->conn->query($sql) or die("failed!");
 		while($r = $q->fetch(PDO::FETCH_ASSOC)){
 		$data[]=$r;
@@ -45,28 +45,28 @@ class Leave {
 		}
 	}
     public function get_leave_id($leave_id) {
-        $sql = "SELECT leave_id FROM `leaves` WHERE leave_id = :leave_id"; // Added backticks
+        $sql = "SELECT leave_id FROM `leave` WHERE leave_id = :leave_id"; // Added backticks
         $q = $this->conn->prepare($sql);
         $q->execute(['leave_id' => $leave_id]);
         return $q->fetchColumn();
     }
 
     public function get_leave_details($leave_id) {
-        $sql = "SELECT * FROM `leaves` WHERE leave_id = :leave_id"; // Added backticks
+        $sql = "SELECT * FROM `leave` WHERE leave_id = :leave_id"; // Added backticks
         $q = $this->conn->prepare($sql);
         $q->execute(['leave_id' => $leave_id]);
         return $q->fetch(PDO::FETCH_ASSOC);
     }
 
     public function get_leaves_by_nurse($nurse_id) {
-        $sql = "SELECT * FROM `leaves` WHERE nurse_id = :nurse_id"; // Added backticks
+        $sql = "SELECT * FROM `leave` WHERE nurse_id = :nurse_id"; // Added backticks
         $q = $this->conn->prepare($sql);
         $q->execute(['nurse_id' => $nurse_id]);
         return $q->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function get_leaves_by_status($status) {
-        $sql = "SELECT * FROM `leaves` WHERE leave_status = :status"; // Added backticks
+        $sql = "SELECT * FROM `leave` WHERE leave_status = :status"; // Added backticks
         $q = $this->conn->prepare($sql);
         $q->execute(['status' => $status]);
         return $q->fetchAll(PDO::FETCH_ASSOC);

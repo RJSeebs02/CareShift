@@ -4,10 +4,15 @@ include_once 'class/class.admin.php';
 include_once 'class/class.logs.php';
 include_once 'class/class.leave.php';
 include_once 'class/class.reports.php';
+include_once 'class/class.rooms.php';
+include_once 'class/class.departments.php';
+include_once 'class/class.useraccess.php';
+include_once 'class/class.status.php';
+include_once 'class/class.dept_type.php';
 include 'config/config.php';
 
 /*Parameter variables for the navbar*/
-$page = (isset($_GET['page']) && $_GET['page'] != '') ? $_GET['page'] : '';
+$page = (isset($_GET['page']) && $_GET['page'] != '') ? $_GET['page'] : 'reports';
 $subpage = (isset($_GET['subpage']) && $_GET['subpage'] != '') ? $_GET['subpage'] : '';
 $id = (isset($_GET['id']) && $_GET['id'] != '') ? $_GET['id'] : '';
 
@@ -17,6 +22,11 @@ $admin = new Admin();
 $log = new Log();
 $leave = new Leave(); 
 $report = new Report();
+$rooms = new Rooms();
+$departments = new Departments();
+$useraccess = new UserAccess();
+$status = new Status();
+$dept_type = new Dept_Type();
 
 /*Login Verifier (Deploys Login Check Method from another file)*/
 if(!$admin->get_session()){
@@ -43,13 +53,22 @@ $admin_user_login = $admin_id;
         <div class="sidebar">
             <h2>CareShift</h2>
             <ul>
-                <li><a href="index.php?page=schedule" class="<?= $page == 'schedule' ? 'active' : '' ?>"><i class="fas fa-solid fa-clock"></i>Schedule</a></li>
+                <h3>Main</h3>
                 <li><a href="index.php?page=reports" class="<?= $page == 'reports' ? 'active' : '' ?>"><i class="fas fa-solid fa-chart-line"></i>Reports</a></li>
+                <li><a href="index.php?page=schedule" class="<?= $page == 'schedule' ? 'active' : '' ?>"><i class="fas fa-solid fa-clock"></i>Schedule</a></li>
                 <li><a href="index.php?page=logs" class="<?= $page == 'logs' ? 'active' : '' ?>"><i class="fas fa-solid fa-receipt"></i>Logs</a></li>
                 <li><a href="index.php?page=leave" class="<?= $page == 'leave' ? 'active' : '' ?>"><i class="fas fa-regular fa-paste"></i></i></i>Leave Applicants</a></li>
+
+                <h3>Users</h3>
                 <li><a href="index.php?page=nurses" class="<?= $page == 'nurses' ? 'active' : '' ?>"><i class="fas fa-solid fa-user-nurse"></i>Nurses</a></li>
                 <li><a href="index.php?page=admins" class="<?= $page == 'admins' ? 'active' : '' ?>"><i class="fas fa-lock" aria-hidden="true"></i></i>Admins</a></li>
-                <li><a href="index.php?page=settings" class="<?= $page == 'settings' ? 'active' : '' ?>"><i class="fas fa-solid fa-gear"></i>Settings</a></li>
+
+                <h3>Master List</h3>
+                <li><a href="index.php?page=rooms" class="<?= $page == 'rooms' ? 'active' : '' ?>"><i class="fas fa-solid fa-door-closed"></i>Rooms</a></li>
+                <li><a href="index.php?page=departments" class="<?= $page == 'departments' ? 'active' : '' ?>"><i class="fas fa-solid fa-users-line"></i>Departments</a></li>
+
+                <h3>Settings</h3>
+                <li><a href="index.php?page=useraccess" class="<?= $page == 'useraccess' ? 'active' : '' ?>"><i class="fas fa-solid fa-user-shield"></i>User Access</a></li>
             </ul>
         </div>
         <div class="body">
@@ -64,6 +83,10 @@ $admin_user_login = $admin_id;
                     case 'reports':
                         require_once 'reports-module/index.php';
                     break;
+                    /*Displays Schedule Page*/
+                    case 'schedule':
+                        require_once 'schedule-module/index.php';
+                    break;
                     /*Displays Logs Page*/
                     case 'logs':
                         require_once 'logs-module/index.php';
@@ -71,10 +94,6 @@ $admin_user_login = $admin_id;
                     /*Displays Leave Page*/
                     case 'leave':
                         require_once 'leave-module/index.php';
-                    break;
-				    /*Displays Schedule Page*/
-                    case 'schedule':
-                        require_once 'schedule-module/index.php';
                     break;
 				    /*Displays Nurse Page*/
                     case 'nurses':
@@ -84,13 +103,21 @@ $admin_user_login = $admin_id;
                     case 'admins':
                         require_once 'admins-module/index.php';
                     break;
-				    /*Displays Settings Page*/
-                    case 'settings':
-                        require_once 'settings-module/index.php';
+				    /*Displays Rooms Page*/
+                    case 'rooms':
+                        require_once 'rooms-module/index.php';
+                    break;
+                    /*Displays Departments Page*/
+                    case 'departments':
+                        require_once 'departments-module/index.php';
+                    break;
+                    /*Displays User Access Page*/
+                    case 'useraccess':
+                        require_once 'useraccess-module/index.php';
                     break;
 				    /*Displays Default Page (Homepage)*/
                     default:
-                        require_once 'schedule-module/index.php';
+                        require_once 'reports-module/index.php';
                     break; 
                     }
                 ?>

@@ -111,28 +111,6 @@ window.addEventListener("click", function(event) {
     }
 });
 
-// Multiple Schedule Modal
-var multipleScheduleModal = document.getElementById("multipleScheduleModal");
-var multipleScheduleBtn = document.getElementById("multipleScheduleBtn");
-var multipleScheduleClose = multipleScheduleModal.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal
-multipleScheduleBtn.addEventListener("click", function() {
-    multipleScheduleModal.style.display = "block";
-});
-
-// When the user clicks on <span> (x), close the modal
-multipleScheduleClose.addEventListener("click", function() {
-    multipleScheduleModal.style.display = "none";
-});
-
-// When the user clicks anywhere outside of the modal, close it
-window.addEventListener("click", function(event) {
-    if (event.target == multipleScheduleModal) {
-        multipleScheduleModal.style.display = "none";
-    }
-});
-
 // Generate Schedule Modal
 var generateScheduleModal = document.getElementById("generateScheduleModal");
 var generateScheduleBtn = document.getElementById("generateScheduleBtn"); // Add a button with this ID to trigger the modal

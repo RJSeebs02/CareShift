@@ -8,6 +8,11 @@
             <i class="fa fa-plus"></i>&nbspAdd Schedule
         </button>
 
+        <!-- Multiple Schedule Button (opens modal) -->
+        <button id="multipleScheduleBtn" class="right_button">
+            <i class="fa fa-plus"></i>&nbspMultiple Assign
+        </button>
+
         <!-- Auto Generate Schedule Button (opens modal) -->
         <button id="generateScheduleBtn" class="right_button">
             <i class="fa fa-plus"></i>&nbspAuto Generate
@@ -71,6 +76,54 @@
             <input type="number" name="work_hours" required>
 
             <button type="submit">Add Schedule</button>
+        </form>
+    </div>
+</div>
+
+<!-- Multiple Schedule Modal -->
+<div id="multipleScheduleModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h1><i class="fa fa-plus"></i>&nbsp;Multiple Assign Nurse Schedule</h1>
+        <form action="processes/process.schedule.php?action=multiple" method="POST">
+            
+            <!-- Nurse Selection (either all nurses or specific ones) -->
+            <label for="nurse_id">Select Nurse:</label>
+            <div>
+                <input type="checkbox" name="nurse_id[]" value="all" id="selectAllNurses">
+                <label for="selectAllNurses">All Nurses</label>
+            </div>
+            <?php
+            if (!$con) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+            $query = "SELECT nurse_id, CONCAT(nurse_fname, ' ', nurse_lname) AS name FROM nurse";
+            $result = mysqli_query($con, $query); 
+
+            if ($result && mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<div>";
+                    echo "<input type='checkbox' name='nurse_id[]' value='{$row['nurse_id']}' id='nurse_{$row['nurse_id']}'>";
+                    echo "<label for='nurse_{$row['nurse_id']}'>{$row['name']}</label>";
+                    echo "</div>";
+                }
+            } else {
+                echo "<p>No nurses found</p>";
+            }
+            ?>
+
+            <!-- Other Inputs -->
+            <label for="start_date">Start Date:</label>
+            <input type="date" name="start_date" required>
+            <label for="end_date">End Date:</label>
+            <input type="date" name="end_date" required>
+            <label for="start_time">Start Time:</label>
+            <input type="time" name="start_time" required>
+            <label for="end_time">End Time:</label>
+            <input type="time" name="end_time" required>
+
+            <button type="submit">Assign Schedule</button>
         </form>
     </div>
 </div>

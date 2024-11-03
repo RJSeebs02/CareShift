@@ -10,11 +10,11 @@ switch ($action) {
     case 'new':
         create_new_leave();
         break;
-    case 'update':
-        update_leave_status();
+    case 'approve':
+        approve_leave();
         break;
-    case 'delete':
-        delete_leave();
+    case 'deny':
+        deny_leave();
         break;
 }
 
@@ -37,20 +37,31 @@ function create_new_leave() {
     }
 }
 
-function update_leave_status() {
+/*Main Function Process for approving a leave */
+function approve_leave(){  
     $leave = new Leave();
-
+    /*Receives the parameters passed from the profile updating page form */
     $leave_id = $_POST['leave_id'];
-    $status = $_POST['leave_status'];
+    $leave_status = 'Approved';
 
-    try {
-        $result = $leave->update_leave_status($leave_id, $status);
-        if ($result) {
-            header("Location: ../index.php?page=leaves&subpage=details&id=" . $leave_id . "&message=Status updated successfully");
-            exit();
-        }
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
+    /*Passes the parameters to the class function */
+    $result = $leave->approve_leave($leave_id,$leave_status);
+    if($result){
+        header('location: ../index.php?page=leave&subpage=profile&id=' . $leave_id);
+    }
+}
+
+/*Main Function Process for denying a leave */
+function deny_leave(){  
+    $leave = new Leave();
+    /*Receives the parameters passed from the profile updating page form */
+    $leave_id = $_POST['leave_id'];
+    $leave_status = 'Denied';
+
+    /*Passes the parameters to the class function */
+    $result = $leave->deny_leave($leave_id,$leave_status);
+    if($result){
+        header('location: ../index.php?page=leave&subpage=profile&id=' . $leave_id);
     }
 }
 ?>

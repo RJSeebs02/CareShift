@@ -7,29 +7,35 @@ class Leave {
     private $conn;
     public function __construct() {
         $this->conn = new PDO("mysql:host=" . $this->DB_SERVER . ";dbname=" . $this->DB_DATABASE, $this->DB_USERNAME, $this->DB_PASSWORD);
-        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Set error mode to exception
     }
 
-    public function new_leave($leave_type, $start_date, $end_date, $description, $status, $nurse_id, $admin) {
-        $data = [
-            [$leave_type, $start_date, $end_date, $description, $status, $nurse_id, $admin]
-        ];
-    
-        // Escape the table name
-        $stmt = $this->conn->prepare("INSERT INTO `leave` (leave_type, leave_start_date, leave_end_date, leave_desc, leave_status, nurse_id, adm_id) VALUES (?,?,?,?,?,?,?)");
-        
-        try {
-            $this->conn->beginTransaction();
-            foreach ($data as $row) {
-                $stmt->execute($row);
-            }
-            $this->conn->commit();
-        } catch (Exception $e) {
-            $this->conn->rollback();
-            throw $e;
-        }
-        return true;
-    }
+    /*Function for creating a new leave */
+	public function new_leave($nurse_id,$leave_start_date,$leave_end_date,$leave_type,$leave_desc,$leave_status){
+
+        /* Setting Timezone for DB */
+		$NOW = new DateTime('now', new DateTimeZone('Asia/Manila'));
+		$NOW = $NOW->format('Y-m-d H:i:s');
+		
+		$data = [
+			[$nurse_id,$leave_start_date,$leave_end_date,$leave_type,$leave_desc,$leave_status,$NOW,$NOW],
+		];
+		/*Stores parameters passed from the creation page inside the database */
+		$stmt = $this->conn->prepare("INSERT INTO `leave` (nurse_id, leave_start_date, leave_end_date, leave_type, leave_desc, leave_status, leave_date_filed, leave_time_filed) VALUES (?,?,?,?,?,?,?,?)");
+		try {
+			$this->conn->beginTransaction();
+			foreach ($data as $row)
+			{
+				$stmt->execute($row);
+			}
+			$this->conn->commit();
+		}catch (Exception $e){
+			$this->conn->rollback();
+			throw $e;
+		}
+
+		return true;
+
+	}
     
     /*Function that selects all the records from the leaves table */
 	public function list_leaves(){
@@ -44,32 +50,28 @@ class Leave {
 			return $data;	
 		}
 	}
-    public function get_leave_id($leave_id) {
-        $sql = "SELECT leave_id FROM `leave` WHERE leave_id = :leave_id"; // Added backticks
-        $q = $this->conn->prepare($sql);
-        $q->execute(['leave_id' => $leave_id]);
-        return $q->fetchColumn();
-    }
-
-    public function get_leave_details($leave_id) {
-        $sql = "SELECT * FROM `leave` WHERE leave_id = :leave_id"; // Added backticks
-        $q = $this->conn->prepare($sql);
-        $q->execute(['leave_id' => $leave_id]);
-        return $q->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function get_leaves_by_nurse($nurse_id) {
-        $sql = "SELECT * FROM `leave` WHERE nurse_id = :nurse_id"; // Added backticks
-        $q = $this->conn->prepare($sql);
-        $q->execute(['nurse_id' => $nurse_id]);
-        return $q->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function get_leaves_by_status($status) {
-        $sql = "SELECT * FROM `leave` WHERE leave_status = :status"; // Added backticks
-        $q = $this->conn->prepare($sql);
-        $q->execute(['status' => $status]);
-        return $q->fetchAll(PDO::FETCH_ASSOC);
-    }
+    /*Function for getting the leave id from the database */
+	function get_id_by_id($id){
+		$sql="SELECT leave_id FROM `leave` WHERE leave_id = :id";	
+		$q = $this->conn->prepare($sql);
+		$q->execute(['id' => $id]);
+		$id = $q->fetchColumn();
+		return $id;
+	}
+	/*Function for getting the leave nurse name from nurse table from the database */
+	function get_leave_nurse_name($id){
+		$sql="SELECT nurse_fname, nurse_mname, nurse_lname FROM nurse INNER JOIN `leave` WHERE leave.nurse_id = nurse.nurse_id AND leave_id = :id";	
+		$q = $this->conn->prepare($sql);
+		$q->execute(['id' => $id]);
+        
+        // Fetch the result as an associative array
+        $nurse = $q->fetch(PDO::FETCH_ASSOC);
+    
+        // Combine first and last name into a full name
+        if ($nurse) {
+            $nurse_name = $nurse['nurse_fname'] . ' ' . $nurse['nurse_mname'] .' '. $nurse['nurse_lname'];
+            return $nurse_name;
+        }
+	}
 }
 ?>

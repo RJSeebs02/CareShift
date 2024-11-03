@@ -276,6 +276,8 @@ label {
 .add_form input[type="number"],
 .add_form input[type="email"],
 .add_form input[type="tel"],
+.add_form input[type="date"],
+.add_form input[type="time"],
 .add_form select {
     width: 100%;
     padding: 10px;

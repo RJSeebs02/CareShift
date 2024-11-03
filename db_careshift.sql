@@ -66,22 +66,22 @@ DROP TABLE IF EXISTS `leave`;
 CREATE TABLE `leave` (
   `leave_id` int(50) NOT NULL auto_increment,
   `leave_type` varchar(50) NOT NULL,
-  `leave_date_filed` date NOT NULL,
   `leave_start_date` date NOT NULL,
   `leave_end_date` date NOT NULL,
-  `leave_desc` varchar(50) NOT NULL,
+  `leave_date_filed` date NOT NULL,
+  `leave_time_filed` time NOT NULL,
+  `leave_desc` varchar(255) NOT NULL,
   `leave_status` varchar(50) NOT NULL,
   `nurse_id` int(50) NOT NULL,
-  `adm_id` int(50) NOT NULL,
   PRIMARY KEY  (`leave_id`),
-  KEY (`nurse_id`),
-  KEY (`adm_id`)
+  KEY (`nurse_id`)
 );
 
-INSERT INTO `leave`(leave_type,leave_date_filed,leave_start_date,leave_end_date,leave_desc,leave_status,nurse_id,adm_id) 
-VALUES  ("Sick Leave", "2024-10-10", "2024-10-20", "2024-10-24", "Diagnosed with amoeba", "Pending", "2", "1"),
-        ("Vacation Leave", "2024-9-2", "2024-9-15", "2024-9-30", "Vacation Break", "Approved", "1", "1"),
-        ("Emergency Leave", "2024-9-2", "2024-9-2", "2024-9-2", "Late", "Denied", "3", "1");
+
+INSERT INTO `leave`(leave_type,leave_start_date,leave_end_date,leave_date_filed,leave_time_filed,leave_desc,leave_status,nurse_id) 
+VALUES  ("Sick Leave", "2024-10-10", "2024-10-20", "2024-10-24", "13:00", "Diagnosed with amoeba", "Pending", "2"),
+        ("Vacation Leave", "2024-9-2", "2024-9-15", "2024-9-30", "13:20", "Vacation Break", "Approved", "1"),
+        ("Emergency Leave", "2024-9-2", "2024-9-2", "2024-9-2", "5:00", "Late", "Denied", "3");
 
 DROP TABLE IF EXISTS `dept_type`;
 CREATE TABLE `dept_type` (

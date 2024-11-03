@@ -22,23 +22,18 @@ switch ($action) {
 function create_new_leave() {
     $leave = new Leave();
     /* Receives the parameters passed from the creation page form */
-    $leave_type = $_POST['leave_type'];
-    $start_date = $_POST['leave_start_date'];
-    $end_date = $_POST['leave_end_date'];
-    $description = $_POST['leave_desc'];
     $nurse_id = $_POST['nurse_id'];
-    $admin_id = $_POST['adm_id'];
+    $leave_start_date = $_POST['leave_start_date'];
+    $leave_end_date = $_POST['leave_end_date'];
+    $leave_type = $_POST['leave_type'];
+    $leave_desc = $_POST['leave_desc'];
 
     $leave_status = 'Pending';
 
-    try {
-        $result = $leave->new_leave($leave_type, $start_date, $end_date, $description, $leave_status, $nurse_id, $admin_id);
-        if ($result) {
-            header("Location: ../index.php?page=leaves");
-            exit();
-        }
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
+    /*Passes the parameters to the class function */
+    $result = $leave->new_leave($nurse_id,$leave_start_date,$leave_end_date,$leave_type,$leave_desc,$leave_status);
+    if($result){
+        header("location: ../index.php?page=leave");
     }
 }
 

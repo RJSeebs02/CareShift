@@ -5,11 +5,11 @@
             case 'records':
                 require_once 'records.php';
             break;
-            case 'new':
-                require_once 'new_leave.php';
+            case 'add':
+                require_once 'add.php';
             break;
-            case 'details':
-                require_once 'details.php';
+            case 'profile':
+                require_once 'profile.php';
             break;
             default:
                 require_once 'records.php';

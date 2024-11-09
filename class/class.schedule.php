@@ -10,6 +10,20 @@ class Schedule{
         $this->conn = new PDO("mysql:host=".$this->DB_SERVER.";dbname=".$this->DB_DATABASE, $this->DB_USERNAME, $this->DB_PASSWORD);
     }
 
+    public function getCurrentWeekDates($weekOffset = 0) {
+        $dates = [];
+        $currentDate = new DateTime();
+        $currentDate->modify("Monday this week +{$weekOffset} weeks"); // Adjust the week by the offset
+    
+        for ($i = 0; $i < 7; $i++) {
+            $dates[] = $currentDate->format('Y-m-d');
+            $currentDate->modify('+1 day');
+        }
+        return $dates;
+    }    
+    
+    
+
     public function new_schedule($nurse_id, $sched_date, $sched_start_time, $work_hours){
         // Calculate the end time based on work hours
         $start_time = new DateTime($sched_date . ' ' . $sched_start_time);

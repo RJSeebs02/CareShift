@@ -1,3 +1,11 @@
+<?php
+// Get the week offset from the query parameter, default to 0
+$weekOffset = isset($_GET['weekOffset']) ? (int)$_GET['weekOffset'] : 0;
+
+// Fetch week dates based on the offset
+$weekDates = $schedule->getCurrentWeekDates($weekOffset);
+?>
+
 <div class="content_wrapper">
     <div class="heading">
         <h1><i class="fas fa-solid fa-clock"></i>&nbsp;Schedule</h1>
@@ -8,36 +16,56 @@
             <i class="fa fa-plus"></i>&nbspAdd Schedule
         </button>
 
-        <!-- Multiple Schedule Button (opens modal) -->
-        <button id="multipleScheduleBtn" class="right_button">
-            <i class="fa fa-plus"></i>&nbspMultiple Assign
-        </button>
+       
 
         <!-- Auto Generate Schedule Button (opens modal) -->
         <button id="generateScheduleBtn" class="right_button">
             <i class="fa fa-plus"></i>&nbspAuto Generate
         </button>
     </div>
-        <form id="nurseForm" method="GET" action="">
-            <label for="nurseSelect">Select Nurse:</label>
-            <select id="nurseSelect" name="nurse_id" onchange="this.form.submit()">
-                <option value="all">All Nurses</option>
-                <?php
-                // Query to select nurses from the nurse table
-                $query = "SELECT nurse_id, CONCAT(nurse_lname, ', ', nurse_fname) AS name FROM nurse";
-                $result = mysqli_query($con, $query);
 
-                if ($result && mysqli_num_rows($result) > 0) {
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $selected = isset($_GET['nurse_id']) && $_GET['nurse_id'] == $row['nurse_id'] ? 'selected' : '';
-                        echo "<option value='{$row['nurse_id']}' $selected>{$row['name']}</option>";
-                    }
-                } else {
-                    echo "<option>No nurses found</option>";
-                }
+<!-- Schedule Table -->
+<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+    <button class="nav-button" onclick="navigateWeek(<?php echo $weekOffset - 1; ?>)">Previous Week</button>
+    <span>Week of <?php echo $weekDates[0]; ?> to <?php echo $weekDates[6]; ?></span>
+    <button class="nav-button" onclick="navigateWeek(<?php echo $weekOffset + 1; ?>)">Next Week</button>
+</div>
+
+<table id="tablerecords">
+    <thead>
+        <tr>
+            <th>Nurse Name</th>
+            <?php foreach ($weekDates as $date): ?>
+                <th><?php echo $date; ?></th>
+            <?php endforeach; ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if ($nurse->list_nurses() != false) {
+            foreach ($nurse->list_nurses() as $value) {
+                extract($value);
+                $row_url = "index.php?page=nurses&subpage=profile&id=" . $nurse_id;
                 ?>
-            </select>
-        </form>
+                <tr onclick="location.href='<?php echo $row_url; ?>'" style="cursor: pointer;">
+                    <td><?php echo $nurse_lname . ', ' . $nurse_fname . ' ' . $nurse_mname; ?></td>
+                    <?php foreach ($weekDates as $date): ?>
+                        <td></td> <!-- Empty cells for each day of the week -->
+                    <?php endforeach; ?>
+                </tr>
+                <?php
+            }
+        } else {
+            ?>
+            <tr>
+                <td colspan="<?php echo count($weekDates) + 1; ?>">No Record Found.</td>
+            </tr>
+        <?php
+        }
+        ?>
+    </tbody>
+</table>
+
 </div>
 
 
@@ -216,5 +244,4 @@
         </form>
     </div>
 </div>
-
-<div id="calendar"></div>
+<div id="calendar">

@@ -1,4 +1,3 @@
-<!--Nurse Class File-->
 <?php
 class Nurse{
 	private $DB_SERVER='localhost';
@@ -71,6 +70,30 @@ class Nurse{
 			return $data;	
 		}
 	}
+
+	public function countAvailableNursesByDepartment($departmentId) {
+		$query = "SELECT COUNT(*) as count 
+				  FROM nurse n
+				  JOIN department d ON n.department_id = d.department_id 
+				  WHERE d.department_id = :departmentId";  // Changed to use department_id
+	
+		$stmt = $this->conn->prepare($query);
+		$stmt->bindParam(':departmentId', $departmentId, PDO::PARAM_INT);  // Make sure to bind as integer
+		$stmt->execute();
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+		return $row['count'];
+	}
+
+	public function countTotalNurses() {
+		$query = "SELECT COUNT(*) as count FROM nurse";
+		
+		$stmt = $this->conn->prepare($query);
+		$stmt->execute();
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+		return $row['count'];
+	}
+
 	/*Function for getting the nurse id from the database */
 	function get_id($id){
 		$sql="SELECT nurse_id FROM nurse WHERE nurse_id = :id";	

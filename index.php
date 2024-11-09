@@ -1,4 +1,5 @@
 <?php
+
 include_once 'class/class.nurse.php';
 include_once 'class/class.admin.php';
 include_once 'class/class.logs.php';
@@ -9,6 +10,7 @@ include_once 'class/class.departments.php';
 include_once 'class/class.useraccess.php';
 include_once 'class/class.status.php';
 include_once 'class/class.dept_type.php';
+include_once 'class/class.schedule.php';
 include 'config/config.php';
 
 /*Parameter variables for the navbar*/
@@ -27,6 +29,7 @@ $departments = new Departments();
 $useraccess = new UserAccess();
 $status = new Status();
 $dept_type = new Dept_Type();
+$schedule = new Schedule();
 
 /*Login Verifier (Deploys Login Check Method from another file)*/
 if(!$admin->get_session()){
@@ -34,6 +37,7 @@ if(!$admin->get_session()){
 }
 $admin_id = $admin->get_id_by_username($_SESSION['adm_username']);
 $admin_user_login = $admin_id;
+
 ?>
 
 
@@ -47,6 +51,7 @@ $admin_user_login = $admin_id;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script> 
     <script src="https://kit.fontawesome.com/e697cf1067.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
 </head>
 <body>
     <div class="wrapper">
@@ -77,6 +82,7 @@ $admin_user_login = $admin_id;
                 <a href="logout.php" class="right">Logout</a>
             </div>
             <div class="main_content">
+
                 <?php
                     switch($page){
 				    /*Displays Reports Page*/
@@ -121,9 +127,11 @@ $admin_user_login = $admin_id;
                     break; 
                     }
                 ?>
+                
             </div>
         </div>
     </div>
+   
     <script src="script/script.js"></script>
 </body>
 </html>

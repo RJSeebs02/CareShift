@@ -70,6 +70,19 @@ class Leave {
 			return $data;	
 		}
 	}
+
+	public function countPendingLeaves() {
+		$query = "SELECT COUNT(*) as count 
+				  FROM `leave` 
+				  WHERE leave_status = 'Pending'";
+	
+		$stmt = $this->conn->prepare($query);
+		$stmt->execute();
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+		return $row['count'];
+	}
+
     /*Function for getting the leave id from the database */
 	function get_id_by_id($id){
 		$sql="SELECT leave_id FROM `leave` WHERE leave_id = :id";	

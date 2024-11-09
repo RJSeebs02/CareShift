@@ -24,15 +24,7 @@ $(document).ready(function() {
         },
         events: 'schedule-module/fetch_schedule.php?nurse_id=' + nurse_id, // Load events based on nurse_id from the URL
         eventRender: function(event, element) {
-            element.html(`
-                <div style="white-space: normal;">
-                    <strong>${event.title}</strong><br>
-                    ${event.position}<br>
-                    ${event.department}<br>
-                    ${event.start}<br>
-                    ${event.end}
-                </div>
-            `);
+            element.attr('title', event.title);
         },
         eventClick: function(event, jsEvent, view) {
             // Populate modal content
@@ -59,107 +51,35 @@ $(document).ready(function() {
     });
 });
 
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Get references to the "All Nurses" checkbox and individual checkboxes
-    const selectAllNurses = document.getElementById('selectAllNurses');
-    const nurseCheckboxes = document.querySelectorAll('input[name="nurse_id[]"]:not(#selectAllNurses)');
-
-    // Event listener for "All Nurses" checkbox
-    selectAllNurses.addEventListener('change', function() {
-        // Check or uncheck all individual nurse checkboxes based on "All Nurses" checkbox
-        nurseCheckboxes.forEach(function(checkbox) {
-            checkbox.checked = selectAllNurses.checked;
-        });
+$(document).ready(function() {
+    // Initialize FullCalendar
+    $('#calendar').fullCalendar({
+        // Your calendar options here
+        events: [], // Start with no events
+        // Other options...
     });
 
-    // Optional: Add event listeners for individual nurse checkboxes
-    nurseCheckboxes.forEach(function(checkbox) {
-        checkbox.addEventListener('change', function() {
-            // If any individual checkbox is unchecked, uncheck "All Nurses"
-            if (!checkbox.checked) {
-                selectAllNurses.checked = false;
-            }
-            // If all individual checkboxes are checked, check "All Nurses"
-            if (Array.from(nurseCheckboxes).every(checkbox => checkbox.checked)) {
-                selectAllNurses.checked = true;
-            }
-        });
-    });
+    // Function to fetch the schedule
+    window.fetchSchedule = function() {
+        const nurseId = $('#nurseSelect').val();
+
+        // Fetch the schedule based on the selected nurse
+        fetch(`fetch_schedule.php?nurse_id=${nurseId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update FullCalendar with the fetched events
+                $('#calendar').fullCalendar('removeEvents'); // Clear existing events
+                $('#calendar').fullCalendar('addEventSource', data); // Add new events
+            })
+            .catch(error => console.error('Error fetching schedule:', error));
+    };
 });
 
 
-// Add Schedule Modal
-var addScheduleModal = document.getElementById("addScheduleModal");
-var addScheduleBtn = document.getElementById("addScheduleBtn");
-var addScheduleClose = addScheduleModal.getElementsByClassName("close")[0];
 
-// When the user clicks the button, open the modal
-addScheduleBtn.addEventListener("click", function() {
-    addScheduleModal.style.display = "block";
-});
 
-// When the user clicks on <span> (x), close the modal
-addScheduleClose.addEventListener("click", function() {
-    addScheduleModal.style.display = "none";
-});
 
-// When the user clicks anywhere outside of the modal, close it
-window.addEventListener("click", function(event) {
-    if (event.target == addScheduleModal) {
-        addScheduleModal.style.display = "none";
-    }
-});
 
-// Generate Schedule Modal
-var generateScheduleModal = document.getElementById("generateScheduleModal");
-var generateScheduleBtn = document.getElementById("generateScheduleBtn"); // Add a button with this ID to trigger the modal
-var generateScheduleClose = generateScheduleModal.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal
-generateScheduleBtn.addEventListener("click", function() {
-    generateScheduleModal.style.display = "block";
-});
-
-// When the user clicks on <span> (x), close the modal
-generateScheduleClose.addEventListener("click", function() {
-    generateScheduleModal.style.display = "none";
-});
-
-// When the user clicks anywhere outside of the modal, close it
-window.addEventListener("click", function(event) {
-    if (event.target == generateScheduleModal) {
-        generateScheduleModal.style.display = "none";
-    }
-});
-
-// Checkbox behavior for 'Select All Nurses' in generateSchedule
-document.addEventListener('DOMContentLoaded', function() {
-    const selectAllNursesGenerate = document.getElementById('selectAllNursesGenerate');
-    const nurseCheckboxesGenerate = document.querySelectorAll('input[name="nurse_id[]"]:not(#selectAllNursesGenerate)');
-
-    // Event listener for "All Nurses" checkbox
-    selectAllNursesGenerate.addEventListener('change', function() {
-        // Check or uncheck all individual nurse checkboxes based on "All Nurses" checkbox
-        nurseCheckboxesGenerate.forEach(function(checkbox) {
-            checkbox.checked = selectAllNursesGenerate.checked;
-        });
-    });
-
-    // Optional: Add event listeners for individual nurse checkboxes
-    nurseCheckboxesGenerate.forEach(function(checkbox) {
-        checkbox.addEventListener('change', function() {
-            // If any individual checkbox is unchecked, uncheck "All Nurses"
-            if (!checkbox.checked) {
-                selectAllNursesGenerate.checked = false;
-            }
-            // If all individual checkboxes are checked, check "All Nurses"
-            if (Array.from(nurseCheckboxesGenerate).every(checkbox => checkbox.checked)) {
-                selectAllNursesGenerate.checked = true;
-            }
-        });
-    });
-});
 
 function viewSchedules(nurse_id) {
     // Send an AJAX request to fetch schedules for the selected nurse
@@ -186,9 +106,7 @@ function closeModal() {
     document.getElementById('scheduleModal').style.display = 'none';
 }
 
-var message = "This function is not allowed here.";
 $(document).on("contextmenu", function(e) {
-    alert(message);
     return false; 
 });
 
@@ -231,5 +149,54 @@ function filterTable() {
         cell.style.textAlign = "center";
     }
 }
+
+function navigateWeek(offset) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('weekOffset', offset);
+    window.location.href = url;
+}
+
+
+
+
+
+// Global variable to store scanned data
+let scanData = '';
+
+// Function to listen for the keydown event globally
+document.addEventListener('keydown', function(event) {
+    // Get the focused element (if any)
+    const activeElement = document.activeElement;
+
+    // Check if the key pressed is a valid character and if we're not focusing on an input field
+    if (event.key.length === 1) {
+        // If any input field is focused, prevent the character from being typed into that field
+        if (activeElement && (activeElement.tagName.toLowerCase() === 'input' || activeElement.tagName.toLowerCase() === 'textarea')) {
+            event.preventDefault();  // Prevent the scanner input from entering the focused field
+        }
+
+        // Capture the QR code input data
+        scanData += event.key;
+    } 
+    else if (event.key === 'Enter') {
+        // When the scanner sends the "Enter" key, process the scan data
+        try {
+            let data = JSON.parse(scanData);  // Attempt to parse the scan data as JSON
+            if (data.nurse_id) {
+                // Redirect to the page with the nurse_id
+                const nurseId = data.nurse_id;
+                window.location.href = `index.php?page=nurses&subpage=profile&id=${nurseId}`;
+            } else {
+                console.error("nurse_id not found in scanned data");
+            }
+        } catch (e) {
+            console.error("Invalid JSON format", e);
+        } finally {
+            // Clear the scan data after processing
+            scanData = '';
+        }
+    }
+});
+
 
 

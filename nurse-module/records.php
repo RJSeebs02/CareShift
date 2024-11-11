@@ -1,35 +1,41 @@
 <div class="heading">
-    <h1><i class="fas fa-solid fa-receipt"></i>&nbspLogs</h1>
+    <h1><i class="fas fa-solid fa-user-nurse"></i>&nbspNurses</h1>
+    <a href="index.php?page=nurses&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Nurse</a>
 </div>
 <span class="right">
-    <div class="search_bar">Search:<input type="text" id="search" name="search" onkeyup="">
+    <div class="search_bar">
+        <label for="search">Search:</label>
+        <input type="text" id="search" class="search" name="search" onkeyup="filterTable()">
     </div>
 </span>
-    <table id="tablerecords">   
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Actor</th>
-                <th>Action</th>
-                <th>Subject</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
+
+<table id="tablerecords">   
+    <thead>
+        <tr>
+            <th>Nurse ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Contact No.</th>
+            <th>Department</th>
+            <th>Position</th>
+        </tr>
+    </thead>
+    <tbody>
         <?php
-        /* Display each log record from the database */
-        if ($logs = $log->list_logs()) {
-            foreach ($logs as $value) {
-                extract($value); // Extracts variables from the array
+        /* Display each admin record located in the database */
+        if ($nurse->list_nurses() != false) {
+            foreach ($nurse->list_nurses() as $value) {
+                extract($value);
+                // Create a link for each row using the nurse_id
+                $row_url = "index.php?page=nurses&subpage=profile&id=" . $nurse_id;
                 ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($log_date_managed); ?></td>
-                    <td><?php echo htmlspecialchars($log_time_managed); ?></td>
-                    <td><?php echo htmlspecialchars($adm_fname . ' ' . $adm_lname); ?></td> <!-- Admin's full name -->
-                    <td><?php echo htmlspecialchars($log_action); ?></td>
-                    <td><?php echo isset($nurse_lname) ? htmlspecialchars($nurse_fname . ' ' . $nurse_lname) : 'N/A'; ?></td> 
-                    <td><?php echo htmlspecialchars($log_description); ?></td>
+                <tr onclick="location.href='<?php echo $row_url; ?>'" style="cursor: pointer;">
+                    <td><?php echo $nurse_id; ?></td>
+                    <td><?php echo $nurse_lname . ', ' . $nurse_fname . ' ' . $nurse_mname; ?></td>
+                    <td><?php echo $nurse_email; ?></td>
+                    <td><?php echo $nurse_contact; ?></td>
+                    <td><?php echo $nurse->get_nurse_department_name($nurse_id); ?></td>
+                    <td><?php echo $nurse_position; ?></td>
                 </tr>
                 <?php
             }
@@ -38,8 +44,8 @@
             <tr>
                 <td colspan="6">No Record Found.</td>
             </tr>
-            <?php
+        <?php
         }
         ?>
-        </tbody>
-    </table>
+    </tbody>
+</table>

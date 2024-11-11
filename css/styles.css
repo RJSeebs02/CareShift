@@ -590,3 +590,38 @@ label {
     margin-top: 20px;
     font-size: 1.2em;
 }
+
+
+
+
+.custom-multiselect {
+    position: relative;
+    display: inline-block;
+    width: 200px;
+}
+
+.custom-multiselect input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-options {
+    display: none; /* Hide by default */
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1;
+    width: 100%;
+}
+
+.dropdown-options label {
+    display: block;
+    padding: 5px 10px;
+}
+
+.dropdown-options label:hover {
+    background-color: #f0f0f0;
+}

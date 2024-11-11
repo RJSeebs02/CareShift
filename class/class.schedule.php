@@ -13,7 +13,7 @@ class Schedule{
     public function getCurrentWeekDates($weekOffset = 0) {
         $dates = [];
         $currentDate = new DateTime();
-        $currentDate->modify("Monday this week +{$weekOffset} weeks"); // Adjust the week by the offset
+        $currentDate->modify("Sunday this week +{$weekOffset} weeks"); // Adjust the week by the offset
     
         for ($i = 0; $i < 7; $i++) {
             $dates[] = $currentDate->format('Y-m-d');
@@ -105,4 +105,38 @@ class Schedule{
 
         return json_encode($events);
     }
+
+    /*Function for updating a schedule */
+	public function update_schedule($eventSchedId,$eventDate,$eventStart,$eventEnd){
+		/*Updates data from the database using the parameters passed from the schedule updating page */
+		$sql = "UPDATE schedule SET sched_date=:eventDate, sched_start_time=:eventStart, sched_end_time=:eventEnd WHERE sched_id=:id";
+
+		$q = $this->conn->prepare($sql);
+		$q->execute(array(':eventDate'=>$eventDate, ':eventStart'=>$eventStart, ':eventEnd'=>$eventEnd, ':id'=>$eventSchedId));
+		return true;
+	}
+
+    /* Function to get the shift code for a nurse on a specific date */
+    function get_shift_code($nurse_id, $date) {
+    $sql = "SELECT sched_start_time, sched_end_time
+            FROM schedule
+            WHERE nurse_id = :nurse_id AND sched_date = :date";
+
+    $q = $this->conn->prepare($sql);
+    $q->execute(['nurse_id' => $nurse_id, 'date' => $date]);
+    $shift = $q->fetch();
+
+    if ($shift) {
+        // Determine the shift code based on start and end times
+        if ($shift['sched_start_time'] == '06:00:00' && $shift['sched_end_time'] == '14:00:00') {
+            return 'A';  // 6am to 2pm
+        } elseif ($shift['sched_start_time'] == '14:00:00' && $shift['sched_end_time'] == '22:00:00') {
+            return 'P';  // 2pm to 10pm
+        } elseif ($shift['sched_start_time'] == '22:00:00' && $shift['sched_end_time'] == '06:00:00') {
+            return 'G';  // 10pm to 6am
+        }
+    }
+    return 'NA';  // Return empty if no shift found
+}
+
 }

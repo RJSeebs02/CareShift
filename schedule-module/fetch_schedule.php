@@ -10,7 +10,7 @@ $nurse_id = isset($_GET['nurse_id']) ? $_GET['nurse_id'] : 'all';
 
 // Prepare the base query
 $query = "
-    SELECT s.nurse_id, s.sched_date, s.sched_start_time, s.sched_end_time, n.nurse_lname, n.nurse_fname, n.nurse_position, n.department_id
+    SELECT s.sched_id, s.nurse_id, s.sched_date, s.sched_start_time, s.sched_end_time, n.nurse_lname, n.nurse_fname, n.nurse_position, n.department_id
     FROM schedule s
     JOIN nurse n ON s.nurse_id = n.nurse_id
 ";
@@ -52,9 +52,12 @@ while ($row = mysqli_fetch_assoc($result)) {
     $nurse_name = htmlspecialchars($row['nurse_lname'] . ', ' . $row['nurse_fname']); 
 
     $events[] = [
+        'id' => $row['sched_id'], // Include sched_id in the event
+        'nurse_id' => $row['nurse_id'],
         'title' => $nurse_name,
         'position' => htmlspecialchars($row['nurse_position']), // Position
         'department' => htmlspecialchars($row['department_id']),
+        'date' => $row['sched_date'],
         'start' => $start_time,
         'end' => $end_time,
         'allDay' => false,

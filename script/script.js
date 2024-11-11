@@ -31,12 +31,25 @@ $(document).ready(function() {
             $('#eventNurse').val(event.title);
             $('#eventPosition').val(event.position);
             $('#eventDepartment').val(event.department);
-            $('#eventStart').val(event.start.format('MMMM D, YYYY h:mm A'));
-            $('#eventEnd').val(event.end ? event.end.format('MMMM D, YYYY h:mm A') : 'N/A');
-            
+        
+            // Set the sched_id in the hidden input field or display it
+            $('#eventSchedId').val(event.id);  // Display sched_id in modal
+        
+            // Set the nurse_id in the hidden input field or display it
+            $('#eventNurseId').val(event.nurse_id);  // Display nurse_id in modal
+        
+            // Extract date portion (YYYY-MM-DD) and set for eventDate input
+            $('#eventDate').val(event.date);
+            console.log("Event Date:", $('#eventDate').val());  // Debugging output
+        
+            // Extract time portion (HH:mm) and set for eventStartTime and eventEndTime
+            $('#eventStart').val(event.start.format('HH:mm'));
+            $('#eventEnd').val(event.end ? event.end.format('HH:mm') : '');
+        
             // Show the modal
             $('#viewScheduleModal').css('display', 'block');
         }
+        
     });
 
     $('#viewScheduleClose').on('click', function() {
@@ -50,6 +63,8 @@ $(document).ready(function() {
         }
     });
 });
+
+
 
 $(document).ready(function() {
     // Initialize FullCalendar
@@ -102,13 +117,12 @@ function viewSchedules(nurse_id) {
         });
 }
 
+
 function closeModal() {
     document.getElementById('scheduleModal').style.display = 'none';
 }
 
-$(document).on("contextmenu", function(e) {
-    return false; 
-});
+
 
 function filterTable() {
     let searchInput = document.getElementById("search").value.toUpperCase();
@@ -160,43 +174,170 @@ function navigateWeek(offset) {
 
 
 
-// Global variable to store scanned data
-let scanData = '';
+let scanData = '';  // To accumulate QR code scan data
+let manualTyping = false;  // Track if you are manually typing in an input
+
+// Listen for the focus event on input fields to stop scanner input
+document.querySelectorAll('input, textarea').forEach((element) => {
+    element.addEventListener('focus', function() {
+        manualTyping = true;  // User is typing, so disable scanner input
+    });
+
+    element.addEventListener('blur', function() {
+        manualTyping = false; // Input has lost focus, enable scanner input
+    });
+});
 
 // Function to listen for the keydown event globally
 document.addEventListener('keydown', function(event) {
-    // Get the focused element (if any)
-    const activeElement = document.activeElement;
+    // Check if we should ignore the scanner input (when typing in a text field)
+    if (manualTyping) return;  // Ignore scanner input while typing
 
-    // Check if the key pressed is a valid character and if we're not focusing on an input field
+    // If not typing and scanner input is detected (i.e., a key is pressed)
     if (event.key.length === 1) {
-        // If any input field is focused, prevent the character from being typed into that field
-        if (activeElement && (activeElement.tagName.toLowerCase() === 'input' || activeElement.tagName.toLowerCase() === 'textarea')) {
-            event.preventDefault();  // Prevent the scanner input from entering the focused field
-        }
+        scanData += event.key; // Accumulate the scanned characters
+    }
 
-        // Capture the QR code input data
-        scanData += event.key;
-    } 
-    else if (event.key === 'Enter') {
-        // When the scanner sends the "Enter" key, process the scan data
-        try {
-            let data = JSON.parse(scanData);  // Attempt to parse the scan data as JSON
-            if (data.nurse_id) {
-                // Redirect to the page with the nurse_id
-                const nurseId = data.nurse_id;
-                window.location.href = `index.php?page=nurses&subpage=profile&id=${nurseId}`;
-            } else {
-                console.error("nurse_id not found in scanned data");
-            }
-        } catch (e) {
-            console.error("Invalid JSON format", e);
-        } finally {
-            // Clear the scan data after processing
-            scanData = '';
-        }
+    // If the Enter key is pressed, process the scanned data
+    if (event.key === 'Enter' && scanData) {
+        event.preventDefault();  // Prevent the default action of the Enter key
+        processScanData();       // Process the accumulated scan data
     }
 });
 
+// Function to process the scanned QR code data
+function processScanData() {
+    try {
+        let data = JSON.parse(scanData);  // Attempt to parse the scanned data as JSON
+        if (data.nurse_id) {
+            // If nurse_id exists, redirect to the relevant profile page
+            const nurseId = data.nurse_id;
+            window.location.href = `index.php?page=nurses&subpage=profile&id=${nurseId}`;
+        } else {
+            console.error("nurse_id not found in scanned data");
+        }
+    } catch (e) {
+        console.error("Invalid JSON format", e);  // Handle invalid scan data format
+    }
+    scanData = '';  // Clear scan data after processing
+}
 
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const departmentSelect = document.getElementById("departmentSelect");
+    const nurseCountElement = document.getElementById("nurse-count");
+
+    if (departmentSelect) {
+        departmentSelect.addEventListener("change", function() {
+            const departmentId = departmentSelect.value;
+
+            // Check if the department is "all"
+            if (departmentId !== 'all') {
+                // If a specific department is selected, fetch nurse count for that department
+                fetch('reports-module/fetch_nurse_report.php?department=' + encodeURIComponent(departmentId))
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.available_nurses !== undefined) {
+                            nurseCountElement.textContent = data.available_nurses;
+                        } else {
+                            nurseCountElement.textContent = "Error: " + (data.message || "Unknown error");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching nurse data:', error);
+                        nurseCountElement.textContent = 'Error fetching data.';
+                    });
+            } else {
+                // If "All Departments" is selected, fetch total nurse count across all departments
+                fetch('reports-module/fetch_nurse_report.php?department=all')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.available_nurses !== undefined) {
+                            nurseCountElement.textContent = data.available_nurses;
+                        } else {
+                            nurseCountElement.textContent = "Error: " + (data.message || "Unknown error");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching nurse data for all departments:', error);
+                        nurseCountElement.textContent = 'Error fetching data for all departments.';
+                    });
+            }
+        });
+    } else {
+        console.error('Department select element not found.');
+    }
+}); // <-- Closing bracket for document.addEventListener("DOMContentLoaded")
+
+document.addEventListener("DOMContentLoaded", function() {
+    const leaveCountElement = document.getElementById("leave-count");
+
+    // Function to fetch pending leave data
+    function fetchLeaveReport() {
+        // Fetch the count of pending leaves from fetch_leave_report.php
+        fetch('reports-module/fetch_leave_report.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.pending_leaves !== undefined) {
+                    leaveCountElement.textContent = data.pending_leaves;
+                } else {
+                    leaveCountElement.textContent = "Error: " + (data.message || "Unknown error");
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching leave data:', error);
+                leaveCountElement.textContent = 'Error fetching leave data.';
+            });
+    }
+
+    // Fetch leave count on page load
+    fetchLeaveReport();
+}); // <-- Closing bracket for do
+
+
+
+
+
+
+
+
+
+
+
+function toggleSelectAll() {
+    const isChecked = document.getElementById('selectAll').checked;
+    document.querySelectorAll('.nurse-option').forEach(function(checkbox) {
+        checkbox.checked = isChecked;  // Set the checked status for all checkboxes
+    });
+
+    // Call the update function to update the hidden input and dropdown
+    updateSelectedNurses();
+}
+
+function updateSelectedNurses() {
+    let selectedNurses = [];
+    let selectedNursesNames = [];
+
+    document.querySelectorAll('.nurse-option:checked').forEach(function(checkbox) {
+        selectedNurses.push(checkbox.value);
+        selectedNursesNames.push(checkbox.nextSibling.textContent.trim());
+    });
+
+    // Update the value of the hidden input field
+    document.getElementById('nurse_id').value = selectedNurses.join(',');
+    
+    // Update the text input field with selected nurse names
+    document.getElementById('nurseDropdown').value = selectedNursesNames.join(', ');
+
+    // Update the "Select All" checkbox based on the selection
+    const allSelected = document.querySelectorAll('.nurse-option').length === selectedNurses.length;
+    document.getElementById('selectAll').checked = allSelected;
+}
 

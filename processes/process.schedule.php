@@ -49,66 +49,96 @@ function create_new_schedule($con) {
 
             mysqli_query($con, $log_insert_query);
 
-            echo "<script>alert('Schedule added successfully!'); window.location.href = '../index.php?page=schedule&subpage=calendar';</script>";
+            header('Location: ../index.php?page=schedule');
         } else {
-            echo "<script>alert('Error: " . mysqli_error($con) . "'); window.location.href = '../index.php?page=schedule&subpage=calendar';</script>";
+            header('Location: ../index.php?page=schedule');
         }
     }
 }
 
 function auto_generate_schedule($con) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $nurse_ids = isset($_POST['nurse_id']) ? $_POST['nurse_id'] : [];
-        $start_date = $_POST['start_date'];
-        $end_date = $_POST['end_date'];
+        // Get the schedule start and end dates
+        $startDate = $_POST['start_date'];
+        $endDate = $_POST['end_date'];
 
-        // Check if 'all' is selected
-        if (in_array('all', $nurse_ids)) {
-            $query = "SELECT nurse_id FROM nurse";
-            $result = mysqli_query($con, $query);
-            $nurse_ids = [];
-            while ($row = mysqli_fetch_assoc($result)) {
-                $nurse_ids[] = $row['nurse_id'];
-            }
-        }
+        // Get the selected nurse IDs
+        $nurseIds = explode(',', $_POST['nurse_id']);
 
-        // Define rotating shifts
-        $shifts = [
-            ['start_time' => '06:00:00', 'end_time' => '14:00:00'], // Morning shift
-            ['start_time' => '14:00:00', 'end_time' => '22:00:00'], // Afternoon shift
-            ['start_time' => '22:00:00', 'end_time' => '06:00:00']  // Night shift
+        // Define time slots
+        $timeSlots = [
+            '06:00:00' => '14:00:00', // 6 AM - 2 PM
+            '14:00:00' => '22:00:00', // 2 PM - 10 PM
+            '22:00:00' => '06:00:00'  // 10 PM - 6 AM
         ];
-        
-        // Loop through selected nurses and insert schedules with rotating shifts
-        foreach ($nurse_ids as $nurse_id) {
-            $current_date = $start_date;
-            $shift_index = 0; // Start with the first shift (morning)
-            
-            while (strtotime($current_date) <= strtotime($end_date)) {
-                $current_shift = $shifts[$shift_index];
 
-                $insert_query = "INSERT INTO schedule (nurse_id, sched_date, sched_start_time, sched_end_time) 
-                                 VALUES ('$nurse_id', '$current_date', '{$current_shift['start_time']}', '{$current_shift['end_time']}')";
+        // Convert the start and end dates to DateTime objects
+        $startDateTime = new DateTime($startDate);
+        $endDateTime = new DateTime($endDate);
 
-                if (!mysqli_query($con, $insert_query)) {
-                    // Log error if query fails
-                    error_log("Error inserting schedule: " . mysqli_error($con));
-                    echo "<script>alert('Error inserting schedule for nurse ID $nurse_id: " . mysqli_error($con) . "');</script>";
+        // Loop through each day in the range
+        $interval = new DateInterval('P1D'); // Interval of 1 day
+        $datePeriod = new DatePeriod($startDateTime, $interval, $endDateTime->modify('+1 day')); // Include the end date
+
+        // Loop through each selected nurse
+        foreach ($nurseIds as $nurseId) {
+            // Loop through the date range
+            foreach ($datePeriod as $date) {
+                $schedDate = $date->format('Y-m-d'); // Format the date to 'Y-m-d'
+
+                // Check if the nurse already has a schedule for this date
+                $checkQuery = "SELECT * FROM schedule WHERE nurse_id = ? AND sched_date = ?";
+                $stmt = $con->prepare($checkQuery);
+                $stmt->bind_param("is", $nurseId, $schedDate);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                // If no schedule exists for the nurse on that day, generate a new schedule
+                if ($result->num_rows == 0) {
+                    // Randomly choose a time slot
+                    $randomIndex = array_rand($timeSlots);
+                    $startTime = $randomIndex;
+                    $endTime = $timeSlots[$randomIndex];
+
+                    // Insert the schedule for this nurse and date
+                    $insertQuery = "INSERT INTO schedule (nurse_id, sched_date, sched_start_time, sched_end_time) 
+                                    VALUES (?, ?, ?, ?)";
+                    $insertStmt = $con->prepare($insertQuery);
+                    $insertStmt->bind_param("isss", $nurseId, $schedDate, $startTime, $endTime);
+                    $insertStmt->execute();
                 }
-                
-                // Rotate to the next shift
-                $shift_index = ($shift_index + 1) % 3; // Cycle through 0, 1, 2 (morning, afternoon, night)
-                
-                // Move to the next date
-                $current_date = date('Y-m-d', strtotime($current_date . ' +1 day'));
+
+                $stmt->close();
             }
         }
 
-        // Redirect or show success message
-        header("Location: ../index.php?page=schedules");
-        exit();
+        // Redirect or show a success message
+        header('Location: ../index.php?page=schedule');
     }
 }
+
+/*Main Function Process for updating a schedule */
+function update_schedule(){  
+    $schedule = new Schedule();
+    /*Receives the parameters passed from the profile updating page form */
+    $eventSchedId = $_POST['eventSchedId'];
+    $eventNurseId = $_POST['eventNurseId'];
+    $eventDate = $_POST['eventDate'];  // Check if this is being received correctly
+    $eventStart = $_POST['eventStart'];
+    $eventEnd = $_POST['eventEnd'];
+
+    // Debugging to check values
+    var_dump($eventDate, $eventStart, $eventEnd);  // Debug output
+
+    /*Passes the parameters to the class function */
+    $result = $schedule->update_schedule($eventSchedId, $eventDate, $eventStart, $eventEnd);
+    if ($result) {
+        header('location: ../index.php?page=schedule');
+    }
+}
+
+
+
 
 mysqli_close($con);
 ?>

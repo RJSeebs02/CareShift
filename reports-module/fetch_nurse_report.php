@@ -1,22 +1,20 @@
 <?php
-include '../config/config.php';  // Adjust path as necessary
+include '../config/config.php';  
 include '../class/class.nurse.php';
 
 header('Content-Type: application/json');
 
-// Get the selected department (if any)
-$department = isset($_GET['department']) ? $_GET['department'] : '';
+$department = isset($_GET['department']) ? $_GET['department'] : 'all';
 
 $nurse = new Nurse();
 
 if ($department) {
     try {
+        $department = isset($_GET['department']) ? $_GET['department'] : 'all';
         if ($department === 'all') {
-            // If 'all' is selected, count nurses for all departments
-            $nurseCount = $nurse->countTotalNurses(); // Get total nurses from all departments
+            $nurseCount = $nurse->countTotalNurses(); 
             echo json_encode(['available_nurses' => $nurseCount]);
         } else {
-            // If a specific department is selected, count nurses in that department
             $nurseCount = $nurse->countAvailableNursesByDepartment($department);
             echo json_encode(['available_nurses' => $nurseCount]);
         }

@@ -21,40 +21,46 @@ switch ($action) {
 
 function create_new_schedule($con) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $nurse_id = $_POST['nurse_id'];
+        // Assume nurse_id is now an array of IDs (from checkboxes)
+        $nurse_ids = explode(',', $_POST['nurse_id']);
         $sched_date = $_POST['sched_date'];
         $sched_start_time = $_POST['sched_start_time'];
         $work_hours = $_POST['work_hours'];
-
+    
+        // Calculate end time based on start time and work hours
         $start_time = new DateTime($sched_date . ' ' . $sched_start_time);
-        $end_time = clone $start_time; 
+        $end_time = clone $start_time;
         $end_time->modify("+{$work_hours} hours");
-
+    
         $formatted_start_time = $start_time->format('H:i:s');
         $formatted_end_time = $end_time->format('H:i:s');
-        $end_date = $end_time->format('Y-m-d'); 
-
-        $insert_query = "INSERT INTO schedule (nurse_id, sched_date, sched_start_time, sched_end_time) 
-                         VALUES ('$nurse_id', '$sched_date', '$formatted_start_time', '$formatted_end_time')";
-
-        if (mysqli_query($con, $insert_query)) {
-            $log_action = "Added Schedule";
-            $log_description = "Added a new schedule for nurse ID $nurse_id";
-            $log_date_managed = date('Y-m-d');
-            $log_time_managed = date('H:i:s'); 
-            $adm_id = $_SESSION['adm_id']; 
-
-            $log_insert_query = "INSERT INTO logs (log_action, log_description, log_time_managed, log_date_managed, adm_id, nurse_id) 
-                                 VALUES ('$log_action', '$log_description', '$log_time_managed', '$log_date_managed', '$adm_id', '$nurse_id')";
-
-            mysqli_query($con, $log_insert_query);
-
-            header('Location: ../index.php?page=schedule');
-        } else {
-            header('Location: ../index.php?page=schedule');
+        $end_date = $end_time->format('Y-m-d'); // Just in case for further use
+    
+        // Loop through each nurse ID and add a schedule
+        foreach ($nurse_ids as $nurse_id) {
+            $insert_query = "INSERT INTO schedule (nurse_id, sched_date, sched_start_time, sched_end_time) 
+                            VALUES ('$nurse_id', '$sched_date', '$formatted_start_time', '$formatted_end_time')";
+    
+            if (mysqli_query($con, $insert_query)) {
+                // Log the addition for each nurse
+                $log_action = "Added Schedule";
+                $log_description = "Added a new schedule for nurse ID $nurse_id";
+                $log_date_managed = date('Y-m-d');
+                $log_time_managed = date('H:i:s');
+                $adm_id = $_SESSION['adm_id'];
+    
+                $log_insert_query = "INSERT INTO logs (log_action, log_description, log_time_managed, log_date_managed, adm_id, nurse_id) 
+                                    VALUES ('$log_action', '$log_description', '$log_time_managed', '$log_date_managed', '$adm_id', '$nurse_id')";
+    
+                mysqli_query($con, $log_insert_query);
+            }
         }
+    
+        // Redirect to the schedule page
+        header('Location: ../index.php?page=schedule');
     }
 }
+    
 
 function auto_generate_schedule($con) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {

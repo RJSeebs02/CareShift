@@ -594,10 +594,11 @@ label {
 
 
 
+
 .custom-multiselect {
     position: relative;
     display: inline-block;
-    width: 200px;
+    width: 100%; /* Adjust width as needed */
 }
 
 .custom-multiselect input[type="text"] {
@@ -607,8 +608,7 @@ label {
 }
 
 .dropdown-options {
-    display: none; /* Hide by default */
-    position: absolute;
+    display: block; /* Initially hide the dropdown */
     background-color: white;
     border: 1px solid #ccc;
     max-height: 200px;
@@ -624,4 +624,21 @@ label {
 
 .dropdown-options label:hover {
     background-color: #f0f0f0;
+}
+
+
+
+
+
+
+
+.charts-container {
+    display: flex;
+    justify-content: space-between; 
+    gap: 20px; 
+}
+
+canvas {
+    max-width: 50%;
+    max-height: 100%;
 }

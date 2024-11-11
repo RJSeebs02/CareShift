@@ -71,11 +71,29 @@ class Leave {
 		}
 	}
 
-	public function countPendingLeaves() {
+	public function countPendingLeavesByDepartment($departmentId = null) {
+		$query = "SELECT d.department_name, COUNT(*) as count 
+		  FROM `leave` l
+		  JOIN `nurse` n ON l.nurse_id = n.nurse_id
+		  JOIN `department` d ON n.department_id = d.department_id
+		  WHERE l.leave_status = 'Pending'";
+		if ($departmentId) {
+		$query .= " AND n.department_id = :departmentId";
+		}
+		$query .= " GROUP BY d.department_name";
+		$stmt = $this->conn->prepare($query);
+		if ($departmentId) {
+		$stmt->bindParam(':departmentId', $departmentId, PDO::PARAM_INT);
+		}
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+		
+	public function countTotalPendingLeaves() {
 		$query = "SELECT COUNT(*) as count 
-				  FROM `leave` 
-				  WHERE leave_status = 'Pending'";
-	
+		  FROM `leave` 
+		  WHERE leave_status = 'Pending'";
+		
 		$stmt = $this->conn->prepare($query);
 		$stmt->execute();
 		$row = $stmt->fetch(PDO::FETCH_ASSOC);

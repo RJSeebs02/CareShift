@@ -12,17 +12,18 @@
                 <input type="text" id="nurseDropdown" placeholder="Select Nurse" readonly onclick="toggleDropdown()">
                 <div class="dropdown-options" id="dropdownOptions">
                     <label><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"> Select All</label>
-                    <?php
-                    if($nurse->list_nurses() != false){
-                        foreach($nurse->list_nurses() as $value){
-                            extract($value);
-                            echo '<label><input type="checkbox" value="'.$nurse_id.'" class="nurse-option" onchange="updateSelectedNurses()"> '.$nurse_fname.' '.$nurse_mname.' '.$nurse_lname.'</label>';
+                        <?php
+                        if($nurse->list_nurses() != false){
+                            foreach($nurse->list_nurses() as $value){
+                                extract($value);
+                                echo '<label><input type="checkbox" value="'.$nurse_id.'" class="nurse-option" onchange="updateSelectedNurses()"> '.$nurse_fname.' '.$nurse_mname.' '.$nurse_lname.'</label>';
+                            }
                         }
-                    }
-                    ?>
+                        ?>
                 </div>
                 <input type="hidden" name="nurse_id" id="nurse_id" required>
             </div>
+
         </div>
         <div class="add_form-right">
             <label for="start_date">Schedule Start Date</label>

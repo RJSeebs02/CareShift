@@ -308,6 +308,19 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+function toggleDropdown() {
+    const dropdown = document.getElementById("dropdownOptions");
+    dropdown.style.display = dropdown.style.display === "none" || dropdown.style.display === "" ? "block" : "none";
+}
+
+// Optional: Close the dropdown if the user clicks outside of it
+document.addEventListener("click", function (event) {
+    const dropdown = document.getElementById("dropdownOptions");
+    const input = document.getElementById("nurseDropdown");
+    if (!input.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.style.display = "none";
+    }
+});
 
 
 
@@ -341,3 +354,136 @@ function updateSelectedNurses() {
     document.getElementById('selectAll').checked = allSelected;
 }
 
+// DISABLE RIGHT CLICK
+$(document).on("contextmenu", function(e) {
+    return false; 
+});
+
+
+// REPORTS
+document.addEventListener("DOMContentLoaded", function() {
+    const departmentSelect = document.getElementById("departmentSelect");
+    const nurseCountElement = document.getElementById("nurse-count");
+
+    const ctx = document.getElementById('nurseChart').getContext('2d');
+    let nurseChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Available Nurses'],
+            datasets: [{
+                label: 'Available Nurses Count',
+                data: [0],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true, 
+                    min: 0,
+                    max: 20
+                }
+            }
+        }
+    });
+
+    if (departmentSelect) {
+        if (!departmentSelect.value) {
+            departmentSelect.value = 'all';
+        }
+
+        const departmentId = departmentSelect.value;
+        fetchNurseData(departmentId);
+
+        departmentSelect.addEventListener("change", function() {
+            const departmentId = departmentSelect.value;
+            fetchNurseData(departmentId);
+        });
+
+        function fetchNurseData(departmentId) {
+            fetch('reports-module/fetch_nurse_report.php?department=' + encodeURIComponent(departmentId))
+                .then(response => response.json())
+                .then(data => {
+                    if (data.available_nurses !== undefined) {
+                        nurseCountElement.textContent = data.available_nurses;
+                        nurseChart.data.datasets[0].data = [data.available_nurses];
+                        nurseChart.update();
+                    } else {
+                        nurseCountElement.textContent = "Error: " + (data.message || "Unknown error");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching nurse data:', error);
+                    nurseCountElement.textContent = 'Error fetching data.';
+                });
+        }
+    } else {
+        console.error('Department select element not found.');
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const departmentSelectLeave = document.getElementById("departmentSelectLeave");
+    const leaveCountElement = document.getElementById("leave-count");
+
+    const ctx = document.getElementById('leaveChart').getContext('2d');
+    let leaveChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Pending Leaves'],
+            datasets: [{
+                label: 'Pending Leaves Count',
+                data: [0], 
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    min: 0,
+                    max: 20
+                }
+            }
+        }
+    });
+
+    function fetchPendingLeaves(department = 'all') {
+        const url = `reports-module/fetch_leave_report.php?department=${encodeURIComponent(department)}`;
+        
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.pending_leaves !== undefined) {
+                    leaveCountElement.textContent = data.pending_leaves;
+
+                    leaveChart.data.datasets[0].data = [data.pending_leaves];
+                    leaveChart.update();
+                } else {
+                    leaveCountElement.textContent = "Error: " + (data.message || "Unknown error");
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching leave data:', error);
+                leaveCountElement.textContent = 'Error fetching leave data.';
+            });
+    }
+
+    // Set default department to 'all' if no department is selected
+    const initialDepartment = departmentSelectLeave ? departmentSelectLeave.value : 'all';
+    fetchPendingLeaves(initialDepartment); // Fetch initial data
+
+    // Add event listener to department selection dropdown
+    if (departmentSelectLeave) {
+        departmentSelectLeave.addEventListener("change", function() {
+            const selectedDepartment = departmentSelectLeave.value;
+            fetchPendingLeaves(selectedDepartment); // Fetch new data when department is changed
+        });
+    }
+});

@@ -22,7 +22,14 @@ class Schedule{
         return $dates;
     }    
     
-    
+    public function schedule_exists($nurse_id, $sched_date) {
+        $query = "SELECT * FROM schedule WHERE nurse_id = :nurse_id AND sched_date = :sched_date";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':nurse_id', $nurse_id);
+        $stmt->bindValue(':sched_date', $sched_date);
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
+    }
 
     public function new_schedule($nurse_id, $sched_date, $sched_start_time, $work_hours){
         // Calculate the end time based on work hours
@@ -56,6 +63,30 @@ class Schedule{
 
         return true;
     }
+
+    public function generate_schedule($nurse_id, $sched_date, $sched_start_time, $sched_end_time) {
+        // Prepare the data for insertion with provided start and end times
+        $data = [
+            [$nurse_id, $sched_date, $sched_start_time, $sched_end_time],
+        ];
+    
+        // Insert the schedule into the database
+        $stmt = $this->conn->prepare("INSERT INTO schedule (nurse_id, sched_date, sched_start_time, sched_end_time) VALUES (?, ?, ?, ?)");
+        
+        try {
+            $this->conn->beginTransaction();
+            foreach ($data as $row) {
+                $stmt->execute($row);
+            }
+            $this->conn->commit();
+        } catch (Exception $e) {
+            $this->conn->rollback();
+            throw $e;
+        }
+    
+        return true;
+    }
+    
 
     public function fetch_schedule($nurse_id = 'all') {
         // Prepare the base query
@@ -137,6 +168,14 @@ class Schedule{
         }
     }
     return 'NA';  // Return empty if no shift found
+}
+
+function get_schedule_nurse_id($id){
+    $sql="SELECT nurse_id FROM schedule WHERE sched_id = :id";
+    $q = $this->conn->prepare($sql);
+    $q->execute(['id' => $id]);
+    $nurse_id = $q->fetchColumn();
+    return $nurse_id;
 }
 
 }

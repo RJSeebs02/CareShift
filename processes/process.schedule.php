@@ -55,66 +55,50 @@ switch ($action) {
     }
     
 
-function auto_generate_schedule($con) {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Get the schedule start and end dates
+    function auto_generate_schedule($con) {
+        $schedule = new Schedule($con);
+        $log = new Log($con);
+        
         $startDate = $_POST['start_date'];
         $endDate = $_POST['end_date'];
-
-        // Get the selected nurse IDs
-        $nurseIds = explode(',', $_POST['nurse_id']);
-
-        // Define time slots
+    
+        $nurse_ids = explode(',', $_POST['nurse_id']);
+    
         $timeSlots = [
-            '06:00:00' => '14:00:00', // 6 AM - 2 PM
-            '14:00:00' => '22:00:00', // 2 PM - 10 PM
-            '22:00:00' => '06:00:00'  // 10 PM - 6 AM
+            '06:00:00' => '14:00:00',
+            '14:00:00' => '22:00:00',
+            '22:00:00' => '06:00:00'
         ];
-
-        // Convert the start and end dates to DateTime objects
+    
         $startDateTime = new DateTime($startDate);
         $endDateTime = new DateTime($endDate);
-
-        // Loop through each day in the range
-        $interval = new DateInterval('P1D'); // Interval of 1 day
-        $datePeriod = new DatePeriod($startDateTime, $interval, $endDateTime->modify('+1 day')); // Include the end date
-
-        // Loop through each selected nurse
-        foreach ($nurseIds as $nurseId) {
-            // Loop through the date range
+        $interval = new DateInterval('P1D');
+        $datePeriod = new DatePeriod($startDateTime, $interval, $endDateTime->modify('+1 day'));
+    
+        foreach ($nurse_ids as $nurse_id) {
             foreach ($datePeriod as $date) {
-                $schedDate = $date->format('Y-m-d'); // Format the date to 'Y-m-d'
-
-                // Check if the nurse already has a schedule for this date
-                $checkQuery = "SELECT * FROM schedule WHERE nurse_id = ? AND sched_date = ?";
-                $stmt = $con->prepare($checkQuery);
-                $stmt->bind_param("is", $nurseId, $schedDate);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                // If no schedule exists for the nurse on that day, generate a new schedule
-                if ($result->num_rows == 0) {
-                    // Randomly choose a time slot
+                $sched_date = $date->format('Y-m-d');
+    
+                if (!$schedule->schedule_exists($nurse_id, $sched_date)) {
                     $randomIndex = array_rand($timeSlots);
-                    $startTime = $randomIndex;
-                    $endTime = $timeSlots[$randomIndex];
-
-                    // Insert the schedule for this nurse and date
-                    $insertQuery = "INSERT INTO schedule (nurse_id, sched_date, sched_start_time, sched_end_time) 
-                                    VALUES (?, ?, ?, ?)";
-                    $insertStmt = $con->prepare($insertQuery);
-                    $insertStmt->bind_param("isss", $nurseId, $schedDate, $startTime, $endTime);
-                    $insertStmt->execute();
+                    $start_time = $randomIndex;
+                    $end_time = $timeSlots[$randomIndex];
+    
+                    if ($schedule->generate_schedule($nurse_id, $sched_date, $start_time, $end_time)) {
+                        $log->addLog(
+                            "Added Schedule",
+                            "Generated schedule for nurse ID $nurse_id on $sched_date",
+                            $_SESSION['adm_id'],
+                            $nurse_id
+                        );
+                    }
                 }
-
-                $stmt->close();
             }
         }
-
-        // Redirect or show a success message
+    
         header('Location: ../index.php?page=schedule');
     }
-}
+    
 
 /*Main Function Process for updating a schedule */
 function update_schedule(){  

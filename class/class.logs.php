@@ -1,5 +1,4 @@
 <?php
-/*Creates Logs Object with database connection */
 class Log {
     private $DB_SERVER = 'localhost';
     private $DB_USERNAME = 'root';
@@ -12,12 +11,12 @@ class Log {
         $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
     }
 
-    public function addLog($action, $description, $adm_id) {
+    public function addLog($action, $description, $adm_id, $nurse_id = null) {
         $log_date = date('Y-m-d');
         $log_time = date('H:i:s');
 
-        $query = "INSERT INTO logs (log_action, log_description, log_time_managed, log_date_managed, adm_id) 
-                  VALUES (:action, :description, :log_time, :log_date, :adm_id)";
+        $query = "INSERT INTO logs (log_action, log_description, log_time_managed, log_date_managed, adm_id, nurse_id) 
+                  VALUES (:action, :description, :log_time, :log_date, :adm_id, :nurse_id)";
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(':action', $action);
@@ -25,50 +24,50 @@ class Log {
         $stmt->bindParam(':log_time', $log_time);
         $stmt->bindParam(':log_date', $log_date);
         $stmt->bindParam(':adm_id', $adm_id);
+        $stmt->bindParam(':nurse_id', $nurse_id, PDO::PARAM_INT);
 
         return $stmt->execute();
     }
 
     public function list_logs() {
-$sql = "SELECT logs.*, 
-   admin.adm_fname, 
-   admin.adm_lname, 
-   nurse.nurse_fname, 
-   nurse.nurse_lname 
-FROM logs 
-LEFT JOIN admin ON logs.adm_id = admin.adm_id 
-LEFT JOIN nurse ON logs.nurse_id = nurse.nurse_id"; 
+        $sql = "SELECT l.*, 
+                       a.adm_fname, a.adm_lname, 
+                       n.nurse_fname, n.nurse_lname 
+                FROM logs AS l
+                LEFT JOIN admin AS a ON l.adm_id = a.adm_id 
+                LEFT JOIN nurse AS n ON l.nurse_id = n.nurse_id"; 
 
-$q = $this->conn->query($sql);
-$data = [];
+        $stmt = $this->conn->query($sql);
+        $data = [];
 
-while ($r = $q->fetch(PDO::FETCH_ASSOC)) {
-$data[] = $r;
-}
+        while ($r = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $data[] = $r;
+        }
 
-return empty($data) ? false : $data;
-}
+        return !empty($data) ? $data : false;
+    }
+    
 
-public function fetch_log($filter = null, $startDate = null, $endDate = null) {
-        $query = "SELECT logs.*, 
-                         admin.adm_fname, 
-                         admin.adm_lname, 
-                         nurse.nurse_fname, 
-                         nurse.nurse_lname 
-                  FROM logs 
-                  JOIN admin ON logs.adm_id = admin.adm_id 
-                  JOIN nurse ON logs.nurse_id = nurse.nurse_id WHERE 1=1"; 
+    public function fetch_log($filter = null, $startDate = null, $endDate = null) {
+        $query = "SELECT l.*, 
+                         a.adm_fname, 
+                         a.adm_lname, 
+                         n.nurse_fname, 
+                         n.nurse_lname 
+                  FROM logs AS l
+                  JOIN admin AS a ON l.adm_id = a.adm_id 
+                  JOIN nurse AS n ON l.nurse_id = n.nurse_id WHERE 1=1"; 
 
         if ($filter) {
-            $query .= " AND logs.log_action LIKE :filter"; 
+            $query .= " AND l.log_action LIKE :filter"; 
         }
 
         if ($startDate) {
-            $query .= " AND logs.log_date_managed >= :startDate"; 
+            $query .= " AND l.log_date_managed >= :startDate"; 
         }
 
         if ($endDate) {
-            $query .= " AND logs.log_date_managed <= :endDate"; 
+            $query .= " AND l.log_date_managed <= :endDate"; 
         }
 
         $query .= " ORDER BY logs.log_date_managed DESC"; 

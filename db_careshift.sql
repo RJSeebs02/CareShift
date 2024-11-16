@@ -41,7 +41,7 @@ DROP TABLE IF EXISTS `logs`;
 CREATE TABLE `logs` (
   `log_id` int(50) NOT NULL auto_increment,
   `log_action` varchar(50) NOT NULL,
-  `log_description` varchar(50) NOT NULL,
+  `log_description` varchar(255) NOT NULL,
   `log_time_managed` time NOT NULL,
   `log_date_managed` date NOT NULL,
   `adm_id` int(50) NOT NULL,

@@ -13,14 +13,16 @@ class Schedule{
     public function getCurrentWeekDates($weekOffset = 0) {
         $dates = [];
         $currentDate = new DateTime();
-        $currentDate->modify("Sunday this week +{$weekOffset} weeks"); // Adjust the week by the offset
-    
+        $currentDate->modify("Sunday this week");
+        $currentDate->modify("{$weekOffset} week");
+
         for ($i = 0; $i < 7; $i++) {
             $dates[] = $currentDate->format('Y-m-d');
-            $currentDate->modify('+1 day');
+            $currentDate->modify('+1 day'); 
         }
+    
         return $dates;
-    }    
+    }
     
     public function schedule_exists($nurse_id, $sched_date) {
         $query = "SELECT * FROM schedule WHERE nurse_id = :nurse_id AND sched_date = :sched_date";
@@ -176,6 +178,22 @@ function get_schedule_nurse_id($id){
     $q->execute(['id' => $id]);
     $nurse_id = $q->fetchColumn();
     return $nurse_id;
+}
+
+/*Function for getting the admin_id managed from the database */
+function get_nurse_name($id){
+    $sql="SELECT nurse_fname, nurse_mname, nurse_lname FROM nurse INNER JOIN schedule WHERE schedule.nurse_id = nurse.nurse_id AND sched_id = :id";	
+    $q = $this->conn->prepare($sql);
+    $q->execute(['id' => $id]);
+    
+    // Fetch the result as an associative array
+    $nurse = $q->fetch(PDO::FETCH_ASSOC);
+
+    // Combine first and last name into a full name
+    if ($nurse) {
+        $nurse_name = $nurse['nurse_fname'] . ' ' . $nurse['nurse_mname'] .' '. $nurse['nurse_lname'];
+        return $nurse_name;
+    }
 }
 
 }

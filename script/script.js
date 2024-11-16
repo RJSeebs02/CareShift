@@ -487,3 +487,30 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+
+
+
+
+
+
+// Initialize QR Code Scanner
+function onScanSuccess(decodedText, decodedResult) {
+    document.getElementById('qr-content').textContent = decodedText; // Display QR content
+    showQrModal(); // Show the modal with content
+}
+
+function onScanFailure(error) {
+    console.warn(`QR Code scan error: ${error}`);
+}
+
+let html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
+html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+
+// Modal Functions
+function showQrModal() {
+    document.getElementById('qrModal').style.display = 'block';
+}
+
+function closeQrModal() {
+    document.getElementById('qrModal').style.display = 'none';
+}

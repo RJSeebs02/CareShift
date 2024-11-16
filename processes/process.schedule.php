@@ -2,6 +2,7 @@
 include '../config/config.php';
 include '../class/class.schedule.php';
 include '../class/class.logs.php';
+include '../class/class.nurse.php';
 
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 
@@ -23,6 +24,7 @@ switch ($action) {
 function create_new_schedule($con) {
     $schedule = new Schedule();
     $log = new Log();
+    $nurse = new Nurse();
 
     $nurse_ids = explode(',', $_POST['nurse_id']); 
     $sched_date = $_POST['sched_date'];
@@ -41,11 +43,13 @@ function create_new_schedule($con) {
         $result = $schedule->new_schedule($nurse_id, $sched_date, $formatted_start_time, $work_hours);
         
         if ($result) {
+            $nurse_name = $schedule->get_nurse_name($nurse_id);
+
             $log_action = "Added Schedule";
-            $log_description = "Added a new schedule for nurse ID $nurse_id";
+            $log_description = "Added a New Schedule: $nurse_name (Nurse ID: $nurse_id) on $sched_date";
             $adm_id = $_SESSION['adm_id'];
 
-            $log->addLog($log_action, $log_description, $adm_id, $nurse_id);
+            $log->addLog($log_action, $log_description, $adm_id);
         }
     }
 
@@ -82,12 +86,13 @@ function auto_generate_schedule($con) {
                 $end_time = $timeSlots[$randomIndex];
 
                 if ($schedule->generate_schedule($nurse_id, $sched_date, $start_time, $end_time)) {
-                    $log->addLog(
-                        "Added Schedule",
-                        "Generated schedule for nurse ID $nurse_id on $sched_date",
-                        $_SESSION['adm_id'],
-                        $nurse_id
-                    );
+                    $nurse_name = $schedule->get_nurse_name($nurse_id);
+
+                    $log_action = "Added Schedule";
+                    $log_description = "Added a New Schedule: $nurse_name (Nurse ID: $nurse_id) on $sched_date";
+                    $adm_id = $_SESSION['adm_id'];
+
+                    $log->addLog($log_action, $log_description, $adm_id);
                 }
             }
         }
@@ -109,8 +114,10 @@ function update_schedule(){
     $result = $schedule->update_schedule($eventSchedId, $eventDate, $eventStart, $eventEnd);
     
     if ($result) {
-        $log_action = "Update Schedule";
-        $log_description = "Updated schedule for nurse ID $eventNurseId on $eventDate";
+        $nurse_name = $schedule->get_nurse_name($eventSchedId);
+
+        $log_action = "Updated Schedule";
+        $log_description = "Updated Schedule for $nurse_name (Nurse ID: $eventNurseId) on $eventDate";
         $adm_id = $_SESSION['adm_id'];
         $log->addLog($log_action, $log_description, $adm_id, $eventNurseId);
 

@@ -60,3 +60,14 @@
     <canvas id="nurseChart"></canvas>
     <canvas id="leaveChart"></canvas>
 </div>
+
+<div id="qr-reader" style="width: 300px;"></div>
+<button onclick="showQrModal()">Scan QR Code</button>
+
+<div id="qrModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeQrModal()">&times;</span>
+        <h2>QR Code Content</h2>
+        <p id="qr-content">No content scanned yet.</p>
+    </div>
+</div>

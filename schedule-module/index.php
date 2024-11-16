@@ -4,6 +4,9 @@
         switch($subpage){
             case 'main':
                 require_once 'main.php';
+            break;
+            case 'calendar':
+                require_once 'calendar.php';
             break; 
             case 'add':
                 require_once 'add_schedule.php';

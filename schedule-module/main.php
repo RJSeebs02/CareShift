@@ -10,8 +10,12 @@ $monthName = $startOfWeek->format('F');
 <div class="heading">
     <h1><i class="fas fa-solid fa-clock"></i>&nbsp;Schedule</h1>
     <a href="index.php?page=schedule&subpage=calendar" class="right_button"><i class="fa fa-calendar"></i>&nbspCalendar</a>
+    
+<?php if ($useraccess_id != 2 ): ?>
     <a href="index.php?page=schedule&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Sched</a>
     <a href="index.php?page=schedule&subpage=generate" class="right_button"><i class="fa fa-plus"></i>&nbspGenerate</a>
+<?php endif; ?>
+
 </div>
 
 <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">

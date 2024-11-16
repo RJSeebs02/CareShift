@@ -1,6 +1,10 @@
 <div class="heading">
     <h1><i class="fas fa-solid fa-user-nurse"></i>&nbspNurses</h1>
+
+    <?php if ($useraccess_id != 3): ?>
     <a href="index.php?page=nurses&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Nurse</a>
+    <?php endif; ?>
+
 </div>
 <span class="right">
     <div class="search_bar">

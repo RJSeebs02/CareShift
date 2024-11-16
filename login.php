@@ -1,30 +1,46 @@
 <?php
-/*Include class files*/
+/* Include class files */
 include_once 'config/config.php';
 include_once 'class/class.admin.php';
 
-/*Define Object*/
+/* Define Object */
 $admin = new Admin();
 
-/*Checks if the user inputs (username and password) matches with that of the database */
-if($admin->get_session()){
-	header("location: index.php");
+/* Check if the user session already exists */
+if ($admin->get_session()) {
+    header("location: index.php");
+    exit();
 }
-if(isset($_REQUEST['submit'])){
-	extract($_REQUEST);
-	$login = $admin->check_login($username,$password);
-	if($login){
-		$adm_id = $admin->get_id_by_username($username);
+
+/* Handle login form submission */
+if (isset($_REQUEST['submit'])) {
+    extract($_REQUEST);
+    $login = $admin->check_login($username, $password);
+
+    if ($login) {
+        $adm_id = $admin->get_id_by_username($username);
         $_SESSION['adm_id'] = $adm_id;
-		header("location: index.php");
-	}else{
-		?>
+
+        $useraccess_id = $admin->get_access_id($adm_id);
+        $_SESSION['useraccess_id'] = $useraccess_id;
+
+        if ($useraccess_id == 1) { /*Super Admin*/
+            header("location: index.php");
+        } elseif ($useraccess_id == 2) { /*Head Nurse*/
+            header("location: index.php");
+        } elseif ($useraccess_id == 3) { /*Scheduler*/
+            header("location: index.php");
+        } else {
+            header("location: index.php"); 
+        }
+        exit();
+    } else {
+        ?>
         <div id='error_box'>
-			<div id='error_notif'>Wrong username or password.</div>
-		</div>
+            <div id='error_notif'>Wrong username or password.</div>
+        </div>
         <?php
-	}
-	
+    }
 }
 ?>
 

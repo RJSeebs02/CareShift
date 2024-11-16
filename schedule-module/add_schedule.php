@@ -13,8 +13,8 @@
                 <div class="dropdown-options" id="dropdownOptions">
                     <label><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"> Select All</label>
                         <?php
-                        if($nurse->list_nurses() != false){
-                            foreach($nurse->list_nurses() as $value){
+                        if($nurses != false){
+                            foreach($nurses as $value){
                                 extract($value);
                                 echo '<label><input type="checkbox" value="'.$nurse_id.'" class="nurse-option" onchange="updateSelectedNurses()"> '.$nurse_fname.' '.$nurse_mname.' '.$nurse_lname.'</label>';
                             }

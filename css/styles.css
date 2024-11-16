@@ -10,7 +10,7 @@
 }
 
 body{
-    background: #f3f5f9;
+    background: #F0F4F8;
 }
 
 .wrapper{
@@ -22,15 +22,23 @@ body{
     position: fixed;
     width: 250px;
     height: 100%;
-    background: #f3f5f9;
+    background: #F0F4F8;
     padding: 30px 0;
     z-index: 999;
     border-right: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+.wrapper .sidebar img{
+    width: 100px;
+    height: 100px;
+    display: block;        /* Makes the image a block element */
+    margin: 0 auto;  
+}
+
 .wrapper .sidebar h2{
     color: #181a1d;
     text-align: center;
+    margin-top: 10px;
     margin-bottom: 30px;
 }
 
@@ -44,21 +52,25 @@ body{
 .wrapper .sidebar ul li{
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     border-top: 1px solid rgba(255, 255, 255, 0.05);
+    transition: 0.3s;
 }
 
 .wrapper .sidebar ul li a{
     color: #181a1d;
     display: block;
     padding: 15px 15px 15px 35px;
+    transition: 0.3s;
 }
 
 .wrapper .sidebar ul li a .fas{
     width: 25px;
+    transition: 0.1s;
 }
 
 .wrapper .sidebar ul li a.active {
-    background-color: #29ce7a;
+    background-color: #7BB9FA;
     color: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .wrapper .sidebar ul li a.active .fas {
@@ -81,7 +93,7 @@ body{
 
 .wrapper .body .header {
     padding: 20px;
-    background: #29ce7a;
+    background: #7BB9FA;
     display: flex;
     justify-content: flex-end;
     gap: 20px;
@@ -95,6 +107,7 @@ body{
 
 .wrapper .body .header h3{
     margin: 0;
+    color: white;
 }
 
 .wrapper .body .main_content{
@@ -121,7 +134,7 @@ body{
 
 .heading .right_button{
     padding: 10px 20px;
-    background-color: #29ce7a;
+    background-color: #7BB9FA;
     color: white;
     border: none;
     cursor: pointer;
@@ -129,7 +142,7 @@ body{
 }
 
 .heading .right_button:hover {
-    background-color: #27b46b;
+    background-color: #5A9FE3;
 }
 
 .heading #addScheduleBtn {
@@ -217,7 +230,7 @@ body{
 	padding: 10px 20px 10px 20px;
 }
 #tablerecords tbody tr:hover{
-    background-color: #27b46b;
+    background-color: #5A9FE3;
 	color: #ffffff;
 	transition: 0.2s;
 }

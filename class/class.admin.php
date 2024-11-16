@@ -35,12 +35,12 @@ class Admin{
 	}
 
 	/*Function for updating an admin */
-	public function update_admin($id,$username,$first_name,$middle_name,$last_name,$email,$contact_no,$access){
+	public function update_admin($id,$username,$first_name,$middle_name,$last_name,$email,$contact_no,$access,$department){
 		/*Updates data from the database using the parameters passed from the profile updating page */
-		$sql = "UPDATE admin SET adm_fname=:first_name, adm_mname=:middle_name, adm_lname=:last_name, adm_email=:email, adm_contact=:contact_no, useraccess_id=:access WHERE adm_username=:username";
+		$sql = "UPDATE admin SET adm_fname=:first_name, adm_mname=:middle_name, adm_lname=:last_name, adm_email=:email, adm_contact=:contact_no, useraccess_id=:access, department_id=:department WHERE adm_username=:username";
 
 		$q = $this->conn->prepare($sql);
-		$q->execute(array(':first_name'=>$first_name, ':middle_name'=>$middle_name,':last_name'=>$last_name,':email'=>$email,':contact_no'=>$contact_no, ':access'=>$access, ':username'=>$username));
+		$q->execute(array(':first_name'=>$first_name, ':middle_name'=>$middle_name,':last_name'=>$last_name,':email'=>$email,':contact_no'=>$contact_no, ':access'=>$access, ':department'=>$department, ':username'=>$username));
 		return true;
 	}
 

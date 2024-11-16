@@ -71,6 +71,13 @@ class Nurse{
 		}
 	}
 
+	public function list_nurses_by_department($department_id) {
+        $sql = "SELECT * FROM nurse WHERE department_id = :department_id";  
+        $q = $this->conn->prepare($sql);
+        $q->execute(['department_id' => $department_id]);
+        return $q->fetchAll(PDO::FETCH_ASSOC); 
+    }
+
 	public function countAvailableNursesByDepartment($departmentId) {
 		$query = "SELECT COUNT(*) as count 
 				  FROM nurse n

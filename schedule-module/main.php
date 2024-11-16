@@ -1,4 +1,6 @@
 <?php
+
+
 $weekOffset = isset($_GET['weekOffset']) ? (int)$_GET['weekOffset'] : 0;
 $weekDates = $schedule->getCurrentWeekDates($weekOffset);
 $startOfWeek = new DateTime($weekDates[0]);
@@ -35,8 +37,8 @@ $monthName = $startOfWeek->format('F');
     </thead>
     <tbody>
         <?php
-        if ($nurse->list_nurses() != false) {
-            foreach ($nurse->list_nurses() as $value) {
+        if ($nurses) {
+            foreach ($nurses as $value) {
                 extract($value);
                 $row_url = "index.php?page=nurses&subpage=profile&id=" . $nurse_id;
                 ?>

@@ -71,6 +71,33 @@ class Leave {
 		}
 	}
 
+	/*Function that selects all the leaves records for a specific department*/
+	public function list_leaves_by_department($department_id) {
+		$data = []; 
+		
+		try {
+		$sql = "SELECT l.* 
+		FROM `leave` l
+		JOIN `nurse` n ON l.nurse_id = n.nurse_id
+		WHERE n.department_id = :department_id
+		ORDER BY l.leave_date_filed DESC, l.leave_time_filed DESC";
+		
+		$stmt = $this->conn->prepare($sql);
+		$stmt->bindParam(':department_id', $department_id, PDO::PARAM_INT);
+		$stmt->execute();
+		
+		while ($r = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		$data[] = $r;
+		}
+		
+		return !empty($data) ? $data : false;
+		
+		} catch (PDOException $e) {
+		error_log("Error fetching leaves by department: " . $e->getMessage());
+		return false;
+		}
+	}
+
 	public function countPendingLeavesByDepartment($departmentId = null) {
 		$query = "SELECT d.department_name, COUNT(*) as count 
 		  FROM `leave` l

@@ -59,9 +59,10 @@ function update_admin(){
     $last_name = ucfirst($_POST['last_name']);
     $email = $_POST['email'];
     $contact_no = $_POST['contact_no'];
+    $department = $_POST['department'];
     $access = $_POST['access'];
 
-    $result = $admin->update_admin($id,$username,$first_name,$middle_name,$last_name,$email,$contact_no,$access);
+    $result = $admin->update_admin($id,$username,$first_name,$middle_name,$last_name,$email,$contact_no,$access,$department);
 
     if($result){
 

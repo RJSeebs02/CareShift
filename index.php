@@ -58,6 +58,7 @@ $useraccess_id = $admin->get_access_id($admin_id);
 <body>
     <div class="wrapper">
         <div class="sidebar">
+            <img src="img/logo.png" alt="Logo Image" class="logo_image">
             <h2>CareShift</h2>
             <ul>
                 <h3>Main</h3>

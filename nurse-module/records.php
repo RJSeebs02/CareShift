@@ -1,10 +1,21 @@
+<?php
+$admin_id = $admin->get_id_by_username($_SESSION['adm_username']);
+$access_id = $admin->get_access_id($admin_id);
+$scheduler_department_id = $admin->get_department_id($admin_id);
+
+if ($access_id == 3) { 
+    $nurses = $nurse->list_nurses_by_department($scheduler_department_id);
+} else {
+    $nurses = $nurse->list_nurses(); 
+}
+?>
+
 <div class="heading">
     <h1><i class="fas fa-solid fa-user-nurse"></i>&nbspNurses</h1>
 
     <?php if ($useraccess_id != 3): ?>
     <a href="index.php?page=nurses&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Nurse</a>
     <?php endif; ?>
-
 </div>
 <span class="right">
     <div class="search_bar">
@@ -26,9 +37,9 @@
     </thead>
     <tbody>
         <?php
-        /* Display each admin record located in the database */
-        if ($nurse->list_nurses() != false) {
-            foreach ($nurse->list_nurses() as $value) {
+        /* Display nurses based on the department filter for Scheduler */
+        if ($nurses) {
+            foreach ($nurses as $value) {
                 extract($value);
                 // Create a link for each row using the nurse_id
                 $row_url = "index.php?page=nurses&subpage=profile&id=" . $nurse_id;

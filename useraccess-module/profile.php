@@ -1,5 +1,6 @@
 <div class="heading">
     <h1><i class="fas fa-solid fa-user-shield"></i>&nbsp<?php echo $useraccess->get_useraccess_name($id).'\'s ';?>Profile</h1>
+    <a href="index.php?page=useraccess&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Access Level</a>
     <a href="index.php?page=useraccess" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspAccess Level List</a>
 </div>
 

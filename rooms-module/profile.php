@@ -1,6 +1,7 @@
 <div class="heading">
     <h1><i class="fas fa-solid fa-door-closed"></i>&nbsp<?php echo $rooms->get_room_name($id).' ';?>Details</h1>
     <a href="index.php?page=rooms" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspRooms List</a>
+    <a href="index.php?page=rooms&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Room</a>
 </div>
 
 <div class="add_form_wrapper">

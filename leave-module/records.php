@@ -12,6 +12,7 @@ if ($access_id == 3) {
 
 <div class="heading">
     <h1><i class="fas fa-regular fa-paste"></i>&nbspLeave Applicants</h1>
+    <a href="index.php?page=leave" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspLeave List</a>
     <a href="index.php?page=leave&subpage=add" class="right_button"><i class="fa fa-file-pen" aria-hidden="true"></i>&nbspApply Leave</a>
 </div>
 <span class="right">
@@ -60,7 +61,7 @@ if ($access_id == 3) {
                 <td><?php echo $leave->get_leave_start_date($leave_id);?></td>
                 <td><?php echo $leave->get_leave_end_date($leave_id);?></td>
                 <td><?php echo $leave_type; ?></td>
-                <td class="<?php echo $status_class; ?>">
+                <td><p class="<?php echo $status_class; ?>">
                     <?php echo $leave_status; ?>
                 </td>
             </tr>

@@ -114,14 +114,12 @@ body{
     padding: 0px 30px 0px 30px;
 }
 .wrapper .body .main_content h1{
-    font-size: 50px;
-    margin-bottom: 30px;
+    font-size: 2.4rem;
     width: 80%;
 }
 .wrapper .body .main_content .content_wrapper{
     background: white;
     box-shadow: 0 0 10px 5px #CBD4DF;
-    padding: 20px;
     margin-top: 30px;
     margin-bottom: 30px;
 }
@@ -130,15 +128,25 @@ body{
     display: flex;
     justify-content: space-between; /* This will push h1 to the left and button to the right */
     align-items: center;
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .heading .right_button{
     padding: 10px 20px;
+    width: 200px;
     background-color: #7BB9FA;
     color: white;
     border: none;
     cursor: pointer;
     font-size: 20px;
+    margin-left: 5px;
+
+    display: flex; /* Enables flexbox */
+    justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Centers content vertically */
+    text-align: center; /* Aligns text (fallback) */
 }
 
 .heading .right_button:hover {
@@ -173,11 +181,11 @@ body{
 }
 
 .right .search_bar {
-    margin-bottom: 10px;
+    margin: 10px;
 }
 
 .right .search_bar label {
-    font-size: 25px;
+    font-size: 1.3rem;
     margin-bottom: 10px;
     font-weight: normal;
 }
@@ -185,7 +193,7 @@ body{
 .search_bar input[type="text"] {
     padding: 3px;              /* Padding for the input field */
     width: 250px;              /* Set a fixed width */
-    font-size: 20px;           /* Font size for the input text */
+    font-size: 1.3rem;           /* Font size for the input text */
     border-radius: 4px;       /* Rounded corners for the input */
     margin-left: 10px;         /* Space between label and input */
 }
@@ -196,18 +204,26 @@ body{
 
 #tablerecords{
 	padding: 10px;
-	/*border-collapse: collapse;*/
+	box-shadow: 0 5px 10px #CBD4DF;
 	width: 100%;
+    background-color: white;
+    text-align: left;
+    overflow: hidden;
     border-collapse: collapse; /* Ensures that borders are merged for cleaner look */
 }
 #tablerecords thead{
-	color: white;
-	background-color: #181a1d;
-	text-align: left;
-    font-size: 30px;
+	color: #181a1d;
+    
+    box-shadow: 0 5px 10px #CBD4DF;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 #tablerecords thead tr th{
-	padding: 10px 20px 10px 20px;
+    padding: 1rem 2rem;
+	text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0.1rem;
 }
 #tablerecords th, /* Add border to the table headers */
 #tablerecords td { /* Add border to the table data cells */
@@ -218,16 +234,16 @@ body{
 }
 
 #tablerecords tbody tr:nth-child(odd) {
-    background-color: #f2f2f2; /* Light gray for odd rows */
+    background-color: #ffffff; /* Light gray for odd rows */
 }
 
 #tablerecords tbody tr:nth-child(even) {
-    background-color: #ffffff; /* White for even rows */
+    background-color: #f2f2f2; /* White for even rows */
 }
 
 
 #tablerecords tbody tr td{
-	padding: 10px 20px 10px 20px;
+	padding: 1rem 2rem;
 }
 #tablerecords tbody tr:hover{
     background-color: #5A9FE3;
@@ -236,22 +252,37 @@ body{
 }
 
 .leave-status-denied {
+    border-radius: 5px;
+    color: rgb(122, 28, 28);
+    padding: 0.2rem 1rem;
+    text-align: center;
     background-color: rgb(255, 125, 125);
 }
 
 .leave-status-approved {
+    border-radius: 5px;
+    color: rgb(20, 100, 20);
+    padding: 0.2rem 1rem;
+    text-align: center;
     background-color: rgb(118, 255, 118);
 }
 
 .leave-status-pending {
-    background-color: rgb(248, 246, 137);
+    border-radius: 5px;
+    color: rgb(117, 95, 20);
+    padding: 0.2rem 1rem;
+    text-align: center;
+    background-color: rgb(248, 222, 137);
 }
 
 
-
+.leave-date-and-time {
+    margin: 20px 20px 0px 20px;
+}
 
 .add_form_wrapper{
-    margin: 10px 100px 10px 100px;
+    margin: 40px 100px 40px 100px;
+    padding: 20px;
 }
 .add_form {
     display: flex;

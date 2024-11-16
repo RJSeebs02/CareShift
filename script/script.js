@@ -355,9 +355,9 @@ function updateSelectedNurses() {
 }
 
 // DISABLE RIGHT CLICK
-$(document).on("contextmenu", function(e) {
-    return false; 
-});
+//$(document).on("contextmenu", function(e) {
+//    return false; 
+//});
 
 
 // REPORTS

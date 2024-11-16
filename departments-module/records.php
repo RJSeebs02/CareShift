@@ -2,7 +2,8 @@
     <h1><i class="fas fa-solid fa-users-line"></i>&nbspDepartments</h1>
 
     <?php if ($useraccess_id != 2 && $useraccess_id != 3): ?>
-    <a href="index.php?page=departments&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Department</a>
+    <a href="index.php?page=departments" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspDept. List</a>
+    <a href="index.php?page=departments&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Dept.</a>
     <?php endif; ?>
     
 </div>

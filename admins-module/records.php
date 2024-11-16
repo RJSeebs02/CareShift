@@ -1,5 +1,6 @@
 <div class="heading">
     <h1><i class="fas fa-lock" aria-hidden="true"></i>&nbspAdmins</h1>
+    <a href="index.php?page=admins" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspAdmin List</a>
     <a href="index.php?page=admins&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Admin</a>
 </div>
 <span class="right">

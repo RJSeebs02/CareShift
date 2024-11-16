@@ -1,6 +1,7 @@
 <div class="heading">
     <h1><i class="fas fa-solid fa-user-nurse"></i>&nbsp<?php echo $nurse->get_fname($id).' '.$nurse->get_lname($id).'\'s ';?>Profile</h1>
     <a href="index.php?page=nurses" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspNurse List</a>
+    <a href="index.php?page=nurses&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Nurse</a>
 </div>
 
 <div class="add_form_wrapper">

@@ -1,6 +1,7 @@
 <div class="heading">
     <h1><i class="fas fa-regular fa-file-alt"></i>&nbspApply for Leave</h1>
     <a href="index.php?page=leave" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspLeave List</a>
+    <a href="index.php?page=leave&subpage=add" class="right_button"><i class="fa fa-file-pen" aria-hidden="true"></i>&nbspApply Leave</a>
 </div>
 
 <div class="add_form_wrapper">

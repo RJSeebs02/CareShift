@@ -2,6 +2,7 @@
     <h1><i class="fas fa-solid fa-door-closed"></i>&nbspRooms</h1>
 
     <?php if ($useraccess_id != 2 && $useraccess_id != 3): ?>
+        <a href="index.php?page=rooms" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspRooms List</a>
     <a href="index.php?page=rooms&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Room</a>
     <?php endif; ?>
     

@@ -1,10 +1,12 @@
 <div class="heading">
     <h1><i class="fas fa-regular fa-file-alt"></i>&nbspLeave # <?php echo $leave->get_id_by_id($id).' ';?>Profile</h1>
     <a href="index.php?page=leave" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspLeave List</a>
-    
+    <a href="index.php?page=leave&subpage=add" class="right_button"><i class="fa fa-file-pen" aria-hidden="true"></i>&nbspApply Leave</a>
 </div>
-<h2>Date Filed: <?php echo $leave->get_leave_date_filed($id);?></h2>
-<h2>Time Filed: <?php echo $leave->get_leave_time_filed($id);?></h2>
+<div class="leave-date-and-time">
+    <h2>Date Filed: <?php echo $leave->get_leave_date_filed($id);?></h2>
+    <h2>Time Filed: <?php echo $leave->get_leave_time_filed($id);?></h2>
+</div>
 
 <?php
 if ($leave->get_leave_status($id) == 'Approved' || $leave->get_leave_status($id) == 'Denied'){

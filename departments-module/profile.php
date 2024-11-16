@@ -1,6 +1,7 @@
 <div class="heading">
     <h1><i class="fas fa-solid fa-users-line"></i>&nbsp<?php echo $departments->get_department_name($id).' ';?>Details</h1>
-    <a href="index.php?page=departments" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspDepartments List</a>
+    <a href="index.php?page=departments" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspDept. List</a>
+    <a href="index.php?page=departments&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Dept.</a>
 </div>
 
 <div class="add_form_wrapper">

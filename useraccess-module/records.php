@@ -1,6 +1,7 @@
 <div class="heading">
     <h1><i class="fas fa-solid fa-user-shield"></i>&nbspUser Access</h1>
     <a href="index.php?page=useraccess&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Access Level</a>
+    <a href="index.php?page=useraccess" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspAccess Level List</a>
 </div>
 <span class="right">
     <div class="search_bar">

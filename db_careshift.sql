@@ -35,7 +35,7 @@ CREATE TABLE `admin` (
 );
 
 INSERT INTO admin(adm_username,adm_password,adm_fname,adm_mname,adm_lname,adm_email,adm_contact,useraccess_id,department_id) 
-VALUES ("admin","123", "Admin", "Admin", "Admin", "admin@gmail.com", 123, 1, 1);
+VALUES ("admin","123", "Super", "Admin", "Admin", "admin@gmail.com", 123, 1, 1);
 
 DROP TABLE IF EXISTS `logs`;
 CREATE TABLE `logs` (
@@ -45,10 +45,8 @@ CREATE TABLE `logs` (
   `log_time_managed` time NOT NULL,
   `log_date_managed` date NOT NULL,
   `adm_id` int(50) NOT NULL,
-  `nurse_id` int(50) NOT NULL,
   PRIMARY KEY  (`log_id`),
-  KEY (`adm_id`),
-  KEY (`nurse_id`)
+  KEY (`adm_id`)
 );
 
 DROP TABLE IF EXISTS `schedule`;

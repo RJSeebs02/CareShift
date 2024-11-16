@@ -80,6 +80,12 @@ class Admin{
 		$id = $q->fetchColumn();
 		return $id;
 	}
+	function get_admin_by_id($id) {
+		$sql = "SELECT adm_fname, adm_lname, adm_username FROM admin WHERE adm_id = :id";
+		$q = $this->conn->prepare($sql);
+		$q->execute(['id' => $id]);
+		return $q->fetch(PDO::FETCH_ASSOC);
+	}
 	/*Function for getting the admin id by username from the database */
 	function get_id_by_username($username){
 		$sql="SELECT adm_id FROM admin WHERE adm_username = :username";	
@@ -176,10 +182,6 @@ class Admin{
 		$department_name = $q->fetchColumn();
 		return $department_name;
 	}
-
-
-
-
 
     /*Function for getting the session from the database for logging in */
 	function get_session(){

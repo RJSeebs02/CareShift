@@ -2,41 +2,38 @@
     <h1><i class="fas fa-solid fa-receipt"></i>&nbspLogs</h1>
 </div>
 <span class="right">
-    <div class="search_bar">Search:<input type="text" id="search" name="search" onkeyup="">
+    <div class="search_bar">
+        <label for="search">Search:</label>
+        <input type="text" id="search" class="search" name="search" onkeyup="filterTable()">
     </div>
 </span>
     <table id="tablerecords">   
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Actor</th>
-                <th>Action</th>
-                <th>Subject</th>
-                <th>Description</th>
+                <th>Audit Log</th>
             </tr>
         </thead>
         <tbody>
         <?php
         /* Display each log record from the database */
-        if ($logs = $log->list_logs()) {
-            foreach ($logs as $value) {
-                extract($value); // Extracts variables from the array
+        if ($log->list_logs() != false) {
+            foreach ($log->list_logs() as $value) {
+                extract($value);
                 ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($log_date_managed); ?></td>
-                    <td><?php echo htmlspecialchars($log_time_managed); ?></td>
-                    <td><?php echo htmlspecialchars($adm_fname . ' ' . $adm_lname); ?></td> <!-- Admin's full name -->
-                    <td><?php echo htmlspecialchars($log_action); ?></td>
-                    <td><?php echo isset($nurse_lname) ? htmlspecialchars($nurse_fname . ' ' . $nurse_lname) : 'N/A'; ?></td> 
-                    <td><?php echo htmlspecialchars($log_description); ?></td>
+                <td>
+                    <?php echo $log->get_adm_name($log_id) . '<br>';?>
+                    <?php echo $log->get_desc($log_id) . '<br>';?>
+                    <?php echo 'Date: '. $log->get_date($log_id) . '<br>';?>
+                    <?php echo 'Time: '. $log->get_time($log_id)?>
+                    </td>
                 </tr>
                 <?php
             }
         } else {
             ?>
             <tr>
-                <td colspan="6">No Record Found.</td>
+                <td colspan="6">No Logs Found.</td>
             </tr>
             <?php
         }

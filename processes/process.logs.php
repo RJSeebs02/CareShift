@@ -23,13 +23,13 @@ switch ($action) {
 }
 
 // Function to insert log into the database
-function addLog($log_action, $log_description, $adm_id, $nurse_id) {
+function addLog($log_action, $log_description, $adm_id) {
     global $con; // Ensure $con is accessible
     $log_date_managed = date('Y-m-d');
     $log_time_managed = date('H:i:s');
 
-    $log_insert_query = "INSERT INTO logs (log_action, log_description, log_time_managed, log_date_managed, adm_id, nurse_id) 
-                         VALUES ('$log_action', '$log_description', '$log_time_managed', '$log_date_managed', '$adm_id', '$nurse_id')";
+    $log_insert_query = "INSERT INTO logs (log_action, log_description, log_time_managed, log_date_managed, adm_id) 
+                         VALUES ('$log_action', '$log_description', '$log_time_managed', '$log_date_managed', '$adm_id')";
     
     mysqli_query($con, $log_insert_query);
 }

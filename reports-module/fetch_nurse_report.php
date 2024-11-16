@@ -13,10 +13,12 @@ if ($department) {
         $department = isset($_GET['department']) ? $_GET['department'] : 'all';
         if ($department === 'all') {
             $nurseCount = $nurse->countTotalNurses(); 
-            echo json_encode(['available_nurses' => $nurseCount]);
+            $totalNurses = $nurse->countTotalNurses();
+            echo json_encode(['available_nurses' => $nurseCount, 'total_nurses' => $totalNurses]);
         } else {
             $nurseCount = $nurse->countAvailableNursesByDepartment($department);
-            echo json_encode(['available_nurses' => $nurseCount]);
+            $totalNurses = $nurse->countTotalNurses();
+            echo json_encode(['available_nurses' => $nurseCount, 'total_nurses' => $totalNurses]);
         }
     } catch (Exception $e) {
         echo json_encode(['error' => 'Error fetching nurse data: ' . $e->getMessage()]);

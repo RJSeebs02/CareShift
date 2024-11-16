@@ -102,6 +102,14 @@ class Nurse{
 		$id = $q->fetchColumn();
 		return $id;
 	}
+	/*Function for getting the nurse id from the database */
+	function get_id_by_name($nurse_fname){
+		$sql="SELECT nurse_id FROM nurse WHERE nurse_fname = :nurse_fname";	
+		$q = $this->conn->prepare($sql);
+		$q->execute(['nurse_fname' => $nurse_fname]);
+		$id = $q->fetchColumn();
+		return $id;
+	}
 	/*Function for getting the nurse fname from the database */
 	function get_fname($id){
 		$sql="SELECT nurse_fname FROM nurse WHERE nurse_id = :id";	

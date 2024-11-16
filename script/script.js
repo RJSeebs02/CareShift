@@ -369,12 +369,12 @@ document.addEventListener("DOMContentLoaded", function() {
     let nurseChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Available Nurses'],
+            labels: ['Total Nurses', 'Available Nurses'],
             datasets: [{
-                label: 'Available Nurses Count',
-                data: [0],
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                label: 'Nurse Count',
+                data: [0, 0],
+                backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(75, 192, 192, 0.2)'],
+                borderColor: ['rgba(54, 162, 235, 0.2)', 'rgba(75, 192, 192, 0.2)'],
                 borderWidth: 1
             }]
         },
@@ -390,7 +390,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    if (departmentSelect) {
+     if (departmentSelect) {
         if (!departmentSelect.value) {
             departmentSelect.value = 'all';
         }
@@ -407,9 +407,9 @@ document.addEventListener("DOMContentLoaded", function() {
             fetch('reports-module/fetch_nurse_report.php?department=' + encodeURIComponent(departmentId))
                 .then(response => response.json())
                 .then(data => {
-                    if (data.available_nurses !== undefined) {
+                    if (data.available_nurses !== undefined && data.total_nurses !== undefined) {
                         nurseCountElement.textContent = data.available_nurses;
-                        nurseChart.data.datasets[0].data = [data.available_nurses];
+                        nurseChart.data.datasets[0].data = [data.total_nurses, data.available_nurses];
                         nurseChart.update();
                     } else {
                         nurseCountElement.textContent = "Error: " + (data.message || "Unknown error");

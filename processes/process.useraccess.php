@@ -1,80 +1,73 @@
 <?php
 include '../config/config.php';
 include '../class/class.useraccess.php';
+include '../class/class.logs.php';
 
-/*Parameters for switch case*/
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 
-/*Switch case for actions in the process */
 switch($action){
-	case 'new':
+    case 'new':
         create_new_useraccess($con);
-	break;
+    break;
     case 'update':
         update_useraccess();
-	break;
+    break;
     case 'delete':
         delete_useraccess();
     break;
 }
 
-/*Main Function Process for creating an nurse */
 function create_new_useraccess($con) {
     $useraccess = new UserAccess();
-    /* Receives the parameters passed from the creation page form */
+    $log = new Log();
+
     $useraccess_name = ucfirst($_POST['useraccess_name']);
     $useraccess_desc = ucfirst($_POST['useraccess_desc']);
 
-    /* Passes the parameters to the class function */
     $result = $useraccess->new_access($useraccess_name, $useraccess_desc);
     
     if ($result) {
         $id = $useraccess->get_id_by_useraccess_name($useraccess_name);
-
+        $log->addLog("Added User Access", "Added new user access: $useraccess_name", $_SESSION['adm_id'], $id);
         header("location: ../index.php?page=useraccess");
     } else {
-        echo "<script>alert('Error adding nurse.'); window.history.back();</script>";
+        echo "<script>alert('Error adding user access.'); window.history.back();</script>";
     }
 }
 
-/*Main Function Process for updating an admin */
 function update_useraccess(){  
     $useraccess = new UserAccess();
-    /*Receives the parameters passed from the profile updating page form */
+    $log = new Log();
+
     $id = $_POST['id'];
     $useraccess_name = ucfirst($_POST['useraccess_name']);
     $useraccess_desc = ucfirst($_POST['useraccess_desc']);
 
-    /*Passes the parameters to the class function */
-    $result = $useraccess->update_user_access($id,$useraccess_name,$useraccess_desc);
+    $result = $useraccess->update_user_access($id, $useraccess_name, $useraccess_desc);
+
     if($result){
+        $log->addLog("Updated User Access", "Updated user access ID $id with name $useraccess_name", $_SESSION['adm_id'], $id);
         header('location: ../index.php?page=useraccess&subpage=profile&id=' . $id);
     }
 }
 
-/*Main Function Process for deleting a user access */
 function delete_useraccess()
 {
-    /*If parameter was passed succesfully */
     if (isset($_POST['id'])) {
         $useraccess = new UserAccess();
-        /*Receives the parameters passed from the delete button */
+        $log = new Log();
+
         $id = $_POST['id'];
 
-        /*Passes the parameters to the class function */
         $result = $useraccess->delete_useraccess($id);
 
-        /*If result was executed */
         if ($result) {
+            $log->addLog("Deleted User Access", "Deleted user access ID $id", $_SESSION['adm_id'], $id);
             header("location: ../index.php?page=useraccess&subpage=records");
-        }
-        /*If result was interrupted */
-        else {
+        } else {
             echo "Error deleting user access.";
         }
-    }
-    /*If parameter was not passed successfully */
-    else {
+    } else {
         echo "Invalid User Access ID.";
     }
 }

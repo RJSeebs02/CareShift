@@ -101,6 +101,17 @@ class Nurse{
 		return $row['count'];
 	}
 
+	public function countNursesByDepartment() {
+		$query = "SELECT department, COUNT(*) as count 
+				  FROM nurse 
+				  GROUP BY department_id";
+	
+		$stmt = $this->conn->prepare($query);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+		// Example output: [{"department": "ICU", "count": 10}, {"department": "ER", "count": 15}]
+	}
+
 	/*Function for getting the nurse id from the database */
 	function get_id($id){
 		$sql="SELECT nurse_id FROM nurse WHERE nurse_id = :id";	

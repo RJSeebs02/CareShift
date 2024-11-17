@@ -104,6 +104,20 @@ body{
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Adds shadow below the header */
 }
 
+.wrapper .body .header a{
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.wrapper .body .header a:hover{
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    text-transform: uppercase;
+    font-weight: 800;
+    transition: 0.3s;
+}
 
 .wrapper .body .header h3{
     margin: 0;
@@ -151,6 +165,7 @@ body{
 
 .heading .right_button:hover {
     background-color: #5A9FE3;
+    transition: 0.2s;
 }
 
 #nurseForm label {
@@ -368,6 +383,7 @@ label {
 
 .submit-btn:hover {
     background-color: #27b46b;
+    transition: 0.2s;
 }
 
 .delete-btn {
@@ -385,6 +401,7 @@ label {
 
 .delete-btn:hover {
     background-color: #e64949;
+    transition: 0.2s;
 }
 
 
@@ -394,6 +411,7 @@ label {
     align-items: center;     /* Center content vertically (if needed) */
     gap: 10px; /* Space between items */
     margin: auto;
+    background-color: white;
 }
 
 .content_layer1_wrapper #nurses_report,
@@ -451,7 +469,17 @@ label {
     font-weight: bold;
 }
 
+.qr_wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    margin-top: 100px;
+}
 
+.qr_text{
+    display: flex;
+    flex-direction: column;
+}
 
 
 
@@ -552,6 +580,7 @@ label {
 .fc-button:hover {
     background: #5A9FE3 !important;
     color: white !important;
+    transition: 0.2s !important;
 }
 
 #calendar .fc-day-today {
@@ -692,6 +721,7 @@ label {
 
 .modal-content button[type="submit"]:hover {
     background-color: #27b46b;
+    transition: 0.2s;
 }
 
 /* The Close Button */
@@ -707,6 +737,7 @@ label {
     color: black;
     text-decoration: none;
     cursor: pointer;
+    transition: 0.2s;
 }
 
 #qr-reader {
@@ -753,6 +784,7 @@ label {
 
 .dropdown-options label:hover {
     background-color: #f0f0f0;
+    transition: 0.2s;
 }
 
 

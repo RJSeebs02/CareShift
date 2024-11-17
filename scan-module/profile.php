@@ -4,9 +4,9 @@
 </div>
 
 <div class="qr_profile_container">
-    <div class="form_wrapper">
+    <div class="qr_wrapper">
     <img src="img/default_profile_pic.jpg" alt="Profile Image" class="profile_image">
-        <div class="add_form_left">
+        <div class="qr_text">
 
             <p><span class="bold">Nurse ID:</span> <?php echo $nurse->get_id($id);?></p>
 

@@ -496,6 +496,69 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    const ctxDonut = document.getElementById('donutChart').getContext('2d');
+
+    // Initialize Donut Chart
+    let donutChart = new Chart(ctxDonut, {
+        type: 'doughnut',
+        data: {
+            labels: ['Available Nurses', 'Pending Leaves'], // Adjust labels as needed
+            datasets: [{
+                label: 'Overview',
+                data: [0, 0], // Initial values
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.6)', // Available Nurses
+                    'rgba(255, 99, 132, 0.6)', // Pending Leaves
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 99, 132, 1)',
+                ],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            const label = context.label || '';
+                            const value = context.raw || 0;
+                            return `${label}: ${value}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Fetch data for Donut Chart
+    function updateDonutChart() {
+        const departmentId = document.getElementById('departmentSelect')?.value || 'all';
+        Promise.all([
+            fetch(`reports-module/fetch_nurse_report.php?department=${encodeURIComponent(departmentId)}`)
+                .then(response => response.json()),
+            fetch(`reports-module/fetch_leave_report.php?department=${encodeURIComponent(departmentId)}`)
+                .then(response => response.json())
+        ]).then(([nurseData, leaveData]) => {
+            const availableNurses = nurseData?.available_nurses || 0;
+            const pendingLeaves = leaveData?.pending_leaves || 0;
+
+            donutChart.data.datasets[0].data = [availableNurses, pendingLeaves];
+            donutChart.update();
+        }).catch(error => console.error('Error fetching data for donut chart:', error));
+    }
+
+    // Fetch and update data on page load and department change
+    updateDonutChart();
+
+    const departmentSelect = document.getElementById('departmentSelect');
+    if (departmentSelect) {
+        departmentSelect.addEventListener('change', updateDonutChart);
+    }
+});
 
 
 

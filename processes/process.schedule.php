@@ -19,6 +19,12 @@ switch ($action) {
     case 'generate':
         auto_generate_schedule($con);
     break;
+    case 'add_nurse':
+        if (isset($_GET['nurse_id'])) {
+            $nurse_id = $_GET['nurse_id'];
+            generate_schedule_for_week($con, $nurse_id);
+        }
+    break;
 }
 
 function create_new_schedule($con) {
@@ -40,13 +46,24 @@ function create_new_schedule($con) {
     $end_date = $end_time->format('Y-m-d');
 
     foreach ($nurse_ids as $nurse_id) {
-        $result = $schedule->new_schedule($nurse_id, $sched_date, $formatted_start_time, $work_hours);
-        
-        if ($result) {
-            $nurse_name = $schedule->get_nurse_name($nurse_id);
+        // Check if a schedule already exists
+        if (!$schedule->schedule_exists($nurse_id, $sched_date)) {
+            $result = $schedule->new_schedule($nurse_id, $sched_date, $formatted_start_time, $work_hours);
 
-            $log_action = "Added Schedule";
-            $log_description = "Added a New Schedule: $nurse_name (Nurse ID: $nurse_id) on $sched_date";
+            if ($result) {
+                $nurse_name = $schedule->get_nurse_name($nurse_id);
+
+                $log_action = "Added Schedule";
+                $log_description = "Added a New Schedule: $nurse_name (Nurse ID: $nurse_id) on $sched_date";
+                $adm_id = $_SESSION['adm_id'];
+
+                $log->addLog($log_action, $log_description, $adm_id);
+            }
+        } else {
+            // Log or notify if the schedule already exists (optional)
+            $nurse_name = $schedule->get_nurse_name($nurse_id);
+            $log_action = "Schedule Exists";
+            $log_description = "Schedule already exists for $nurse_name (Nurse ID: $nurse_id) on $sched_date";
             $adm_id = $_SESSION['adm_id'];
 
             $log->addLog($log_action, $log_description, $adm_id);
@@ -55,6 +72,7 @@ function create_new_schedule($con) {
 
     header('Location: ../index.php?page=schedule');
 }
+
 
 function auto_generate_schedule($con) {
     $schedule = new Schedule($con);
@@ -124,6 +142,58 @@ function update_schedule(){
         header('location: ../index.php?page=schedule');
     }
 }
+
+function generate_schedule_for_week($con, $nurse_id) {
+    $schedule = new Schedule($con);
+    $log = new Log($con);
+
+    // Get today's date
+    $startDate = new DateTime('today');
+    
+    // Calculate the upcoming Saturday
+    $endDate = clone $startDate;
+    $endDate->modify('next Saturday');
+
+    // Define time slots
+    $timeSlots = [
+        '06:00:00' => '14:00:00',
+        '14:00:00' => '22:00:00',
+        '22:00:00' => '06:00:00'
+    ];
+
+    // Create a date period for the current week
+    $interval = new DateInterval('P1D');
+    $datePeriod = new DatePeriod($startDate, $interval, $endDate->modify('+1 day'));
+
+    foreach ($datePeriod as $date) {
+        $sched_date = $date->format('Y-m-d');
+
+        // Check if a schedule already exists for the nurse on this date
+        if (!$schedule->schedule_exists($nurse_id, $sched_date)) {
+            // Randomly select a time slot
+            $randomIndex = array_rand($timeSlots);
+            $start_time = $randomIndex;
+            $end_time = $timeSlots[$randomIndex];
+
+            // Generate the schedule
+            if ($schedule->generate_schedule($nurse_id, $sched_date, $start_time, $end_time)) {
+                $nurse_name = $schedule->get_nurse_name($nurse_id);
+
+                // Log the action
+                $log_action = "Added Schedule";
+                $log_description = "Added a New Schedule: $nurse_name (Nurse ID: $nurse_id) on $sched_date";
+                $adm_id = $_SESSION['adm_id'];
+
+                $log->addLog($log_action, $log_description, $adm_id);
+            }
+        }
+    }
+
+    // Redirect to the schedule page
+    header('Location: ../index.php?page=schedule');
+}
+
+
 
 mysqli_close($con);
 ?>

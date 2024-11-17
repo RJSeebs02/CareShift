@@ -54,6 +54,7 @@ $useraccess_id = $admin->get_access_id($admin_id);
     <script src="https://kit.fontawesome.com/e697cf1067.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="img/logo.png" />
 </head>
 <body>
     <div class="wrapper">

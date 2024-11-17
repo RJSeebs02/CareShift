@@ -43,7 +43,7 @@ function create_new_nurse($con) {
 
         $log->addLog($log_action, $log_description, $adm_id);
 
-        header("location: ../index.php?page=nurses");
+        header("location: process.schedule.php?action=add_nurse&nurse_id=" . $id);
     } else {
         echo "<script>alert('Error adding nurse.'); window.history.back();</script>";
     }

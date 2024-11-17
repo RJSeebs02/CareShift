@@ -1,5 +1,12 @@
 <div class="heading">
-    <a href="index.php?page=schedule&subpage=main" class="right_button"><i class="fa fa-home"></i>&nbspHome</a>
+    <h1><i class="fas fa-solid fa-clock"></i>&nbspAdd Schedule</h1>
+    <a href="index.php?page=schedule" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspSchedules List</a>
+    <a href="index.php?page=schedule&subpage=calendar" class="right_button"><i class="fa fa-calendar"></i>&nbspCalendar</a>
+    
+<?php if ($useraccess_id != 2 ): ?>
+    <a href="index.php?page=schedule&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Sched</a>
+    <a href="index.php?page=schedule&subpage=generate" class="right_button"><i class="fa fa-plus"></i>&nbspGenerate</a>
+<?php endif; ?>
 </div>
 
 <div id="viewScheduleModal" class="modal">

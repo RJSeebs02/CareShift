@@ -11,6 +11,7 @@ $monthName = $startOfWeek->format('F');
 
 <div class="heading">
     <h1><i class="fas fa-solid fa-clock"></i>&nbsp;Schedule</h1>
+    <a href="index.php?page=schedule" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspSchedules List</a>
     <a href="index.php?page=schedule&subpage=calendar" class="right_button"><i class="fa fa-calendar"></i>&nbspCalendar</a>
     
 <?php if ($useraccess_id != 2 ): ?>
@@ -20,10 +21,10 @@ $monthName = $startOfWeek->format('F');
 
 </div>
 
-<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-    <button class="nav-button" onclick="navigateWeek(<?php echo $weekOffset - 1; ?>)">Previous Week</button>
-    <span>Week <?php echo $weekOfMonth; ?> of <?php echo $monthName; ?></span>
-    <button class="nav-button" onclick="navigateWeek(<?php echo $weekOffset + 1; ?>)">Next Week</button>
+<div class="schedule_table_header">
+    <button class="nav-button" onclick="navigateWeek(<?php echo $weekOffset - 1; ?>)"><i class="fa-solid fa-left-long"></i></button>
+    <h2>Week <?php echo $weekOfMonth; ?> of <?php echo $monthName; ?></h2>
+    <button class="nav-button" onclick="navigateWeek(<?php echo $weekOffset + 1; ?>)"><i class="fa-solid fa-right-long"></i></button>
 </div>
 
 <table id="tablerecords">

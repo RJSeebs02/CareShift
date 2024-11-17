@@ -17,6 +17,7 @@ if ($access_id == 3) {
     <a href="index.php?page=nurses" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspNurse List</a>
     <a href="index.php?page=nurses&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Nurse</a>
     <?php endif; ?>
+    
 </div>
 <span class="right">
     <div class="search_bar">

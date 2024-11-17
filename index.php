@@ -70,7 +70,9 @@ $useraccess_id = $admin->get_access_id($admin_id);
                 <li><a href="index.php?page=logs" class="<?= $page == 'logs' ? 'active' : '' ?>"><i class="fas fa-solid fa-receipt"></i>Logs</a></li>
                 <?php endif; ?>
 
-                <li><a href="index.php?page=leave" class="<?= $page == 'leave' ? 'active' : '' ?>"><i class="fas fa-regular fa-paste"></i></i></i>Leave Applicants</a></li>
+                <li><a href="index.php?page=scan" class="<?= $page == 'scan' ? 'active' : '' ?>"><i class="fas fa-solid fa-qrcode"></i>Scan QR Nurses</a></li>
+
+                <li><a href="index.php?page=leave" class="<?= $page == 'leave' ? 'active' : '' ?>"><i class="fas fa-regular fa-paste"></i>Leave Applicants</a></li>
 
                 <h3>Users</h3>
                 <li><a href="index.php?page=nurses" class="<?= $page == 'nurses' ? 'active' : '' ?>"><i class="fas fa-solid fa-user-nurse"></i>Nurses</a></li>
@@ -110,6 +112,10 @@ $useraccess_id = $admin->get_access_id($admin_id);
                     /*Displays Logs Page*/
                     case 'logs':
                         require_once 'logs-module/index.php';
+                    break;
+                    /*Displays Scanning Page*/
+                    case 'scan':
+                        require_once 'scan-module/index.php';
                     break;
                     /*Displays Leave Page*/
                     case 'leave':

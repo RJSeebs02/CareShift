@@ -1,5 +1,5 @@
 <div class="heading">
-    <h1><i class="fas fa-solid fa-clock"></i>&nbspAdd Schedule</h1>
+    <h1><i class="fas fa-solid fa-clock"></i>&nbspSchedule Calendar</h1>
     <a href="index.php?page=schedule" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspSchedules List</a>
     <a href="index.php?page=schedule&subpage=calendar" class="right_button"><i class="fa fa-calendar"></i>&nbspCalendar</a>
     

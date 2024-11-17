@@ -193,7 +193,5 @@ function generate_schedule_for_week($con, $nurse_id) {
     header('Location: ../index.php?page=schedule');
 }
 
-
-
 mysqli_close($con);
 ?>

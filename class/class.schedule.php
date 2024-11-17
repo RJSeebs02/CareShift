@@ -195,5 +195,4 @@ function get_nurse_name($id){
         return $nurse_name;
     }
 }
-
 }

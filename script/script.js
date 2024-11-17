@@ -174,53 +174,61 @@ function navigateWeek(offset) {
 
 
 
-let scanData = '';  // To accumulate QR code scan data
-let manualTyping = false;  // Track if you are manually typing in an input
+// Check if the current page is the "Scan" page
+if (window.location.href.includes('page=scan')) {
+    let scanData = '';  // To accumulate QR code scan data
+    let manualTyping = false;  // Track if you are manually typing in an input
 
-// Listen for the focus event on input fields to stop scanner input
-document.querySelectorAll('input, textarea').forEach((element) => {
-    element.addEventListener('focus', function() {
-        manualTyping = true;  // User is typing, so disable scanner input
+    // Listen for the focus event on input fields to stop scanner input
+    document.querySelectorAll('input, textarea').forEach((element) => {
+        element.addEventListener('focus', function () {
+            manualTyping = true;  // User is typing, so disable scanner input
+        });
+
+        element.addEventListener('blur', function () {
+            manualTyping = false; // Input has lost focus, enable scanner input
+        });
     });
 
-    element.addEventListener('blur', function() {
-        manualTyping = false; // Input has lost focus, enable scanner input
-    });
-});
+    // Function to listen for the keydown event globally
+    document.addEventListener('keydown', function (event) {
+        // Check if we should ignore the scanner input (when typing in a text field)
+        if (manualTyping) return;  // Ignore scanner input while typing
 
-// Function to listen for the keydown event globally
-document.addEventListener('keydown', function(event) {
-    // Check if we should ignore the scanner input (when typing in a text field)
-    if (manualTyping) return;  // Ignore scanner input while typing
-
-    // If not typing and scanner input is detected (i.e., a key is pressed)
-    if (event.key.length === 1) {
-        scanData += event.key; // Accumulate the scanned characters
-    }
-
-    // If the Enter key is pressed, process the scanned data
-    if (event.key === 'Enter' && scanData) {
-        event.preventDefault();  // Prevent the default action of the Enter key
-        processScanData();       // Process the accumulated scan data
-    }
-});
-
-// Function to process the scanned QR code data
-function processScanData() {
-    try {
-        let data = JSON.parse(scanData);  // Attempt to parse the scanned data as JSON
-        if (data.nurse_id) {
-            // If nurse_id exists, redirect to the relevant profile page
-            const nurseId = data.nurse_id;
-            window.location.href = `index.php?page=nurses&subpage=profile&id=${nurseId}`;
-        } else {
-            console.error("nurse_id not found in scanned data");
+        // If not typing and scanner input is detected (i.e., a key is pressed)
+        if (event.key.length === 1) {
+            scanData += event.key; // Accumulate the scanned characters
         }
-    } catch (e) {
-        console.error("Invalid JSON format", e);  // Handle invalid scan data format
+
+        // If the Enter key is pressed, process the scanned data
+        if (event.key === 'Enter' && scanData) {
+            event.preventDefault();  // Prevent the default action of the Enter key
+            processScanData();       // Process the accumulated scan data
+        }
+    });
+
+    // Function to process the scanned QR code data
+    function processScanData() {
+        try {
+            let data = JSON.parse(scanData);  // Attempt to parse the scanned data as JSON
+            if (data.nurse_id) {
+                // If nurse_id exists, redirect to the relevant profile scanning page
+                const nurseId = data.nurse_id;
+                window.location.href = `index.php?page=scan&subpage=profile&id=${nurseId}`;
+            } else {
+                console.error("nurse_id not found in scanned data");
+            }
+        } catch (e) {
+            console.error("Invalid JSON format", e);  // Handle invalid scan data format
+        }
+        scanData = '';  // Clear scan data after processing
     }
-    scanData = '';  // Clear scan data after processing
+} else {
+    // Disable scanning functionality on other pages by doing nothing
+    console.log("QR scanning disabled on this page.");
 }
+
+
 
 
 
@@ -491,26 +499,3 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-
-
-// Initialize QR Code Scanner
-function onScanSuccess(decodedText, decodedResult) {
-    document.getElementById('qr-content').textContent = decodedText; // Display QR content
-    showQrModal(); // Show the modal with content
-}
-
-function onScanFailure(error) {
-    console.warn(`QR Code scan error: ${error}`);
-}
-
-let html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
-html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-
-// Modal Functions
-function showQrModal() {
-    document.getElementById('qrModal').style.display = 'block';
-}
-
-function closeQrModal() {
-    document.getElementById('qrModal').style.display = 'none';
-}

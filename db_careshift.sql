@@ -17,9 +17,6 @@ CREATE TABLE `nurse` (
   PRIMARY KEY  (`nurse_id`)
 );
 
-INSERT INTO `nurse`(nurse_password,nurse_fname,nurse_mname,nurse_lname,nurse_email,nurse_sex,nurse_contact,nurse_position,department_id) 
-VALUES ("123","Romeo", "Valderama", "Seva", "rom@gmail.com", "Male", 09432285239, "Nurse V", 1);
-
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
   `adm_id` int(50) NOT NULL auto_increment,

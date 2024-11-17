@@ -1,3 +1,22 @@
+<?php 
+  $con = new mysqli('localhost','root','','db_careshift');
+  $query = $con->query("
+    SELECT d.department_name, COUNT(n.nurse_id) AS nurse_count
+    FROM department d
+    LEFT JOIN nurse n ON d.department_id = n.department_id
+    GROUP BY d.department_name;
+  ");
+
+  foreach($query as $data)
+  {
+    $nursecount[] = $data['nurse_count'];
+    $department[] = $data['department_name'];
+  }
+
+?>
+
+
+
 <div class="content_wrapper">
     <div class="heading">
         <h1><i class="fas fa-solid fa-chart-line"></i>&nbspReports</h1>
@@ -56,8 +75,40 @@
     </div>
 
     <div class="charts-container">
-        <canvas id="nurseChart"></canvas>
-        <canvas id="leaveChart"></canvas>
-        <canvas id="donutChart"></canvas>
-    </div>
+    <canvas id="NurseCountDeptChart"></canvas>
 </div>
+
+<script>
+    const data = {
+        labels: <?php echo json_encode($department); ?>,  // Department names
+        datasets: [{
+            label: 'Nurse Count',
+            data: <?php echo json_encode($nursecount); ?>,  // Nurse count data
+            backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'
+            ],
+            hoverOffset: 4
+        }]
+    };
+
+    const config = {
+        type: 'doughnut',  // Keep doughnut chart type
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'left',  // Set legend position to the left side of the chart
+                },
+            },
+            // You can also modify other chart options here as needed
+        }
+    };
+
+    var NurseCountDeptChart = new Chart(
+        document.getElementById('NurseCountDeptChart'),
+        config
+    );
+</script>

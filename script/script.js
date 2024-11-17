@@ -412,7 +412,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         function fetchNurseData(departmentId) {
-            fetch('reports-module/fetch_nurse_report.php?department=' + encodeURIComponent(departmentId))
+            fetch('processes/process.nurse.php?action=fetch_by_department&department_id=' + encodeURIComponent(departmentId))
                 .then(response => response.json())
                 .then(data => {
                     if (data.available_nurses !== undefined && data.total_nurses !== undefined) {
@@ -559,6 +559,5 @@ document.addEventListener("DOMContentLoaded", function () {
         departmentSelect.addEventListener('change', updateDonutChart);
     }
 });
-
 
 

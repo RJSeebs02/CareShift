@@ -15,6 +15,9 @@ switch($action){
     case 'delete':
         delete_nurse();
     break;
+    case 'fetch_by_department':
+        fetch_nurses_by_department();
+    break;
 }
 
 function create_new_nurse($con) {
@@ -101,4 +104,26 @@ function delete_nurse(){
         echo "Nurse not found.";
     }
 }
+
+function fetch_nurses_by_department() {
+    $nurse = new Nurse();
+    $department_id = isset($_GET['department_id']) ? $_GET['department_id'] : 'all';
+    
+    try {
+        if ($department_id === 'all') {
+            // Get total and available nurse counts
+            $totalNurses = $nurse->countTotalNurses();
+            $availableNurses = $nurse->countAvailableNurses();  // This is assumed to exist
+            echo json_encode(['total_nurses' => $totalNurses, 'available_nurses' => $availableNurses]);
+        } else {
+            // Get the department-specific counts
+            $totalNurses = $nurse->countNursesByDepartment($department_id);
+            $availableNurses = $nurse->countAvailableNursesByDepartment($department_id);  // This is assumed to exist
+            echo json_encode(['total_nurses' => $totalNurses, 'available_nurses' => $availableNurses]);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['error' => 'Error fetching nurse data: ' . $e->getMessage()]);
+    }
+}
+
 ?>

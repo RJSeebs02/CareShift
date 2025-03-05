@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="heading">
     <h1><i class="fas fa-solid fa-user-shield"></i>&nbspUser Access</h1>
     <a href="index.php?page=useraccess&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Access Level</a>
@@ -44,3 +45,49 @@
         ?>
     </tbody>
 </table>
+=======
+<div class="heading">
+    <h1><i class="fas fa-solid fa-user-shield"></i>&nbspUser Access</h1>
+    <!--<a href="index.php?page=useraccess&subpage=add" class="right_button"><i class="fa fa-plus"></i>&nbspAdd Access Level</a>
+    <a href="index.php?page=useraccess" class="right_button"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbspAccess Level List</a>-->
+</div>
+<span class="right">
+    <div class="search_bar">
+        <label for="search">Search:</label>
+        <input type="text" id="search" class="search" name="search" onkeyup="filterTable()">
+    </div>
+</span>
+
+<table id="tablerecords">   
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Access Level Name</th>
+            <th>Access</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        /* Display each admin record located in the database */
+        if ($useraccess->list_useraccess() != false) {
+            foreach ($useraccess->list_useraccess() as $value) {
+                extract($value);
+                ?>
+                <tr>
+                    <td><?php echo $useraccess_id; ?></td>
+                    <td><?php echo $useraccess_name; ?></td>
+                    <td><?php echo $useraccess_desc; ?></td>
+                </tr>
+                <?php
+            }
+        } else {
+            ?>
+            <tr>
+                <td colspan="3">No Record Found.</td>
+            </tr>
+        <?php
+        }
+        ?>
+    </tbody>
+</table>
+>>>>>>> fa57ef9cad725f4de6f3f7079a21b6419102a7c6

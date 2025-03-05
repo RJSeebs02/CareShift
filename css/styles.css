@@ -32,7 +32,7 @@ body{
 .wrapper .sidebar img{
     width: 100px;
     height: 100px;
-    display: block;        /* Makes the image a block element */
+    display: block;
     margin: 0 auto;  
 }
 
@@ -99,10 +99,10 @@ body{
     justify-content: flex-end;
     gap: 20px;
     align-items: center;
-    position: sticky; /* This makes the header sticky */
-    top: 0;           /* Specifies the top position for the sticky element */
-    z-index: 100;       /* Ensures the header appears above other elements */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Adds shadow below the header */
+    position: sticky;
+    top: 0;
+    z-index: 100; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .wrapper .body .header a{
@@ -141,7 +141,7 @@ body{
 
 .wrapper .body .main_content .content_wrapper .heading{
     display: flex;
-    justify-content: space-between; /* This will push h1 to the left and button to the right */
+    justify-content: space-between;
     align-items: center;
     background-color: #f2f2f2;
     padding: 20px;
@@ -158,10 +158,10 @@ body{
     font-size: 20px;
     margin-left: 5px;
 
-    display: flex; /* Enables flexbox */
-    justify-content: center; /* Centers content horizontally */
-    align-items: center; /* Centers content vertically */
-    text-align: center; /* Aligns text (fallback) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .heading .right_button:hover {
@@ -192,15 +192,15 @@ body{
 }
 
 .search_bar input[type="text"] {
-    padding: 3px;              /* Padding for the input field */
-    width: 250px;              /* Set a fixed width */
-    font-size: 1.3rem;           /* Font size for the input text */
-    border-radius: 4px;       /* Rounded corners for the input */
-    margin-left: 10px;         /* Space between label and input */
+    padding: 3px;      
+    width: 250px;           
+    font-size: 1.3rem;         
+    border-radius: 4px;     
+    margin-left: 10px;      
 }
 
 .search_bar input[type="text"]:focus {
-    transition: box-shadow 0.3s ease; /* Smooth transition */
+    transition: box-shadow 0.3s ease; 
 }
 
 .nav-button {
@@ -214,10 +214,10 @@ body{
     font-size: 20px;
     margin-left: 5px;
 
-    display: flex; /* Enables flexbox */
-    justify-content: center; /* Centers content horizontally */
-    align-items: center; /* Centers content vertically */
-    text-align: center; /* Aligns text (fallback) */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
 }
 
 .nav-button:hover{
@@ -246,7 +246,7 @@ body{
     background-color: white;
     text-align: left;
     overflow: hidden;
-    border-collapse: collapse; /* Ensures that borders are merged for cleaner look */
+    border-collapse: collapse; 
 }
 #tablerecords thead{
 	color: #181a1d;
@@ -262,8 +262,8 @@ body{
     font-weight: 900;
     
 }
-#tablerecords th, /* Add border to the table headers */
-#tablerecords td { /* Add border to the table data cells */
+#tablerecords th, 
+#tablerecords td {
     padding: 10px 0px;
 }
 #tablerecords tbody{
@@ -271,11 +271,11 @@ body{
 }
 
 #tablerecords tbody tr:nth-child(odd) {
-    background-color: #ffffff; /* Light gray for odd rows */
+    background-color: #ffffff; 
 }
 
 #tablerecords tbody tr:nth-child(even) {
-    background-color: #f2f2f2; /* White for even rows */
+    background-color: #f2f2f2; 
 }
 
 
@@ -325,7 +325,7 @@ body{
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 40px; /* Space between left and right sections */
+    gap: 40px; 
     margin-bottom: 20px;
 }
 
@@ -336,7 +336,7 @@ body{
 .form_wrapper {
     display: flex;
     justify-content: space-between;
-    gap: 40px; /* Space between the left and right form sections */
+    gap: 40px; 
     width: 100%;
 }
 
@@ -344,8 +344,8 @@ body{
 .add_form-right {
     width: 500px;
     display: flex;
-    flex-direction: column; /* Align items in a column */
-    flex: 1; /* Allow both sides to take up equal space */
+    flex-direction: column;
+    flex: 1; 
 }
 
 label {
@@ -378,7 +378,7 @@ label {
     font-size: 25px;
     cursor: pointer;
     display: block;
-    width: 100%; /* Full width for the button */
+    width: 100%; 
     text-align: center;
 }
 
@@ -396,7 +396,7 @@ label {
     font-size: 25px;
     cursor: pointer;
     display: block;
-    width: 100%; /* Full width for the button */
+    width: 100%;
     text-align: center;
 }
 
@@ -408,9 +408,9 @@ label {
 
 
 .content_layer1_wrapper {
-    display: flex;        /* Display items in a row */
-    align-items: center;     /* Center content vertically (if needed) */
-    gap: 10px; /* Space between items */
+    display: flex;        
+    align-items: center;  
+    gap: 10px;
     margin: auto;
     background-color: white;
 }
@@ -422,8 +422,8 @@ label {
     width: 270px;
     height: 100px;
     padding: 10px;
-    background-color: #ffffff; /* Light background */
-    border: 1px solid #ddd; /* Border around the calendar */
+    background-color: #ffffff;
+    border: 1px solid #ddd;
     box-shadow: 0 0 10px 5px #CBD4DF;
 }
 
@@ -434,12 +434,12 @@ label {
 .qr_container {
     width: 80%;
     height: 600px;
-    margin: 20px auto 20px; /* Centers the element horizontally, adds margin-top and margin-bottom */
+    margin: 20px auto 20px; 
 
-    display: flex; /* Enables flexbox layout */
-    flex-direction: column; /* Stacks content vertically */
-    align-items: center; /* Centers horizontally */
-    text-align: center; /* Ensures text inside is centered */
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
 }
 
 .qr_container h1 {
@@ -455,10 +455,10 @@ label {
 .qr_profile_container {
     width: 100%;
     height: 600px;
-    margin: 0 0 20px 0; /* Centers the element horizontally, adds margin-top and margin-bottom */
-    display: flex; /* Enables flexbox layout */
-    flex-direction: column; /* Stacks content vertically */
-    align-items: center; /* Centers horizontally */
+    margin: 0 0 20px 0; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
     background-color: white;
 }
 
@@ -543,9 +543,9 @@ label {
 }
 
 #nurseForm {
-    display: flex; /* Enable flexbox */
-    justify-content: center; /* Center contents horizontally */
-    gap: 10px; /* Optional: Adds space between elements */
+    display: flex; 
+    justify-content: center; 
+    gap: 10px; 
 }
 
 
@@ -565,8 +565,8 @@ label {
 #calendar {
     max-width: 100%;
     padding: 20px 10px 10px 10px;
-    background-color: #ffffff; /* Light background */
-    border: 1px solid #ddd; /* Border around the calendar */
+    background-color: #ffffff; 
+    border: 1px solid #ddd; 
 }
 
 .fc-button {
@@ -585,8 +585,8 @@ label {
 }
 
 #calendar .fc-day-today {
-    background-color: #40d4ee !important; /* Ensure it overrides */
-    color: #000 !important; /* Ensure it overrides */
+    background-color: #40d4ee !important; 
+    color: #000 !important; 
 }
 
 
@@ -604,12 +604,12 @@ label {
     background: #7BB9FA !important;
     border: black solid 1px !important;
     color: white !important;
-    font-size: 20px !important; /* Desired font size */
+    font-size: 20px !important;
 }
 
 /* Target the header container */
 #calendar .fc-head-container {
-    font-size: 20px !important; /* Desired font size */
+    font-size: 20px !important;
     font-weight: 900 !important;
     color: white !important;
     background: #7BB9FA !important;
@@ -622,17 +622,17 @@ label {
 
 /* Style day numbers */
 #calendar .fc-day-top {
-    font-size: 20px !important; /* Adjust to desired size */
-    color: #000000 !important; /* Change to desired color */
-    font-weight: 450 !important; /* Optional: Change weight */
+    font-size: 20px !important;
+    color: #000000 !important;
+    font-weight: 450 !important; 
     letter-spacing: 0.1rem !important;
 }
 
 /* Style for the list view's event title */
 #calendar .fc-list-heading {
-    font-size: 30px !important; /* Adjust to desired size */
-    color: #000000 !important; /* Text color */
-    font-weight: 600 !important; /* Optional: Make it bolder */
+    font-size: 30px !important; 
+    color: #000000 !important; 
+    font-weight: 600 !important; 
     letter-spacing: 0.05rem !important;
 }
 
@@ -640,16 +640,16 @@ label {
 /*CALENDAR LIST VIEW*/
 
 #calendar .fc-list-item-time{
-    font-size: 20px !important; /* Adjust to desired size */
-    color: #000000 !important; /* Text color */
-    font-weight: 600 !important; /* Optional: Make it bolder */
+    font-size: 20px !important;
+    color: #000000 !important; 
+    font-weight: 600 !important; 
     letter-spacing: 0.1rem !important;
 }
 
 #calendar .fc-list-item-title{
-    font-size: 20px !important; /* Adjust to desired size */
-    color: #000000 !important; /* Text color */
-    font-weight: 600 !important; /* Optional: Make it bolder */
+    font-size: 20px !important; 
+    color: #000000 !important; 
+    font-weight: 600 !important; 
     letter-spacing: 0.1rem !important;
 }
 
@@ -659,27 +659,27 @@ label {
 
 /* The Modal (background) */
 .modal {
-    display: none; /* Hidden by default */
+    display: none; 
     position: fixed;
-    z-index: 1000; /* Ensure it's on top of other elements */
+    z-index: 1000; 
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+    background-color: rgba(0, 0, 0, 0.5); 
 }
 
 /* Modal Content */
 .modal-content {
-    position: absolute; /* Change to absolute */
-    top: 60%; /* Adjusted from 50% to 60% */
-    left: 50%; /* Position from the left */
-    transform: translate(-50%, -50%); /* Center it */
+    position: absolute; 
+    top: 60%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
     background-color: #fff;
     padding: 20px;
     border: 1px solid #888;
     width: 50%;
-    z-index: 1001; /* Ensure modal content is on top of the background */
+    z-index: 1001; 
 }
 
 .modal-content h2 {
@@ -716,7 +716,7 @@ label {
     font-size: 25px;
     cursor: pointer;
     display: block;
-    width: 100%; /* Full width for the button */
+    width: 100%; 
     text-align: center;
 }
 
@@ -759,7 +759,7 @@ label {
 .custom-multiselect {
     position: relative;
     display: inline-block;
-    width: 100%; /* Adjust width as needed */
+    width: 100%; 
 }
 
 .custom-multiselect input[type="text"] {
@@ -769,7 +769,7 @@ label {
 }
 
 .dropdown-options {
-    display: block; /* Initially hide the dropdown */
+    display: block; 
     background-color: white;
     border: 1px solid #ccc;
     max-height: 200px;
